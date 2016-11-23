@@ -31,6 +31,10 @@ namespace FoucaultTestClasses
         public int sideTolerance_;
         public float zoneAngle_;
     };
+    public struct CalcOptions
+    {
+        public int calcBrightnessPixelNum_;
+    };
 
     // UI handler interfaces
     public interface PictureUIHandler : IDisposable
@@ -74,5 +78,10 @@ namespace FoucaultTestClasses
         void Invalidate();
         void Invalidate(Rectangle rc);
         void OnDefaultPaint(PaintEventArgs e);
+    }
+
+    public interface ICalcBrightness : IDisposable
+    {
+        bool GetBrightness(Image image, int activeZone, ref float l, ref float r);
     }
 }

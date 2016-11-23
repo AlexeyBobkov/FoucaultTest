@@ -35,6 +35,10 @@ namespace FoucaultTest
             sideTolerance_ = 10,
             zoneAngle_ = 20
         };
+        private CalcOptions calcOptions_ = new CalcOptions()
+        {
+            calcBrightnessPixelNum_ = 100
+        };
 
         // UI mode and handlers
         private UIModeE uiMode_;

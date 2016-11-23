@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalcBrightness.cs" />
     <Compile Include="CustomPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
