@@ -1,7 +1,0 @@
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\bin\Debug\FoucaultTestClasses.dll
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\bin\Debug\FoucaultTestClasses.pdb
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\obj\Debug\ResolveAssemblyReference.cache
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\obj\Debug\FoucaultTestClasses.Properties.Resources.resources
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\obj\Debug\FoucaultTestClasses.csproj.GenerateResource.Cache
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\obj\Debug\FoucaultTestClasses.dll
-D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTestClasses\obj\Debug\FoucaultTestClasses.pdb
