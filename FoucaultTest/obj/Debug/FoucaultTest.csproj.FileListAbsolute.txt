@@ -1,0 +1,16 @@
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\FoucaultTest.exe
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\FoucaultTest.pdb
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\AForge.Video.DirectShow.dll
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\AForge.Video.dll
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\FoucaultTestClasses.dll
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\AForge.dll
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\FoucaultTestClasses.pdb
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\AForge.Video.xml
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\AForge.xml
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\bin\Debug\AForge.Video.DirectShow.xml
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\obj\Debug\ResolveAssemblyReference.cache
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\obj\Debug\FoucaultTest.MainForm.resources
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\obj\Debug\FoucaultTest.Properties.Resources.resources
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\obj\Debug\FoucaultTest.csproj.GenerateResource.Cache
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\obj\Debug\FoucaultTest.exe
+D:\Development\Tests\FoucaultTest_Development\br0001_start\FoucaultTest\obj\Debug\FoucaultTest.pdb
