@@ -94,11 +94,11 @@ namespace FoucaultTestClasses
                 {
                     double inner = ZoneBounds[i], outer = ZoneBounds[i + 1];
 
-                    float innerA = (float)(a * inner + 2), innerB = (float)(b * inner + 2);
-                    float outerA = (float)(a * outer - 2), outerB = (float)(b * outer - 2);
+                    float innerA = (float)(a * inner), innerB = (float)(b * inner);
+                    float outerA = (float)(a * outer), outerB = (float)(b * outer);
 
                     // we assume that the ellipse is almost a circle
-                    float angle = (float)((360 * options_.calcBrightnessPixelNum_) / (Math.PI * (outerA * outerA - innerA * innerA)));
+                    float angle = (float)((180 * options_.calcBrightnessPixelNum_) / (Math.PI * (outerA * outerA - innerA * innerA)));
 
                     Region rl, rr;
                     using (var path = new GraphicsPath())
@@ -232,7 +232,7 @@ namespace FoucaultTestClasses
         {
         }
 
-        public override string FloatFormat { get { return "F0"; } }
+        public override string FloatFormat { get { return "F2"; } }
 
         protected override float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area)
         {

@@ -37,7 +37,8 @@ namespace FoucaultTest
         };
         private CalcOptions calcOptions_ = new CalcOptions()
         {
-            calcBrightnessPixelNum_ = 10000
+            calcBrightnessPixelNum_ = 30000,
+            timeAveragingCnt_ = 50
         };
 
         // UI mode and handlers
@@ -45,6 +46,8 @@ namespace FoucaultTest
         private PictureUIUpdateZoneData uiUpdateZoneData_;
         private PictureUISelMirrorBoundData uiSelMirrorBoundData_;
         private ICalcBrightness calcBrightness_;
+        private Queue<float> brightnessDiffQueue_ = new Queue<float>();
+        private float brightnessDiffSum_ = 0;
 
         // zones
         private ZoneVisualizationE zoneVisualization_;
@@ -194,6 +197,15 @@ namespace FoucaultTest
             BeginInvoke(new UpdateBrightnessDelegate(UpdateBrightness), (Bitmap)eventArgs.Frame.Clone());
         }
 
+        private float AddAndCalcDiff(float newDiff)
+        {
+            brightnessDiffSum_ += newDiff;
+            brightnessDiffQueue_.Enqueue(newDiff);
+            if (brightnessDiffQueue_.Count > calcOptions_.timeAveragingCnt_)
+                brightnessDiffSum_ -= brightnessDiffQueue_.Dequeue();
+            return brightnessDiffSum_ / brightnessDiffQueue_.Count;
+        }
+
         private delegate void UpdateBrightnessDelegate(Bitmap bitmap);
         private void UpdateBrightness(Bitmap bitmap)
         {
@@ -203,10 +215,13 @@ namespace FoucaultTest
                 if (calcBrightness_.GetBrightness(bitmap, activeZone_, ref l, ref r))
                 {
                     bitmap.Dispose();
+
+                    //float diff = checkBoxMedianCalc.Checked ? l - r : AddAndCalcDiff(l - r);
+                    float diff = AddAndCalcDiff(l - r);
                     string fmt = calcBrightness_.FloatFormat;
                     textBoxBrightnessLeft.Text = l.ToString(fmt);
                     textBoxBrightnessRight.Text = r.ToString(fmt);
-                    textBoxBrightnessDiff.Text = (l - r).ToString(fmt);
+                    textBoxBrightnessDiff.Text = diff.ToString(fmt);
                     return;
                 }
             }

@@ -34,6 +34,7 @@ namespace FoucaultTestClasses
     public struct CalcOptions
     {
         public int calcBrightnessPixelNum_;
+        public int timeAveragingCnt_;
     };
 
     // UI handler interfaces
