@@ -177,6 +177,8 @@ namespace FoucaultTest
             UpdateUIHandler();
             UpdateCalcHandler(true);
 
+            pictureBox.ImageSizeChanged += new EventHandler(PictureBoxImageSizeChanged);
+
             init_ = true;
         }
 
@@ -238,6 +240,11 @@ namespace FoucaultTest
                 System.Diagnostics.Debug.Assert(hScrollBarScale.Maximum == -hScrollBarScale.Minimum, "Scroll Max != -Min");
                 return Math.Pow(8, (double)hScrollBarScale.Value / hScrollBarScale.Maximum);
             }
+        }
+
+        private void PictureBoxImageSizeChanged(object sender, EventArgs e)
+        {
+            UpdateCalcHandler(false);
         }
 
         private void CorrectPictureSize()

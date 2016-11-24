@@ -99,6 +99,8 @@ namespace FoucaultTestClasses
 
                     // we assume that the ellipse is almost a circle
                     float angle = (float)((180 * options_.calcBrightnessPixelNum_) / (Math.PI * (outerA * outerA - innerA * innerA)));
+                    if (angle > 25)
+                        angle = 25;
                     //float angle = 20;
 
                     Region rl, rr;
