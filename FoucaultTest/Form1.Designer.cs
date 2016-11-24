@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageEdge = new System.Windows.Forms.TabPage();
@@ -63,6 +62,7 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.checkBoxMedianCalc = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -133,6 +133,7 @@
             // 
             // tabPageFoucault
             // 
+            this.tabPageFoucault.Controls.Add(this.checkBoxMedianCalc);
             this.tabPageFoucault.Controls.Add(this.checkBoxZoneNumAuto);
             this.tabPageFoucault.Controls.Add(this.buttonFoucaultOptions);
             this.tabPageFoucault.Controls.Add(this.buttonManualZones);
@@ -169,7 +170,7 @@
             // 
             // buttonFoucaultOptions
             // 
-            this.buttonFoucaultOptions.Location = new System.Drawing.Point(56, 298);
+            this.buttonFoucaultOptions.Location = new System.Drawing.Point(54, 286);
             this.buttonFoucaultOptions.Name = "buttonFoucaultOptions";
             this.buttonFoucaultOptions.Size = new System.Drawing.Size(188, 46);
             this.buttonFoucaultOptions.TabIndex = 12;
@@ -179,7 +180,7 @@
             // 
             // buttonManualZones
             // 
-            this.buttonManualZones.Location = new System.Drawing.Point(163, 390);
+            this.buttonManualZones.Location = new System.Drawing.Point(161, 378);
             this.buttonManualZones.Name = "buttonManualZones";
             this.buttonManualZones.Size = new System.Drawing.Size(124, 65);
             this.buttonManualZones.TabIndex = 14;
@@ -189,7 +190,7 @@
             // 
             // buttonLoadZones
             // 
-            this.buttonLoadZones.Location = new System.Drawing.Point(23, 390);
+            this.buttonLoadZones.Location = new System.Drawing.Point(21, 378);
             this.buttonLoadZones.Name = "buttonLoadZones";
             this.buttonLoadZones.Size = new System.Drawing.Size(124, 65);
             this.buttonLoadZones.TabIndex = 13;
@@ -201,7 +202,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(101, 205);
+            this.label5.Location = new System.Drawing.Point(53, 191);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 24);
             this.label5.TabIndex = 10;
@@ -210,16 +211,16 @@
             // textBoxBrightnessDiff
             // 
             this.textBoxBrightnessDiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(104, 232);
+            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(56, 218);
             this.textBoxBrightnessDiff.Name = "textBoxBrightnessDiff";
             this.textBoxBrightnessDiff.ReadOnly = true;
-            this.textBoxBrightnessDiff.Size = new System.Drawing.Size(92, 31);
+            this.textBoxBrightnessDiff.Size = new System.Drawing.Size(74, 31);
             this.textBoxBrightnessDiff.TabIndex = 11;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(154, 149);
+            this.label4.Location = new System.Drawing.Point(152, 137);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 8;
@@ -227,7 +228,7 @@
             // 
             // textBoxBrightnessRight
             // 
-            this.textBoxBrightnessRight.Location = new System.Drawing.Point(157, 165);
+            this.textBoxBrightnessRight.Location = new System.Drawing.Point(155, 153);
             this.textBoxBrightnessRight.Name = "textBoxBrightnessRight";
             this.textBoxBrightnessRight.ReadOnly = true;
             this.textBoxBrightnessRight.Size = new System.Drawing.Size(73, 20);
@@ -235,7 +236,7 @@
             // 
             // textBoxBrightnessLeft
             // 
-            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(59, 165);
+            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(57, 153);
             this.textBoxBrightnessLeft.Name = "textBoxBrightnessLeft";
             this.textBoxBrightnessLeft.ReadOnly = true;
             this.textBoxBrightnessLeft.Size = new System.Drawing.Size(73, 20);
@@ -244,7 +245,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(55, 149);
+            this.label3.Location = new System.Drawing.Point(53, 137);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 6;
@@ -442,6 +443,17 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
+            // checkBoxMedianCalc
+            // 
+            this.checkBoxMedianCalc.AutoSize = true;
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(155, 218);
+            this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
+            this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
+            this.checkBoxMedianCalc.TabIndex = 15;
+            this.checkBoxMedianCalc.Text = "Median";
+            this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
+            this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -502,6 +514,7 @@
         private System.Windows.Forms.CheckBox checkBoxFitToScreen;
         private System.Windows.Forms.CheckBox checkBoxZoneNumAuto;
         private System.Windows.Forms.Button buttonDelMirrorBound;
+        private System.Windows.Forms.CheckBox checkBoxMedianCalc;
     }
 }
 

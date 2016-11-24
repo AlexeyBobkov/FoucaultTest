@@ -172,7 +172,7 @@ namespace FoucaultTest
             // UI mode: select mirror bound first
             uiMode_ = UIModeE.SelectMirrorBound;
             UpdateUIHandler();
-            UpdateCalcHandler();
+            UpdateCalcHandler(true);
 
             init_ = true;
         }
@@ -203,9 +203,10 @@ namespace FoucaultTest
                 if (calcBrightness_.GetBrightness(bitmap, activeZone_, ref l, ref r))
                 {
                     bitmap.Dispose();
-                    textBoxBrightnessLeft.Text = l.ToString("F2");
-                    textBoxBrightnessRight.Text = r.ToString("F2");
-                    textBoxBrightnessDiff.Text = (l - r).ToString("F2");
+                    string fmt = calcBrightness_.FloatFormat;
+                    textBoxBrightnessLeft.Text = l.ToString(fmt);
+                    textBoxBrightnessRight.Text = r.ToString(fmt);
+                    textBoxBrightnessDiff.Text = (l - r).ToString(fmt);
                     return;
                 }
             }
@@ -245,15 +246,25 @@ namespace FoucaultTest
             }
         }
 
-        private void UpdateCalcHandler()
+        private void UpdateCalcHandler(bool force)
         {
+            if (force && calcBrightness_ != null)
+            {
+                calcBrightness_.Dispose();
+                calcBrightness_ = null;
+            }
             if (uiMode_ == UIModeE.ShowZones && zoneBounds_ != null && !mirrorBound_.IsEmpty && pictureBox.Image != null)
             {
                 Size imageSize = pictureBox.Image.Size;
                 RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
                     imageSize.Width * mirrorBound_.Width, imageSize.Height * mirrorBound_.Height);
                 if (calcBrightness_ == null)
-                    calcBrightness_ = new CalcBrightness1(mirrorBoundAbs, zoneBounds_, calcOptions_);
+                {
+                    if(checkBoxMedianCalc.Checked)
+                        calcBrightness_ = new CalcMedianBrightness(mirrorBoundAbs, zoneBounds_, calcOptions_);
+                    else
+                        calcBrightness_ = new CalcMeanBrightness(mirrorBoundAbs, zoneBounds_, calcOptions_);
+                }
                 else
                 {
                     calcBrightness_.MirrorBoundAbs = mirrorBoundAbs;
@@ -365,7 +376,7 @@ namespace FoucaultTest
             {
                 mirrorBound_ = uiSelMirrorBoundData_.MirrorBound;
                 UpdateUIHandler();
-                UpdateCalcHandler();
+                UpdateCalcHandler(false);
             }
         }
     
@@ -424,7 +435,7 @@ namespace FoucaultTest
         {
             mirrorBound_ = new RectangleF();
             UpdateUIHandler();
-            UpdateCalcHandler();
+            UpdateCalcHandler(false);
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -440,7 +451,7 @@ namespace FoucaultTest
                 uiMode_ = UIModeE.ShowZones;
             }
             UpdateUIHandler();
-            UpdateCalcHandler();
+            UpdateCalcHandler(false);
         }
 
         private void buttonLoadZones_Click(object sender, EventArgs e)
@@ -495,7 +506,6 @@ namespace FoucaultTest
                     break;
             }
             UpdateUIHandler();
-            //UpdateCalcHandler();
         }
 
         private void checkBoxZoneBoundsOnly_CheckedChanged(object sender, EventArgs e)
@@ -506,6 +516,11 @@ namespace FoucaultTest
         private void buttonFoucaultOptions_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateCalcHandler(true);
         }
     }
 }

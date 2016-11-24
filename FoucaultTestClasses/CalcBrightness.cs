@@ -39,6 +39,7 @@ namespace FoucaultTestClasses
             }
         }
 
+        public abstract string FloatFormat { get; }
         public abstract void Dispose();
         public abstract bool GetBrightness(Bitmap bitmap, int activeZone, ref float l, ref float r);
 
@@ -54,9 +55,9 @@ namespace FoucaultTestClasses
 
 
     ////////////////////////////////////////////////////////////////////////////////////
-    public class CalcBrightness1 : CalcBrightnessBase
+    public abstract class CalcBrightnessPieZonesBase : CalcBrightnessBase
     {
-        public CalcBrightness1(RectangleF mirrorBound, double[] zoneBounds, CalcOptions calcOptions)
+        public CalcBrightnessPieZonesBase(RectangleF mirrorBound, double[] zoneBounds, CalcOptions calcOptions)
             : base(mirrorBound, zoneBounds)
         {
             options_ = calcOptions;
@@ -156,15 +157,90 @@ namespace FoucaultTestClasses
             bounds = new Rectangle(l, t, r - l, b - t);
         }
 
-        private float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area)
+        protected abstract float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area);
+
+        private void DisposeZoneData()
+        {
+            if (zoneData_ != null)
+            {
+                foreach (ZoneData zd in zoneData_)
+                {
+                    if (zd.maskL_ != null)
+                        zd.maskL_.Dispose();
+                    if (zd.maskR_ != null)
+                        zd.maskR_.Dispose();
+                }
+            }
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////
+    public class CalcMeanBrightness : CalcBrightnessPieZonesBase
+    {
+        public CalcMeanBrightness(RectangleF mirrorBound, double[] zoneBounds, CalcOptions calcOptions)
+            : base(mirrorBound, zoneBounds, calcOptions)
+        {
+        }
+
+        public override string FloatFormat { get { return "F2"; } }
+
+        protected override float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area)
+        {
+            if (area == 0)
+                return 128;
+
+            // only this format is supported
+            System.Diagnostics.Debug.Assert(image.PixelFormat == PixelFormat.Format24bppRgb);
+
+            Int64 sum = 0;
+            try
+            {
+                BitmapData srcData = image.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                int pixelSize = 3;
+
+                RectangleF[] rects = region.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+                foreach (var rcF in rects)
+                {
+                    Rectangle rc = Rectangle.Round(rcF);
+                    int offsetX = rc.Left - bounds.Left, offsetY = rc.Top - bounds.Top;
+                    for (int i = 0; i < rc.Height; i++)
+                    {
+                        unsafe
+                        {
+                            byte* row = (byte*)srcData.Scan0 + ((i + offsetY) * srcData.Stride) + offsetX * pixelSize;
+                            for (int j = 0; j < rc.Width; j++)
+                            {
+                                sum += row[1];
+                                row += pixelSize;
+                            }
+                        }
+                    }
+                }
+                image.UnlockBits(srcData);
+            }
+            catch (InvalidOperationException)
+            {
+            }
+            return ((float)sum)/area;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    public class CalcMedianBrightness : CalcBrightnessPieZonesBase
+    {
+        public CalcMedianBrightness(RectangleF mirrorBound, double[] zoneBounds, CalcOptions calcOptions)
+            : base(mirrorBound, zoneBounds, calcOptions)
+        {
+        }
+
+        public override string FloatFormat { get { return "F0"; } }
+
+        protected override float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area)
         {
             // only this format is supported
             System.Diagnostics.Debug.Assert(image.PixelFormat == PixelFormat.Format24bppRgb);
 
             int[] pixels = new int[area];
             int idx = 0;
-            //Int64 sum = 0;
-
             try
             {
                 BitmapData srcData = image.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
@@ -183,8 +259,6 @@ namespace FoucaultTestClasses
                             for (int j = 0; j < rc.Width; j++)
                             {
                                 pixels[idx++] = row[1];
-                                //sum += row[1];
-
                                 row += pixelSize;
                             }
                         }
@@ -196,24 +270,8 @@ namespace FoucaultTestClasses
             catch (InvalidOperationException)
             {
             }
-
             Array.Sort(pixels);
-            return pixels[area/2];
-            //return ((float)sum)/area;
-        }
-
-        private void DisposeZoneData()
-        {
-            if (zoneData_ != null)
-            {
-                foreach (ZoneData zd in zoneData_)
-                {
-                    if (zd.maskL_ != null)
-                        zd.maskL_.Dispose();
-                    if (zd.maskR_ != null)
-                        zd.maskR_.Dispose();
-                }
-            }
+            return pixels[area / 2];
         }
     }
 }

@@ -84,6 +84,7 @@ namespace FoucaultTestClasses
     {
         RectangleF MirrorBoundAbs { get; set; }
         double[] ZoneBounds { get; set; }
+        string FloatFormat { get; }
         bool GetBrightness(Bitmap bitmap, int activeZone, ref float l, ref float r);
     }
 }
