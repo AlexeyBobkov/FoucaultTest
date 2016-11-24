@@ -26,17 +26,14 @@ namespace FoucaultTest
         //private bool ignoreMirrorBoundChanged_ = false;
 
         // UI options
-        private UIOptions options_ = new UIOptions()
+        private Options options_ = new Options()
         {
             selectPenColor_ = Color.Red,
             inactiveZoneColor_ = Color.Black,
             activeZoneColor_ = Color.Red,
             zoneHeight_ = 0.16,
             sideTolerance_ = 10,
-            zoneAngle_ = 20
-        };
-        private CalcOptions calcOptions_ = new CalcOptions()
-        {
+            zoneAngle_ = 20,
             calcBrightnessPixelNum_ = 30000,
             timeAveragingCnt_ = 30
         };
@@ -203,7 +200,7 @@ namespace FoucaultTest
         {
             brightnessDiffSum_ += newDiff;
             brightnessDiffQueue_.Enqueue(newDiff);
-            while (brightnessDiffQueue_.Count > calcOptions_.timeAveragingCnt_)
+            while (brightnessDiffQueue_.Count > options_.timeAveragingCnt_)
                 brightnessDiffSum_ -= brightnessDiffQueue_.Dequeue();
             return brightnessDiffSum_ / brightnessDiffQueue_.Count;
         }
@@ -223,7 +220,7 @@ namespace FoucaultTest
                     string fmt = calcBrightness_.FloatFormat;
                     textBoxBrightnessLeft.Text = l.ToString(fmt);
                     textBoxBrightnessRight.Text = r.ToString(fmt);
-                    textBoxBrightnessDiff.Text = diff.ToString(calcOptions_.timeAveragingCnt_ > 1 ? "F2" : fmt);
+                    textBoxBrightnessDiff.Text = diff.ToString(options_.timeAveragingCnt_ > 1 ? "F2" : fmt);
                     return;
                 }
             }
@@ -285,9 +282,9 @@ namespace FoucaultTest
                 if (calcBrightness_ == null)
                 {
                     if(checkBoxMedianCalc.Checked)
-                        calcBrightness_ = new CalcMedianBrightness(mirrorBoundAbs, zoneBounds_, calcOptions_);
+                        calcBrightness_ = new CalcMedianBrightness(mirrorBoundAbs, zoneBounds_, options_);
                     else
-                        calcBrightness_ = new CalcMeanBrightness(mirrorBoundAbs, zoneBounds_, calcOptions_);
+                        calcBrightness_ = new CalcMeanBrightness(mirrorBoundAbs, zoneBounds_, options_);
                 }
                 else
                 {
@@ -541,10 +538,10 @@ namespace FoucaultTest
 
         private void buttonFoucaultOptions_Click(object sender, EventArgs e)
         {
-            CalcOptionsForm form = new CalcOptionsForm(calcOptions_);
+            CalcOptionsForm form = new CalcOptionsForm(options_);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
-            calcOptions_ = form.Options;
+            options_ = form.Options;
             UpdateCalcHandler(true);
         }
 

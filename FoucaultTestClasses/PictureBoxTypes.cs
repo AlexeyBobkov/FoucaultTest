@@ -23,16 +23,13 @@ namespace FoucaultTestClasses
     };
 
     // options
-    public struct UIOptions
+    public struct Options
     {
         public Color selectPenColor_;
         public Color inactiveZoneColor_, activeZoneColor_;
         public double zoneHeight_;
         public int sideTolerance_;
         public float zoneAngle_;
-    };
-    public struct CalcOptions
-    {
         public int calcBrightnessPixelNum_;
         public int timeAveragingCnt_;
     };

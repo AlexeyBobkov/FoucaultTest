@@ -11,42 +11,42 @@ namespace FoucaultTest
 {
     public partial class CalcOptionsForm : Form
     {
-        public CalcOptionsForm(FoucaultTestClasses.CalcOptions options)
+        public CalcOptionsForm(FoucaultTestClasses.Options options)
         {
             options_ = options;
             InitializeComponent();
         }
 
-        public FoucaultTestClasses.CalcOptions Options
+        public FoucaultTestClasses.Options Options
         {
             get { return options_; }
         }
 
         private bool init_ = false;
-        private FoucaultTestClasses.CalcOptions options_;
+        private FoucaultTestClasses.Options options_;
 
         private void CalcOptionsForm_Load(object sender, EventArgs e)
         {
-            textBoxPixelNumber.Text = options_.calcBrightnessPixelNum_.ToString();
+            textBoxAngle.Text = options_.calcBrightnessPixelNum_.ToString();
             textBoxAveragingCount.Text = options_.timeAveragingCnt_.ToString();
             init_ = true;
         }
 
-        private void textBoxPixelNumber_TextChanged(object sender, EventArgs e)
+        private void textBoxAngle_TextChanged(object sender, EventArgs e)
         {
             if (!init_)
                 return;
             try
             {
-                options_.calcBrightnessPixelNum_ = Convert.ToInt32(textBoxPixelNumber.Text);
-                if (options_.calcBrightnessPixelNum_ < 1)
-                    options_.calcBrightnessPixelNum_ = 1;
-                else if (options_.calcBrightnessPixelNum_ > 100000)
-                    options_.calcBrightnessPixelNum_ = 100000;
+                options_.zoneAngle_ = Convert.ToInt32(textBoxAngle.Text)/2;
+                if (options_.zoneAngle_ < 1)
+                    options_.zoneAngle_ = 1;
+                else if (options_.zoneAngle_ > 90)
+                    options_.zoneAngle_ = 90;
             }
             catch (System.FormatException)
             {
-                options_.calcBrightnessPixelNum_ = 30000;
+                options_.zoneAngle_ = 20;
             }
         }
 

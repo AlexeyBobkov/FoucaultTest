@@ -132,7 +132,7 @@ namespace FoucaultTestClasses
     // Show Active Zone UI handler
     public class UIShowActiveZoneHandler : UIShowZoneBaseHandler
     {
-        public UIShowActiveZoneHandler(IPictureBase pict, RectangleF mirrorBound, UIOptions options)
+        public UIShowActiveZoneHandler(IPictureBase pict, RectangleF mirrorBound, Options options)
             : base(pict, mirrorBound)
         {
             pict_ = pict;
@@ -221,7 +221,7 @@ namespace FoucaultTestClasses
         }
 
         private IPictureBase pict_;
-        private UIOptions options_;
+        private Options options_;
         private int mirrorCenterX_, mirrorCenterY_;
         private ZoneData[] zoneData_;
 
@@ -243,7 +243,7 @@ namespace FoucaultTestClasses
     // Show Zone Bounds UI handler
     public class UIShowZoneBoundsHandler : UIShowZoneBaseHandler
     {
-        public UIShowZoneBoundsHandler(IPictureBase pict, RectangleF mirrorBound, UIOptions options)
+        public UIShowZoneBoundsHandler(IPictureBase pict, RectangleF mirrorBound, Options options)
             : base(pict, mirrorBound)
         {
             pict_ = pict;
@@ -313,7 +313,7 @@ namespace FoucaultTestClasses
         }
 
         private IPictureBase pict_;
-        private UIOptions options_;
+        private Options options_;
         private int mirrorCenterX_, mirrorCenterY_;
         private ZoneData[] zoneData_;
 
@@ -351,7 +351,7 @@ namespace FoucaultTestClasses
     // Show Active Zone UI handler
     public class UIShowActiveZoneHandler2 : UIShowZoneBaseHandler
     {
-        public UIShowActiveZoneHandler2(IPictureBase pict, RectangleF mirrorBound, UIOptions options)
+        public UIShowActiveZoneHandler2(IPictureBase pict, RectangleF mirrorBound, Options options)
             : base(pict, mirrorBound)
         {
             pict_ = pict;
@@ -440,7 +440,7 @@ namespace FoucaultTestClasses
         }
 
         private IPictureBase pict_;
-        private UIOptions options_;
+        private Options options_;
         private int mirrorCenterX_, mirrorCenterY_;
         private ZoneData[] zoneData_;
 
@@ -462,7 +462,7 @@ namespace FoucaultTestClasses
     // Show Zone Bounds UI handler
     public class UIShowZoneBoundsHandler2 : UIShowZoneBaseHandler
     {
-        public UIShowZoneBoundsHandler2(IPictureBase pict, RectangleF mirrorBound, UIOptions options)
+        public UIShowZoneBoundsHandler2(IPictureBase pict, RectangleF mirrorBound, Options options)
             : base(pict, mirrorBound)
         {
             pict_ = pict;
@@ -532,7 +532,7 @@ namespace FoucaultTestClasses
         }
 
         private IPictureBase pict_;
-        private UIOptions options_;
+        private Options options_;
         private int mirrorCenterX_, mirrorCenterY_;
         private ZoneData[] zoneData_;
 

@@ -25,7 +25,7 @@ namespace FoucaultTestClasses
     // Select new bound UI handler
     public class UISelNewMirrorBoundHandler : PictureUIHandler, PictureUISelMirrorBoundData
     {
-        public UISelNewMirrorBoundHandler(IPictureBase pict, UIOptions options)
+        public UISelNewMirrorBoundHandler(IPictureBase pict, Options options)
         {
             pict_ = pict;
             pen_ = new Pen(options.selectPenColor_, 1);
@@ -94,7 +94,7 @@ namespace FoucaultTestClasses
     // Select mirror bound UI handler
     public class UISelMirrorBoundHandler : PictureUIHandler, PictureUISelMirrorBoundData
     {
-        public UISelMirrorBoundHandler(IPictureBase pict, RectangleF mirrorBound, UIOptions options)
+        public UISelMirrorBoundHandler(IPictureBase pict, RectangleF mirrorBound, Options options)
         {
             pict_ = pict;
             options_ = options;
@@ -215,7 +215,7 @@ namespace FoucaultTestClasses
         public event EventHandler MirrorBoundChanged;
 
         private IPictureBase pict_;
-        private UIOptions options_;
+        private Options options_;
         private Pen pen_;
         private RectangleF mirrorBound_;
         private Rectangle bound_;
