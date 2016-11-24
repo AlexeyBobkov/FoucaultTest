@@ -82,6 +82,8 @@ namespace FoucaultTestClasses
 
     public interface ICalcBrightness : IDisposable
     {
-        bool GetBrightness(Image image, int activeZone, ref float l, ref float r);
+        RectangleF MirrorBoundAbs { get; set; }
+        double[] ZoneBounds { get; set; }
+        bool GetBrightness(Bitmap bitmap, int activeZone, ref float l, ref float r);
     }
 }

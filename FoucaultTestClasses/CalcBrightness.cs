@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 
 namespace FoucaultTestClasses
 {
     public abstract class CalcBrightnessBase : ICalcBrightness
     {
-        public CalcBrightnessBase(RectangleF mirrorBound, double[] zoneBounds)
+        public CalcBrightnessBase(RectangleF mirrorBoundAbs, double[] zoneBounds)
         {
-            mirrorBound_ = mirrorBound;
+            mirrorBoundAbs_ = mirrorBoundAbs;
             zoneBounds_ = zoneBounds;
         }
 
-        public RectangleF MirrorBound
+        public RectangleF MirrorBoundAbs
         {
-            get { return mirrorBound_; }
+            get { return mirrorBoundAbs_; }
             set
             {
-                if (mirrorBound_ != value)
+                if (mirrorBoundAbs_ != value)
                 {
-                    mirrorBound_ = value;
+                    mirrorBoundAbs_ = value;
                     RebuildZoneData();
                 }
             }
@@ -38,8 +39,8 @@ namespace FoucaultTestClasses
             }
         }
 
-        public abstract void Dispose(); 
-        public abstract bool GetBrightness(Image image, int activeZone, ref float l, ref float r);
+        public abstract void Dispose();
+        public abstract bool GetBrightness(Bitmap bitmap, int activeZone, ref float l, ref float r);
 
         protected abstract void RebuildZoneData();
         protected virtual void OnZoneBoundsChanged()
@@ -48,20 +49,25 @@ namespace FoucaultTestClasses
         }
 
         private double[] zoneBounds_;
-        private RectangleF mirrorBound_; 
+        private RectangleF mirrorBoundAbs_; 
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////
     public class CalcBrightness1 : CalcBrightnessBase
     {
         public CalcBrightness1(RectangleF mirrorBound, double[] zoneBounds, CalcOptions calcOptions)
             : base(mirrorBound, zoneBounds)
         {
             options_ = calcOptions;
+            RebuildZoneData();
         }
 
-        public override bool GetBrightness(Image image, int activeZone, ref float l, ref float r)
+        public override bool GetBrightness(Bitmap bitmap, int activeZone, ref float l, ref float r)
         {
-            return false;
+            l = GetRegionBrightness(bitmap, zoneData_[activeZone].maskL_, zoneData_[activeZone].boundsL_, zoneData_[activeZone].areaL_);
+            r = GetRegionBrightness(bitmap, zoneData_[activeZone].maskR_, zoneData_[activeZone].boundsR_, zoneData_[activeZone].areaR_);
+            return true;
         }
 
         public override void Dispose()
@@ -72,16 +78,16 @@ namespace FoucaultTestClasses
         protected override void RebuildZoneData()
         {
             DisposeZoneData();
-            if (ZoneBounds == null || ZoneBounds.Length <= 1 || MirrorBound.IsEmpty)
+            if (ZoneBounds == null || ZoneBounds.Length <= 1 || MirrorBoundAbs.IsEmpty)
                 zoneData_ = null;
             else
             {
                 zoneData_ = new ZoneData[ZoneBounds.Length - 1];
 
                 // ellipse parameters
-                float a = MirrorBound.Width / 2, b = MirrorBound.Height / 2;    // axis
-                float mirrorCenterX = MirrorBound.Left + a;                     // center
-                float mirrorCenterY = MirrorBound.Top + b;
+                float a = MirrorBoundAbs.Width / 2, b = MirrorBoundAbs.Height / 2;    // axis
+                float mirrorCenterX = MirrorBoundAbs.Left + a;                     // center
+                float mirrorCenterY = MirrorBoundAbs.Top + b;
 
                 for (int i = zoneData_.Length; --i >= 0; )
                 {
@@ -113,6 +119,8 @@ namespace FoucaultTestClasses
 
                     zoneData_[i].maskL_ = rl;
                     zoneData_[i].maskR_ = rr;
+                    GetRegionParameters(rl, out zoneData_[i].boundsL_, out zoneData_[i].areaL_);
+                    GetRegionParameters(rr, out zoneData_[i].boundsR_, out zoneData_[i].areaR_);
                 }
             }
         }
@@ -120,14 +128,78 @@ namespace FoucaultTestClasses
         private struct ZoneData
         {
             public Region maskL_, maskR_;
+            public Rectangle boundsL_, boundsR_;
+            public int areaL_, areaR_;
         }
 
         private ZoneData[] zoneData_;
         private CalcOptions options_;
 
-        private float GetRegionBrightness(Image image, Region r)
+        private void GetRegionParameters(Region region, out Rectangle bounds, out int area)
         {
-            return 0F;
+            int l = int.MaxValue, t = int.MaxValue, r = int.MinValue, b = int.MinValue;
+            area = 0;
+            var rects = region.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+            foreach (var rcF in rects)
+            {
+                Rectangle rc = Rectangle.Round(rcF);
+                area += rc.Width * rc.Height;
+                if(l > rc.Left)
+                    l = rc.Left;
+                if (t > rc.Top)
+                    t = rc.Top;
+                if (r < rc.Right)
+                    r = rc.Right;
+                if (b < rc.Bottom)
+                    b = rc.Bottom;
+            }
+            bounds = new Rectangle(l, t, r - l, b - t);
+        }
+
+        private float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area)
+        {
+            // only this format is supported
+            System.Diagnostics.Debug.Assert(image.PixelFormat == PixelFormat.Format24bppRgb);
+
+            int[] pixels = new int[area];
+            int idx = 0;
+            //Int64 sum = 0;
+
+            try
+            {
+                BitmapData srcData = image.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                int pixelSize = 3;
+
+                RectangleF[] rects = region.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+                foreach (var rcF in rects)
+                {
+                    Rectangle rc = Rectangle.Round(rcF);
+                    int offsetX = rc.Left - bounds.Left, offsetY = rc.Top - bounds.Top;
+                    for (int i = 0; i < rc.Height; i++)
+                    {
+                        unsafe
+                        {
+                            byte* row = (byte*)srcData.Scan0 + ((i + offsetY) * srcData.Stride) + offsetX * pixelSize;
+                            for (int j = 0; j < rc.Width; j++)
+                            {
+                                pixels[idx++] = row[1];
+                                //sum += row[1];
+
+                                row += pixelSize;
+                            }
+                        }
+                    }
+                }
+
+                image.UnlockBits(srcData);
+            }
+            catch (InvalidOperationException)
+            {
+            }
+
+            Array.Sort(pixels);
+            return pixels[area/2];
+            //return ((float)sum)/area;
         }
 
         private void DisposeZoneData()

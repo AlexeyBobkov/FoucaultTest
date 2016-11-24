@@ -37,13 +37,14 @@ namespace FoucaultTest
         };
         private CalcOptions calcOptions_ = new CalcOptions()
         {
-            calcBrightnessPixelNum_ = 100
+            calcBrightnessPixelNum_ = 10000
         };
 
         // UI mode and handlers
         private UIModeE uiMode_;
         private PictureUIUpdateZoneData uiUpdateZoneData_;
         private PictureUISelMirrorBoundData uiSelMirrorBoundData_;
+        private ICalcBrightness calcBrightness_;
 
         // zones
         private ZoneVisualizationE zoneVisualization_;
@@ -171,6 +172,7 @@ namespace FoucaultTest
             // UI mode: select mirror bound first
             uiMode_ = UIModeE.SelectMirrorBound;
             UpdateUIHandler();
+            UpdateCalcHandler();
 
             init_ = true;
         }
@@ -189,6 +191,28 @@ namespace FoucaultTest
         private void videoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             pictureBox.Image = (Bitmap)eventArgs.Frame.Clone();
+            BeginInvoke(new UpdateBrightnessDelegate(UpdateBrightness), (Bitmap)eventArgs.Frame.Clone());
+        }
+
+        private delegate void UpdateBrightnessDelegate(Bitmap bitmap);
+        private void UpdateBrightness(Bitmap bitmap)
+        {
+            if (calcBrightness_ != null)
+            {
+                float l = 0, r = 0;
+                if (calcBrightness_.GetBrightness(bitmap, activeZone_, ref l, ref r))
+                {
+                    bitmap.Dispose();
+                    textBoxBrightnessLeft.Text = l.ToString("F2");
+                    textBoxBrightnessRight.Text = r.ToString("F2");
+                    textBoxBrightnessDiff.Text = (l - r).ToString("F2");
+                    return;
+                }
+            }
+            textBoxBrightnessLeft.Text =
+            textBoxBrightnessRight.Text =
+            textBoxBrightnessDiff.Text = "N/A";
+            bitmap.Dispose();
         }
 
         private double PictureScale
@@ -218,6 +242,28 @@ namespace FoucaultTest
                 if (videoSource_ != null)
                     pictureBox.Size = new Size((int)(videoSource_.VideoResolution.FrameSize.Width * scale),
                                                (int)(videoSource_.VideoResolution.FrameSize.Height * scale));
+            }
+        }
+
+        private void UpdateCalcHandler()
+        {
+            if (uiMode_ == UIModeE.ShowZones && zoneBounds_ != null && !mirrorBound_.IsEmpty && pictureBox.Image != null)
+            {
+                Size imageSize = pictureBox.Image.Size;
+                RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
+                    imageSize.Width * mirrorBound_.Width, imageSize.Height * mirrorBound_.Height);
+                if (calcBrightness_ == null)
+                    calcBrightness_ = new CalcBrightness1(mirrorBoundAbs, zoneBounds_, calcOptions_);
+                else
+                {
+                    calcBrightness_.MirrorBoundAbs = mirrorBoundAbs;
+                    calcBrightness_.ZoneBounds = zoneBounds_;
+                }
+            }
+            else if (calcBrightness_ != null)
+            {
+                calcBrightness_.Dispose();
+                calcBrightness_ = null;
             }
         }
 
@@ -319,6 +365,7 @@ namespace FoucaultTest
             {
                 mirrorBound_ = uiSelMirrorBoundData_.MirrorBound;
                 UpdateUIHandler();
+                UpdateCalcHandler();
             }
         }
     
@@ -377,6 +424,7 @@ namespace FoucaultTest
         {
             mirrorBound_ = new RectangleF();
             UpdateUIHandler();
+            UpdateCalcHandler();
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -392,6 +440,7 @@ namespace FoucaultTest
                 uiMode_ = UIModeE.ShowZones;
             }
             UpdateUIHandler();
+            UpdateCalcHandler();
         }
 
         private void buttonLoadZones_Click(object sender, EventArgs e)
@@ -446,6 +495,7 @@ namespace FoucaultTest
                     break;
             }
             UpdateUIHandler();
+            //UpdateCalcHandler();
         }
 
         private void checkBoxZoneBoundsOnly_CheckedChanged(object sender, EventArgs e)
