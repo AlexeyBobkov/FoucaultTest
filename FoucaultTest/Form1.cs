@@ -221,7 +221,7 @@ namespace FoucaultTest
                     string fmt = calcBrightness_.FloatFormat;
                     textBoxBrightnessLeft.Text = l.ToString(fmt);
                     textBoxBrightnessRight.Text = r.ToString(fmt);
-                    textBoxBrightnessDiff.Text = diff.ToString(fmt);
+                    textBoxBrightnessDiff.Text = diff.ToString(calcOptions_.timeAveragingCnt_ > 1 ? "F2" : fmt);
                     return;
                 }
             }

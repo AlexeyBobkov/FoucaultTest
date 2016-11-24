@@ -238,7 +238,7 @@ namespace FoucaultTestClasses
         {
         }
 
-        public override string FloatFormat { get { return "F2"; } }
+        public override string FloatFormat { get { return "F0"; } }
 
         protected override float GetRegionBrightness(Bitmap image, Region region, Rectangle bounds, int area)
         {
