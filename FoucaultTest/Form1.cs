@@ -201,7 +201,7 @@ namespace FoucaultTest
         {
             brightnessDiffSum_ += newDiff;
             brightnessDiffQueue_.Enqueue(newDiff);
-            if (brightnessDiffQueue_.Count > calcOptions_.timeAveragingCnt_)
+            while (brightnessDiffQueue_.Count > calcOptions_.timeAveragingCnt_)
                 brightnessDiffSum_ -= brightnessDiffQueue_.Dequeue();
             return brightnessDiffSum_ / brightnessDiffQueue_.Count;
         }
@@ -263,6 +263,8 @@ namespace FoucaultTest
 
         private void UpdateCalcHandler(bool force)
         {
+            brightnessDiffQueue_.Clear();
+            brightnessDiffSum_ = 0;
             if (force && calcBrightness_ != null)
             {
                 calcBrightness_.Dispose();
@@ -486,6 +488,8 @@ namespace FoucaultTest
             activeZone_ = comboBoxZoneNum.SelectedIndex;
             if (uiUpdateZoneData_ != null)
                 uiUpdateZoneData_.ActiveZone = activeZone_;
+            brightnessDiffQueue_.Clear();
+            brightnessDiffSum_ = 0;
         }
 
         private void checkBoxZoneNumAuto_CheckedChanged(object sender, EventArgs e)
@@ -530,7 +534,11 @@ namespace FoucaultTest
 
         private void buttonFoucaultOptions_Click(object sender, EventArgs e)
         {
-
+            CalcOptionsForm form = new CalcOptionsForm(calcOptions_);
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
+            calcOptions_ = form.Options;
+            UpdateCalcHandler(true);
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
