@@ -138,9 +138,14 @@ namespace FoucaultTestClasses
 
         private void GetRegionParameters(Region region, out Rectangle bounds, out int area)
         {
-            int l = int.MaxValue, t = int.MaxValue, r = int.MinValue, b = int.MinValue;
             area = 0;
-            var rects = region.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+            var rects = region.GetRegionScans(new Matrix());
+            if (rects.Length <= 0)
+            {
+                bounds = new Rectangle();
+                return;
+            }
+            int l = int.MaxValue, t = int.MaxValue, r = int.MinValue, b = int.MinValue;
             foreach (var rcF in rects)
             {
                 Rectangle rc = Rectangle.Round(rcF);
@@ -209,7 +214,7 @@ namespace FoucaultTestClasses
                             byte* row = (byte*)srcData.Scan0 + ((i + offsetY) * srcData.Stride) + offsetX * pixelSize;
                             for (int j = 0; j < rc.Width; j++)
                             {
-                                sum += row[1];
+                                sum += row[0] + row[1] + row[2];
                                 row += pixelSize;
                             }
                         }
@@ -258,7 +263,7 @@ namespace FoucaultTestClasses
                             byte* row = (byte*)srcData.Scan0 + ((i + offsetY) * srcData.Stride) + offsetX * pixelSize;
                             for (int j = 0; j < rc.Width; j++)
                             {
-                                pixels[idx++] = row[1];
+                                pixels[idx++] = row[0] + row[1] + row[2];
                                 row += pixelSize;
                             }
                         }

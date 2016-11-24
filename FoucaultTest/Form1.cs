@@ -38,7 +38,7 @@ namespace FoucaultTest
         private CalcOptions calcOptions_ = new CalcOptions()
         {
             calcBrightnessPixelNum_ = 30000,
-            timeAveragingCnt_ = 50
+            timeAveragingCnt_ = 30
         };
 
         // UI mode and handlers
@@ -225,10 +225,10 @@ namespace FoucaultTest
                     return;
                 }
             }
+            bitmap.Dispose();
             textBoxBrightnessLeft.Text =
             textBoxBrightnessRight.Text =
             textBoxBrightnessDiff.Text = "N/A";
-            bitmap.Dispose();
         }
 
         private double PictureScale
