@@ -208,12 +208,14 @@ namespace FoucaultTest
 
         private void StartCalibration()
         {
-            if (zoneBounds_ == null || zoneBounds_.Length <= 1)
+            if (zoneBounds_ == null || zoneBounds_.Length <= 1 || uiMode_ != UIModeE.ShowZones || mirrorBound_.IsEmpty || pictureBox.Image == null)
             {
-                labelBrightnessCalib.Text = "No zone data";
+                Console.Beep();
+                labelBrightnessCalib.Text = "Can't start calibration!";
                 return;
             }
             labelBrightnessCalib.Text = "Calibration started...";
+            checkBoxUseCalibration.Enabled = false;
             ResetBrightnessQueue();
 
             zoneBrightnessCalib_ = new ZoneBrightness[zoneBounds_.Length - 1];
@@ -257,6 +259,7 @@ namespace FoucaultTest
                 }
             }
             labelBrightnessCalib.Text = "Calibration done!";
+            checkBoxUseCalibration.Enabled = true;
             return true;
         }
         
@@ -465,6 +468,7 @@ namespace FoucaultTest
             zoneBrightnessCalib_ = null;
             calibrationLeft_ = 0;
             labelBrightnessCalib.Text = "No calibration";
+            checkBoxUseCalibration.Enabled = false;
         }
 
         private void ResetBrightnessQueue()
@@ -485,7 +489,7 @@ namespace FoucaultTest
         private void ImageSizeChanged()
         {
             UpdateUIHandler();
-            UpdateCalcHandler(false);
+            UpdateCalcHandler(true);
             ResetBrightnessQueue();
             ResetCalibration();
         }

@@ -473,6 +473,7 @@
             this.checkBoxUseCalibration.AutoSize = true;
             this.checkBoxUseCalibration.Checked = true;
             this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseCalibration.Enabled = false;
             this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 208);
             this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
             this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
