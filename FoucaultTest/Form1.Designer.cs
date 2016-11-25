@@ -62,6 +62,8 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.buttonBrightnessCalib = new System.Windows.Forms.Button();
+            this.labelBrightnessCalib = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -132,6 +134,8 @@
             // 
             // tabPageFoucault
             // 
+            this.tabPageFoucault.Controls.Add(this.labelBrightnessCalib);
+            this.tabPageFoucault.Controls.Add(this.buttonBrightnessCalib);
             this.tabPageFoucault.Controls.Add(this.checkBoxMedianCalc);
             this.tabPageFoucault.Controls.Add(this.checkBoxZoneNumAuto);
             this.tabPageFoucault.Controls.Add(this.buttonFoucaultOptions);
@@ -160,10 +164,10 @@
             this.checkBoxMedianCalc.AutoSize = true;
             this.checkBoxMedianCalc.Checked = true;
             this.checkBoxMedianCalc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMedianCalc.Location = new System.Drawing.Point(155, 218);
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(162, 289);
             this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
             this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxMedianCalc.TabIndex = 15;
+            this.checkBoxMedianCalc.TabIndex = 13;
             this.checkBoxMedianCalc.Text = "Median";
             this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
             this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
@@ -174,37 +178,37 @@
             this.checkBoxZoneNumAuto.Location = new System.Drawing.Point(161, 43);
             this.checkBoxZoneNumAuto.Name = "checkBoxZoneNumAuto";
             this.checkBoxZoneNumAuto.Size = new System.Drawing.Size(121, 17);
-            this.checkBoxZoneNumAuto.TabIndex = 2;
+            this.checkBoxZoneNumAuto.TabIndex = 4;
             this.checkBoxZoneNumAuto.Text = "Zone # Auto Detect";
             this.checkBoxZoneNumAuto.UseVisualStyleBackColor = true;
             this.checkBoxZoneNumAuto.CheckedChanged += new System.EventHandler(this.checkBoxZoneNumAuto_CheckedChanged);
             // 
             // buttonFoucaultOptions
             // 
-            this.buttonFoucaultOptions.Location = new System.Drawing.Point(54, 286);
+            this.buttonFoucaultOptions.Location = new System.Drawing.Point(24, 467);
             this.buttonFoucaultOptions.Name = "buttonFoucaultOptions";
-            this.buttonFoucaultOptions.Size = new System.Drawing.Size(188, 46);
-            this.buttonFoucaultOptions.TabIndex = 12;
+            this.buttonFoucaultOptions.Size = new System.Drawing.Size(124, 46);
+            this.buttonFoucaultOptions.TabIndex = 16;
             this.buttonFoucaultOptions.Text = "Options";
             this.buttonFoucaultOptions.UseVisualStyleBackColor = true;
             this.buttonFoucaultOptions.Click += new System.EventHandler(this.buttonFoucaultOptions_Click);
             // 
             // buttonManualZones
             // 
-            this.buttonManualZones.Location = new System.Drawing.Point(161, 378);
+            this.buttonManualZones.Location = new System.Drawing.Point(160, 364);
             this.buttonManualZones.Name = "buttonManualZones";
             this.buttonManualZones.Size = new System.Drawing.Size(124, 65);
-            this.buttonManualZones.TabIndex = 14;
+            this.buttonManualZones.TabIndex = 15;
             this.buttonManualZones.Text = "Manual Zone Setup";
             this.buttonManualZones.UseVisualStyleBackColor = true;
             this.buttonManualZones.Click += new System.EventHandler(this.buttonManualZones_Click);
             // 
             // buttonLoadZones
             // 
-            this.buttonLoadZones.Location = new System.Drawing.Point(21, 378);
+            this.buttonLoadZones.Location = new System.Drawing.Point(20, 364);
             this.buttonLoadZones.Name = "buttonLoadZones";
             this.buttonLoadZones.Size = new System.Drawing.Size(124, 65);
-            this.buttonLoadZones.TabIndex = 13;
+            this.buttonLoadZones.TabIndex = 14;
             this.buttonLoadZones.Text = "Load Zones From File";
             this.buttonLoadZones.UseVisualStyleBackColor = true;
             this.buttonLoadZones.Click += new System.EventHandler(this.buttonLoadZones_Click);
@@ -213,53 +217,53 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(53, 191);
+            this.label5.Location = new System.Drawing.Point(21, 262);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 24);
-            this.label5.TabIndex = 10;
+            this.label5.TabIndex = 11;
             this.label5.Text = "Difference";
             // 
             // textBoxBrightnessDiff
             // 
             this.textBoxBrightnessDiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(56, 218);
+            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(24, 289);
             this.textBoxBrightnessDiff.Name = "textBoxBrightnessDiff";
             this.textBoxBrightnessDiff.ReadOnly = true;
-            this.textBoxBrightnessDiff.Size = new System.Drawing.Size(74, 31);
-            this.textBoxBrightnessDiff.TabIndex = 11;
+            this.textBoxBrightnessDiff.Size = new System.Drawing.Size(92, 31);
+            this.textBoxBrightnessDiff.TabIndex = 12;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(152, 137);
+            this.label4.Location = new System.Drawing.Point(158, 219);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Right";
+            this.label4.Size = new System.Drawing.Size(81, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Brighness Right";
             // 
             // textBoxBrightnessRight
             // 
-            this.textBoxBrightnessRight.Location = new System.Drawing.Point(155, 153);
+            this.textBoxBrightnessRight.Location = new System.Drawing.Point(161, 235);
             this.textBoxBrightnessRight.Name = "textBoxBrightnessRight";
             this.textBoxBrightnessRight.ReadOnly = true;
-            this.textBoxBrightnessRight.Size = new System.Drawing.Size(73, 20);
-            this.textBoxBrightnessRight.TabIndex = 9;
+            this.textBoxBrightnessRight.Size = new System.Drawing.Size(91, 20);
+            this.textBoxBrightnessRight.TabIndex = 10;
             // 
             // textBoxBrightnessLeft
             // 
-            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(57, 153);
+            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(25, 235);
             this.textBoxBrightnessLeft.Name = "textBoxBrightnessLeft";
             this.textBoxBrightnessLeft.ReadOnly = true;
-            this.textBoxBrightnessLeft.Size = new System.Drawing.Size(73, 20);
-            this.textBoxBrightnessLeft.TabIndex = 7;
+            this.textBoxBrightnessLeft.Size = new System.Drawing.Size(91, 20);
+            this.textBoxBrightnessLeft.TabIndex = 8;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(53, 137);
+            this.label3.Location = new System.Drawing.Point(21, 219);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 6;
+            this.label3.TabIndex = 7;
             this.label3.Text = "Brightness Left";
             // 
             // comboBoxZoneVisualization
@@ -269,7 +273,7 @@
             this.comboBoxZoneVisualization.Location = new System.Drawing.Point(21, 92);
             this.comboBoxZoneVisualization.Name = "comboBoxZoneVisualization";
             this.comboBoxZoneVisualization.Size = new System.Drawing.Size(124, 21);
-            this.comboBoxZoneVisualization.TabIndex = 4;
+            this.comboBoxZoneVisualization.TabIndex = 3;
             this.comboBoxZoneVisualization.SelectedIndexChanged += new System.EventHandler(this.comboBoxZoneVisualization_SelectedIndexChanged);
             // 
             // label2
@@ -278,7 +282,7 @@
             this.label2.Location = new System.Drawing.Point(18, 76);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 13);
-            this.label2.TabIndex = 3;
+            this.label2.TabIndex = 2;
             this.label2.Text = "Visualization";
             // 
             // label1
@@ -443,6 +447,25 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
+            // buttonBrightnessCalib
+            // 
+            this.buttonBrightnessCalib.Location = new System.Drawing.Point(21, 150);
+            this.buttonBrightnessCalib.Name = "buttonBrightnessCalib";
+            this.buttonBrightnessCalib.Size = new System.Drawing.Size(125, 54);
+            this.buttonBrightnessCalib.TabIndex = 5;
+            this.buttonBrightnessCalib.Text = "Brightness Calibration";
+            this.buttonBrightnessCalib.UseVisualStyleBackColor = true;
+            this.buttonBrightnessCalib.Click += new System.EventHandler(this.buttonBrightnessCalib_Click);
+            // 
+            // labelBrightnessCalib
+            // 
+            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 150);
+            this.labelBrightnessCalib.Name = "labelBrightnessCalib";
+            this.labelBrightnessCalib.Size = new System.Drawing.Size(128, 54);
+            this.labelBrightnessCalib.TabIndex = 6;
+            this.labelBrightnessCalib.Text = "No Caliration";
+            this.labelBrightnessCalib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -503,6 +526,8 @@
         private System.Windows.Forms.CheckBox checkBoxZoneNumAuto;
         private System.Windows.Forms.Button buttonDelMirrorBound;
         private System.Windows.Forms.CheckBox checkBoxMedianCalc;
+        private System.Windows.Forms.Button buttonBrightnessCalib;
+        private System.Windows.Forms.Label labelBrightnessCalib;
     }
 }
 

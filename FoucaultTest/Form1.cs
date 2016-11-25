@@ -546,5 +546,10 @@ namespace FoucaultTest
         {
             UpdateCalcHandler(true);
         }
+
+        private void buttonBrightnessCalib_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
