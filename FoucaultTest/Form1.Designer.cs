@@ -34,6 +34,7 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonEdgeDetect = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
+            this.checkBoxMedianCalc = new System.Windows.Forms.CheckBox();
             this.checkBoxZoneNumAuto = new System.Windows.Forms.CheckBox();
             this.buttonFoucaultOptions = new System.Windows.Forms.Button();
             this.buttonManualZones = new System.Windows.Forms.Button();
@@ -44,7 +45,6 @@
             this.textBoxBrightnessRight = new System.Windows.Forms.TextBox();
             this.textBoxBrightnessLeft = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.checkBoxZoneBoundsOnly = new System.Windows.Forms.CheckBox();
             this.comboBoxZoneVisualization = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -62,7 +62,6 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
-            this.checkBoxMedianCalc = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -144,7 +143,6 @@
             this.tabPageFoucault.Controls.Add(this.textBoxBrightnessRight);
             this.tabPageFoucault.Controls.Add(this.textBoxBrightnessLeft);
             this.tabPageFoucault.Controls.Add(this.label3);
-            this.tabPageFoucault.Controls.Add(this.checkBoxZoneBoundsOnly);
             this.tabPageFoucault.Controls.Add(this.comboBoxZoneVisualization);
             this.tabPageFoucault.Controls.Add(this.label2);
             this.tabPageFoucault.Controls.Add(this.label1);
@@ -156,6 +154,19 @@
             this.tabPageFoucault.TabIndex = 1;
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMedianCalc
+            // 
+            this.checkBoxMedianCalc.AutoSize = true;
+            this.checkBoxMedianCalc.Checked = true;
+            this.checkBoxMedianCalc.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(155, 218);
+            this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
+            this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
+            this.checkBoxMedianCalc.TabIndex = 15;
+            this.checkBoxMedianCalc.Text = "Median";
+            this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
+            this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
             // 
             // checkBoxZoneNumAuto
             // 
@@ -250,17 +261,6 @@
             this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Brightness Left";
-            // 
-            // checkBoxZoneBoundsOnly
-            // 
-            this.checkBoxZoneBoundsOnly.AutoSize = true;
-            this.checkBoxZoneBoundsOnly.Location = new System.Drawing.Point(161, 92);
-            this.checkBoxZoneBoundsOnly.Name = "checkBoxZoneBoundsOnly";
-            this.checkBoxZoneBoundsOnly.Size = new System.Drawing.Size(114, 17);
-            this.checkBoxZoneBoundsOnly.TabIndex = 5;
-            this.checkBoxZoneBoundsOnly.Text = "Zone Bounds Only";
-            this.checkBoxZoneBoundsOnly.UseVisualStyleBackColor = true;
-            this.checkBoxZoneBoundsOnly.CheckedChanged += new System.EventHandler(this.checkBoxZoneBoundsOnly_CheckedChanged);
             // 
             // comboBoxZoneVisualization
             // 
@@ -443,17 +443,6 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
-            // checkBoxMedianCalc
-            // 
-            this.checkBoxMedianCalc.AutoSize = true;
-            this.checkBoxMedianCalc.Location = new System.Drawing.Point(155, 218);
-            this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
-            this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxMedianCalc.TabIndex = 15;
-            this.checkBoxMedianCalc.Text = "Median";
-            this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
-            this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -491,7 +480,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonEdgeDetect;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBoxZoneBoundsOnly;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxBrightnessDiff;
         private System.Windows.Forms.Label label4;

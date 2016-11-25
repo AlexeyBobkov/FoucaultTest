@@ -531,11 +531,6 @@ namespace FoucaultTest
             UpdateUIHandler();
         }
 
-        private void checkBoxZoneBoundsOnly_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonFoucaultOptions_Click(object sender, EventArgs e)
         {
             CalcOptionsForm form = new CalcOptionsForm(options_);
@@ -543,6 +538,7 @@ namespace FoucaultTest
                 return;
             options_ = form.Options;
             UpdateCalcHandler(true);
+            UpdateUIHandler();
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)

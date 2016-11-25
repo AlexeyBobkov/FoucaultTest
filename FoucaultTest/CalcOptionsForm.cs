@@ -27,7 +27,7 @@ namespace FoucaultTest
 
         private void CalcOptionsForm_Load(object sender, EventArgs e)
         {
-            textBoxAngle.Text = options_.calcBrightnessPixelNum_.ToString();
+            textBoxAngle.Text = (options_.zoneAngle_*2).ToString();
             textBoxAveragingCount.Text = options_.timeAveragingCnt_.ToString();
             init_ = true;
         }

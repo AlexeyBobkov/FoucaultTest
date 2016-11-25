@@ -211,7 +211,7 @@ namespace FoucaultTestClasses
                 BitmapData srcData = image.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
                 int pixelSize = 3;
 
-                RectangleF[] rects = region.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+                RectangleF[] rects = region.GetRegionScans(new Matrix());
                 foreach (var rcF in rects)
                 {
                     Rectangle rc = Rectangle.Round(rcF);
@@ -271,7 +271,7 @@ namespace FoucaultTestClasses
                 BitmapData srcData = image.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
                 int pixelSize = 3;
 
-                RectangleF[] rects = region.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+                RectangleF[] rects = region.GetRegionScans(new Matrix());
                 foreach (var rcF in rects)
                 {
                     Rectangle rc = Rectangle.Round(rcF);
@@ -301,8 +301,8 @@ namespace FoucaultTestClasses
                 return -1;
 
             Array.Sort(pixels, 0, idx);
-            if (idx % 1 == 0)
-                return (pixels[idx / 2 - 1] + pixels[idx / 2]) / 2;
+            if (idx % 2 == 0)
+                return (pixels[idx / 2 - 1] + pixels[idx / 2]) / 2.0F;
             else
                 return pixels[idx / 2];
         }
