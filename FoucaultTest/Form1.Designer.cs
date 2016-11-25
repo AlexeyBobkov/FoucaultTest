@@ -34,6 +34,8 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonEdgeDetect = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
+            this.labelBrightnessCalib = new System.Windows.Forms.Label();
+            this.buttonBrightnessCalib = new System.Windows.Forms.Button();
             this.checkBoxMedianCalc = new System.Windows.Forms.CheckBox();
             this.checkBoxZoneNumAuto = new System.Windows.Forms.CheckBox();
             this.buttonFoucaultOptions = new System.Windows.Forms.Button();
@@ -62,8 +64,7 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
-            this.buttonBrightnessCalib = new System.Windows.Forms.Button();
-            this.labelBrightnessCalib = new System.Windows.Forms.Label();
+            this.checkBoxUseCalibration = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -134,6 +135,7 @@
             // 
             // tabPageFoucault
             // 
+            this.tabPageFoucault.Controls.Add(this.checkBoxUseCalibration);
             this.tabPageFoucault.Controls.Add(this.labelBrightnessCalib);
             this.tabPageFoucault.Controls.Add(this.buttonBrightnessCalib);
             this.tabPageFoucault.Controls.Add(this.checkBoxMedianCalc);
@@ -159,15 +161,34 @@
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
             // 
+            // labelBrightnessCalib
+            // 
+            this.labelBrightnessCalib.Location = new System.Drawing.Point(159, 142);
+            this.labelBrightnessCalib.Name = "labelBrightnessCalib";
+            this.labelBrightnessCalib.Size = new System.Drawing.Size(124, 33);
+            this.labelBrightnessCalib.TabIndex = 6;
+            this.labelBrightnessCalib.Text = "No Caliration";
+            this.labelBrightnessCalib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // buttonBrightnessCalib
+            // 
+            this.buttonBrightnessCalib.Location = new System.Drawing.Point(21, 142);
+            this.buttonBrightnessCalib.Name = "buttonBrightnessCalib";
+            this.buttonBrightnessCalib.Size = new System.Drawing.Size(124, 33);
+            this.buttonBrightnessCalib.TabIndex = 5;
+            this.buttonBrightnessCalib.Text = "Brightness Calibration";
+            this.buttonBrightnessCalib.UseVisualStyleBackColor = true;
+            this.buttonBrightnessCalib.Click += new System.EventHandler(this.buttonBrightnessCalib_Click);
+            // 
             // checkBoxMedianCalc
             // 
             this.checkBoxMedianCalc.AutoSize = true;
             this.checkBoxMedianCalc.Checked = true;
             this.checkBoxMedianCalc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMedianCalc.Location = new System.Drawing.Point(162, 289);
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(158, 308);
             this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
             this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxMedianCalc.TabIndex = 13;
+            this.checkBoxMedianCalc.TabIndex = 14;
             this.checkBoxMedianCalc.Text = "Median";
             this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
             this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
@@ -185,30 +206,30 @@
             // 
             // buttonFoucaultOptions
             // 
-            this.buttonFoucaultOptions.Location = new System.Drawing.Point(24, 467);
+            this.buttonFoucaultOptions.Location = new System.Drawing.Point(21, 464);
             this.buttonFoucaultOptions.Name = "buttonFoucaultOptions";
             this.buttonFoucaultOptions.Size = new System.Drawing.Size(124, 46);
-            this.buttonFoucaultOptions.TabIndex = 16;
+            this.buttonFoucaultOptions.TabIndex = 17;
             this.buttonFoucaultOptions.Text = "Options";
             this.buttonFoucaultOptions.UseVisualStyleBackColor = true;
             this.buttonFoucaultOptions.Click += new System.EventHandler(this.buttonFoucaultOptions_Click);
             // 
             // buttonManualZones
             // 
-            this.buttonManualZones.Location = new System.Drawing.Point(160, 364);
+            this.buttonManualZones.Location = new System.Drawing.Point(161, 380);
             this.buttonManualZones.Name = "buttonManualZones";
             this.buttonManualZones.Size = new System.Drawing.Size(124, 65);
-            this.buttonManualZones.TabIndex = 15;
+            this.buttonManualZones.TabIndex = 16;
             this.buttonManualZones.Text = "Manual Zone Setup";
             this.buttonManualZones.UseVisualStyleBackColor = true;
             this.buttonManualZones.Click += new System.EventHandler(this.buttonManualZones_Click);
             // 
             // buttonLoadZones
             // 
-            this.buttonLoadZones.Location = new System.Drawing.Point(20, 364);
+            this.buttonLoadZones.Location = new System.Drawing.Point(21, 380);
             this.buttonLoadZones.Name = "buttonLoadZones";
-            this.buttonLoadZones.Size = new System.Drawing.Size(124, 65);
-            this.buttonLoadZones.TabIndex = 14;
+            this.buttonLoadZones.Size = new System.Drawing.Size(125, 65);
+            this.buttonLoadZones.TabIndex = 15;
             this.buttonLoadZones.Text = "Load Zones From File";
             this.buttonLoadZones.UseVisualStyleBackColor = true;
             this.buttonLoadZones.Click += new System.EventHandler(this.buttonLoadZones_Click);
@@ -217,53 +238,53 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(21, 262);
+            this.label5.Location = new System.Drawing.Point(17, 281);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 24);
-            this.label5.TabIndex = 11;
+            this.label5.TabIndex = 12;
             this.label5.Text = "Difference";
             // 
             // textBoxBrightnessDiff
             // 
             this.textBoxBrightnessDiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(24, 289);
+            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(21, 308);
             this.textBoxBrightnessDiff.Name = "textBoxBrightnessDiff";
             this.textBoxBrightnessDiff.ReadOnly = true;
             this.textBoxBrightnessDiff.Size = new System.Drawing.Size(92, 31);
-            this.textBoxBrightnessDiff.TabIndex = 12;
+            this.textBoxBrightnessDiff.TabIndex = 13;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(158, 219);
+            this.label4.Location = new System.Drawing.Point(154, 238);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
-            this.label4.TabIndex = 9;
+            this.label4.TabIndex = 10;
             this.label4.Text = "Brighness Right";
             // 
             // textBoxBrightnessRight
             // 
-            this.textBoxBrightnessRight.Location = new System.Drawing.Point(161, 235);
+            this.textBoxBrightnessRight.Location = new System.Drawing.Point(157, 254);
             this.textBoxBrightnessRight.Name = "textBoxBrightnessRight";
             this.textBoxBrightnessRight.ReadOnly = true;
             this.textBoxBrightnessRight.Size = new System.Drawing.Size(91, 20);
-            this.textBoxBrightnessRight.TabIndex = 10;
+            this.textBoxBrightnessRight.TabIndex = 11;
             // 
             // textBoxBrightnessLeft
             // 
-            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(25, 235);
+            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(21, 254);
             this.textBoxBrightnessLeft.Name = "textBoxBrightnessLeft";
             this.textBoxBrightnessLeft.ReadOnly = true;
             this.textBoxBrightnessLeft.Size = new System.Drawing.Size(91, 20);
-            this.textBoxBrightnessLeft.TabIndex = 8;
+            this.textBoxBrightnessLeft.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(21, 219);
+            this.label3.Location = new System.Drawing.Point(17, 238);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 7;
+            this.label3.TabIndex = 8;
             this.label3.Text = "Brightness Left";
             // 
             // comboBoxZoneVisualization
@@ -447,24 +468,18 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
-            // buttonBrightnessCalib
+            // checkBoxUseCalibration
             // 
-            this.buttonBrightnessCalib.Location = new System.Drawing.Point(21, 150);
-            this.buttonBrightnessCalib.Name = "buttonBrightnessCalib";
-            this.buttonBrightnessCalib.Size = new System.Drawing.Size(125, 54);
-            this.buttonBrightnessCalib.TabIndex = 5;
-            this.buttonBrightnessCalib.Text = "Brightness Calibration";
-            this.buttonBrightnessCalib.UseVisualStyleBackColor = true;
-            this.buttonBrightnessCalib.Click += new System.EventHandler(this.buttonBrightnessCalib_Click);
-            // 
-            // labelBrightnessCalib
-            // 
-            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 150);
-            this.labelBrightnessCalib.Name = "labelBrightnessCalib";
-            this.labelBrightnessCalib.Size = new System.Drawing.Size(128, 54);
-            this.labelBrightnessCalib.TabIndex = 6;
-            this.labelBrightnessCalib.Text = "No Caliration";
-            this.labelBrightnessCalib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.checkBoxUseCalibration.AutoSize = true;
+            this.checkBoxUseCalibration.Checked = true;
+            this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 208);
+            this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
+            this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxUseCalibration.TabIndex = 7;
+            this.checkBoxUseCalibration.Text = "Use Calibration";
+            this.checkBoxUseCalibration.UseVisualStyleBackColor = true;
+            this.checkBoxUseCalibration.CheckedChanged += new System.EventHandler(this.checkBoxUseCalibration_CheckedChanged);
             // 
             // MainForm
             // 
@@ -528,6 +543,7 @@
         private System.Windows.Forms.CheckBox checkBoxMedianCalc;
         private System.Windows.Forms.Button buttonBrightnessCalib;
         private System.Windows.Forms.Label labelBrightnessCalib;
+        private System.Windows.Forms.CheckBox checkBoxUseCalibration;
     }
 }
 

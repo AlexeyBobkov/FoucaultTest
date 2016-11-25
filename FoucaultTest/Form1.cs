@@ -248,7 +248,6 @@ namespace FoucaultTest
             }
 
             // calibratuon ended
-
             for (int zone = zoneBrightnessCalib_.Length; --zone >= 0; )
             {
                 for (int mode = (int)CalcBrightnessModeE.Size; --mode >= 0; )
@@ -292,7 +291,7 @@ namespace FoucaultTest
                 textBoxBrightnessLeft.Text = l.ToString(fmt);
                 textBoxBrightnessRight.Text = r.ToString(fmt);
 
-                if (zoneBrightnessCalib_ != null)
+                if (zoneBrightnessCalib_ != null && checkBoxUseCalibration.Checked)
                 {
                     l -= zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_];
                     r -= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_];
@@ -464,6 +463,7 @@ namespace FoucaultTest
         private void ResetCalibration()
         {
             zoneBrightnessCalib_ = null;
+            calibrationLeft_ = 0;
             labelBrightnessCalib.Text = "No calibration";
         }
 
@@ -672,6 +672,11 @@ namespace FoucaultTest
         private void buttonBrightnessCalib_Click(object sender, EventArgs e)
         {
             StartCalibration();
+        }
+
+        private void checkBoxUseCalibration_CheckedChanged(object sender, EventArgs e)
+        {
+            ResetBrightnessQueue();
         }
     }
 }
