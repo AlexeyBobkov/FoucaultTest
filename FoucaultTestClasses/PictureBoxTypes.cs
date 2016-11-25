@@ -32,6 +32,7 @@ namespace FoucaultTestClasses
         public float zoneAngle_;
         public int calcBrightnessPixelNum_;
         public int timeAveragingCnt_;
+        public int calibAveragingCnt_;
     };
 
     // UI handler interfaces

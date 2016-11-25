@@ -35,7 +35,8 @@ namespace FoucaultTest
             sideTolerance_ = 10,
             zoneAngle_ = 20,
             calcBrightnessPixelNum_ = 30000,
-            timeAveragingCnt_ = 30
+            timeAveragingCnt_ = 30,
+            calibAveragingCnt_ = 60
         };
 
         // UI mode and handlers

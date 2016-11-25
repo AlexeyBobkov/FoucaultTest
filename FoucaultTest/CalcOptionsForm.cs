@@ -28,7 +28,8 @@ namespace FoucaultTest
         private void CalcOptionsForm_Load(object sender, EventArgs e)
         {
             textBoxAngle.Text = (options_.zoneAngle_*2).ToString();
-            textBoxAveragingCount.Text = options_.timeAveragingCnt_.ToString();
+            textBoxTimeAveragingCount.Text = options_.timeAveragingCnt_.ToString();
+            textBoxCalibAveragingCount.Text = options_.calibAveragingCnt_.ToString();
             init_ = true;
         }
 
@@ -50,13 +51,13 @@ namespace FoucaultTest
             }
         }
 
-        private void textBoxAveragingCount_TextChanged(object sender, EventArgs e)
+        private void textBoxTimeAveragingCount_TextChanged(object sender, EventArgs e)
         {
             if (!init_)
                 return;
             try
             {
-                options_.timeAveragingCnt_ = Convert.ToInt32(textBoxAveragingCount.Text);
+                options_.timeAveragingCnt_ = Convert.ToInt32(textBoxTimeAveragingCount.Text);
                 if (options_.timeAveragingCnt_ < 1)
                     options_.timeAveragingCnt_ = 1;
                 else if (options_.timeAveragingCnt_ > 500)
@@ -64,7 +65,25 @@ namespace FoucaultTest
             }
             catch (System.FormatException)
             {
-                options_.timeAveragingCnt_ = 30000;
+                options_.timeAveragingCnt_ = 30;
+            }
+        }
+
+        private void textBoxCalibAveragingCount_TextChanged(object sender, EventArgs e)
+        {
+            if (!init_)
+                return;
+            try
+            {
+                options_.calibAveragingCnt_ = Convert.ToInt32(textBoxCalibAveragingCount.Text);
+                if (options_.calibAveragingCnt_ < 1)
+                    options_.calibAveragingCnt_ = 1;
+                else if (options_.calibAveragingCnt_ > 500)
+                    options_.calibAveragingCnt_ = 500;
+            }
+            catch (System.FormatException)
+            {
+                options_.calibAveragingCnt_ = 60;
             }
         }
     }
