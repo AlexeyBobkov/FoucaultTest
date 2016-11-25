@@ -48,8 +48,14 @@ namespace FoucaultTest
         private float brightnessDiffSum_ = 0;
 
         // zones
+        private struct ZoneBrightnessCalib
+        {
+            public float brightnessLeft_, brightnessRight_;
+        };
         private ZoneVisualizationE zoneVisualization_;
         private int activeZone_;
+        private ZoneBrightnessCalib[] zoneBrightnessCalib_;
+        private bool calibrationInProcess_ = false;
 
         private struct Zone
         {
@@ -242,7 +248,7 @@ namespace FoucaultTest
 
         private void PictureBoxImageSizeChanged(object sender, EventArgs e)
         {
-            UpdateCalcHandler(false);
+            ImageSizeChanged();
         }
 
         private void CorrectPictureSize()
@@ -392,16 +398,58 @@ namespace FoucaultTest
             pictureBox.Invalidate();
         }
 
+        private void ResetCalibration()
+        {
+            zoneBrightnessCalib_ = null;
+            labelBrightnessCalib.Text = "No calibration";
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        // change handlers
+        private void MirrorBoundChanged()
+        {
+            UpdateUIHandler();
+            UpdateCalcHandler(false);
+            ResetCalibration();
+        }
+        private void ImageSizeChanged()
+        {
+            UpdateUIHandler();
+            UpdateCalcHandler(false);
+            ResetCalibration();
+        }
+        private void UIModeChanged()
+        {
+            UpdateUIHandler();
+            UpdateCalcHandler(false);
+        }
+        private void VisualizationChanged()
+        {
+            UpdateUIHandler();
+        }
+        private void OptionsChanged()
+        {
+            UpdateUIHandler();
+            UpdateCalcHandler(true);
+            ResetCalibration();
+        }
+        private void CalcTypeChanged()
+        {
+            UpdateCalcHandler(true);
+            ResetCalibration();
+        }
+        ////////////////////////////////////////////////////////////////////////////////////
+
         private void OnMirrorBoundChanged(object sender, EventArgs e)
         {
             if (uiSelMirrorBoundData_ != null)
             {
                 mirrorBound_ = uiSelMirrorBoundData_.MirrorBound;
-                UpdateUIHandler();
-                UpdateCalcHandler(false);
+                MirrorBoundChanged();
             }
         }
     
+
         private void buttonCameraSettings_Click(object sender, EventArgs e)
         {
             if (videoSource_ != null)
@@ -456,8 +504,7 @@ namespace FoucaultTest
         private void buttonDelMirrorBound_Click(object sender, EventArgs e)
         {
             mirrorBound_ = new RectangleF();
-            UpdateUIHandler();
-            UpdateCalcHandler(false);
+            MirrorBoundChanged();
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -472,8 +519,7 @@ namespace FoucaultTest
             {
                 uiMode_ = UIModeE.ShowZones;
             }
-            UpdateUIHandler();
-            UpdateCalcHandler(false);
+            UIModeChanged();
         }
 
         private void buttonLoadZones_Click(object sender, EventArgs e)
@@ -529,7 +575,7 @@ namespace FoucaultTest
                     zoneVisualization_ = ZoneVisualizationE.ActiveOnly2;
                     break;
             }
-            UpdateUIHandler();
+            VisualizationChanged();
         }
 
         private void buttonFoucaultOptions_Click(object sender, EventArgs e)
@@ -544,7 +590,7 @@ namespace FoucaultTest
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateCalcHandler(true);
+            CalcTypeChanged();
         }
 
         private void buttonBrightnessCalib_Click(object sender, EventArgs e)
