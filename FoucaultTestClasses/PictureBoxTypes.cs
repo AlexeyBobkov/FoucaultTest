@@ -79,11 +79,19 @@ namespace FoucaultTestClasses
         void OnDefaultPaint(PaintEventArgs e);
     }
 
+    public enum CalcBrightnessModeE
+    {
+        Median = 0,
+        Mean = 1,
+
+        Size = 2
+    }
+
     public interface ICalcBrightness : IDisposable
     {
         RectangleF MirrorBoundAbs { get; set; }
         double[] ZoneBounds { get; set; }
         string FloatFormat { get; }
-        bool GetBrightness(Bitmap bitmap, int activeZone, ref float l, ref float r);
+        void GetBrightness(Bitmap bitmap, int activeZone, CalcBrightnessModeE mode, ref float l, ref float r);
     }
 }
