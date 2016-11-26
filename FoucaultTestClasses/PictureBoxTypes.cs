@@ -30,7 +30,6 @@ namespace FoucaultTestClasses
         public double zoneHeight_;
         public int sideTolerance_;
         public float zoneAngle_;
-        public int calcBrightnessPixelNum_;
         public int timeAveragingCnt_;
         public int calibAveragingCnt_;
     };

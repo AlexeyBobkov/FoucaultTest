@@ -36,7 +36,6 @@ namespace FoucaultTest
             zoneHeight_ = 0.16,
             sideTolerance_ = 10,
             zoneAngle_ = 20,
-            calcBrightnessPixelNum_ = 30000,
             timeAveragingCnt_ = 30,
             calibAveragingCnt_ = 60
         };
@@ -45,7 +44,7 @@ namespace FoucaultTest
         private UIModeE uiMode_;
         private PictureUIUpdateZoneData uiUpdateZoneData_;
         private PictureUISelMirrorBoundData uiSelMirrorBoundData_;
-        private FoucaultTestClasses.CalcBrightnessModeE calcBrightnessMode_ = CalcBrightnessModeE.Median;
+        private CalcBrightnessModeE calcBrightnessMode_ = CalcBrightnessModeE.Median;
         private ICalcBrightness calcBrightness_;
         private Queue<float> brightnessDiffQueue_ = new Queue<float>();
         private float brightnessDiffSum_ = 0;
@@ -313,6 +312,42 @@ namespace FoucaultTest
             textBoxBrightnessDiff.Text = "N/A";
         }
 
+        private Size GetPictureBoxPanelSize()
+        {
+            Size pictureSize = pictureBox.Image.Size;
+            Size panelSize = panelPictureBox.ClientSize;
+            if (!panelPictureBox.VerticalScroll.Visible)
+                panelSize.Width -= SystemInformation.VerticalScrollBarWidth;
+            if (!panelPictureBox.HorizontalScroll.Visible)
+                panelSize.Height -= SystemInformation.HorizontalScrollBarHeight;
+            return panelSize;
+        }
+
+        private PointF GetPanelCenter()
+        {
+            // only for AutoScroll = true mode
+            Size panelSize = GetPictureBoxPanelSize();
+            return new PointF(panelSize.Width / 2 + panelPictureBox.HorizontalScroll.Value, panelSize.Height / 2 + panelPictureBox.VerticalScroll.Value);
+        }
+
+        private void ScrollPictureBoxPointToCenter(PointF pt)
+        {
+            Size panelSize = GetPictureBoxPanelSize();
+            RectangleF newPanelRect = new RectangleF(pt.X - panelSize.Width / 2, pt.Y - panelSize.Height / 2, panelSize.Width, panelSize.Height);
+            newPanelRect.Offset(-panelPictureBox.HorizontalScroll.Value, -panelPictureBox.VerticalScroll.Value);
+
+            using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Left, Top = (int)newPanelRect.Top })
+            {
+                panelPictureBox.ScrollControlIntoView(c);
+                c.Parent = null;
+            }
+            using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Right - 1, Top = (int)newPanelRect.Bottom - 1 })
+            {
+                panelPictureBox.ScrollControlIntoView(c);
+                c.Parent = null;
+            }
+        }
+
         private double PictureScale
         {
             get
@@ -342,9 +377,12 @@ namespace FoucaultTest
             {
                 panelPictureBox.AutoScroll = true;
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                PointF ptOld = GetPanelCenter();
+                SizeF szOld = pictureBox.Size;
                 if (videoSource_ != null)
                     pictureBox.Size = new Size((int)(videoSource_.VideoResolution.FrameSize.Width * scale),
                                                (int)(videoSource_.VideoResolution.FrameSize.Height * scale));
+                ScrollPictureBoxPointToCenter(new PointF(ptOld.X * pictureBox.Size.Width / szOld.Width, ptOld.Y * pictureBox.Size.Height / szOld.Height));
             }
         }
 
@@ -507,13 +545,6 @@ namespace FoucaultTest
         {
             UpdateUIHandler();
         }
-        private void OptionsChanged()
-        {
-            UpdateUIHandler();
-            UpdateCalcHandler(true);
-            ResetBrightnessQueue();
-            ResetCalibration();
-        }
         private void CalcTypeChanged()
         {
             calcBrightnessMode_ = checkBoxMedianCalc.Checked ? CalcBrightnessModeE.Median : CalcBrightnessModeE.Mean;
@@ -670,8 +701,35 @@ namespace FoucaultTest
             CalcOptionsForm form = new CalcOptionsForm(options_);
             if (form.ShowDialog() != DialogResult.OK)
                 return;
+
+            bool fUpdateUIHandler = false, fUpdateCalcHandler = false, fResetBrightnessQueue = false, fResetCalibration = false;
+            if (options_.selectPenColor_ != form.Options.selectPenColor_ ||
+                options_.inactiveZoneColor_ != form.Options.inactiveZoneColor_ ||
+                options_.activeZoneColor_ != form.Options.activeZoneColor_ ||
+                options_.zoneHeight_ != form.Options.zoneHeight_)
+            {
+                fUpdateUIHandler = true;
+            }
+            if (options_.zoneAngle_ != form.Options.zoneAngle_)
+            {
+                fUpdateUIHandler = true;
+                fUpdateCalcHandler = true;
+            }
+            if (options_.timeAveragingCnt_ != form.Options.timeAveragingCnt_)
+                fResetBrightnessQueue = true;
+            if (options_.calibAveragingCnt_ != form.Options.calibAveragingCnt_)
+                fResetCalibration = true;
+
             options_ = form.Options;
-            OptionsChanged();
+
+            if(fUpdateUIHandler)
+                UpdateUIHandler();
+            if(fUpdateCalcHandler)
+                UpdateCalcHandler(true);
+            if (fUpdateCalcHandler || fResetBrightnessQueue)
+                ResetBrightnessQueue();
+            if (fUpdateCalcHandler || fResetCalibration)
+                ResetCalibration();
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
@@ -694,11 +752,7 @@ namespace FoucaultTest
             if (pictureBox.Image == null || mirrorBound_.Width <= 0 || mirrorBound_.Left < 0 || mirrorBound_.Right > pictureBox.Image.Size.Width)
                 return;
             Size pictureSize = pictureBox.Image.Size;
-            Size panelSize = panelPictureBox.ClientSize;
-            if (!panelPictureBox.VerticalScroll.Visible)
-                panelSize.Width -= SystemInformation.VerticalScrollBarWidth;
-            if (!panelPictureBox.HorizontalScroll.Visible)
-                panelSize.Height -= SystemInformation.HorizontalScrollBarHeight;
+            Size panelSize = GetPictureBoxPanelSize();
             float scale = panelSize.Width * 0.95F / (mirrorBound_.Width * pictureSize.Width);
 
             int newScrollBarScaleValue = (int)(hScrollBarScale.Maximum * Math.Log(scale, 8));
@@ -714,21 +768,8 @@ namespace FoucaultTest
 
             CorrectPictureSize();
 
-            float mirrorX = pictureBox.Width * (mirrorBound_.Left + mirrorBound_.Right) / 2;
-            float mirrorY = pictureBox.Height * (mirrorBound_.Top + mirrorBound_.Bottom) / 2;
-            RectangleF newPanelRect = new RectangleF(mirrorX - panelSize.Width / 2, mirrorY - panelSize.Height / 2, panelSize.Width, panelSize.Height);
-            newPanelRect.Offset(-panelPictureBox.HorizontalScroll.Value, -panelPictureBox.VerticalScroll.Value);
-
-            using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Left, Top = (int)newPanelRect.Top })
-            {
-                panelPictureBox.ScrollControlIntoView(c);
-                c.Parent = null;
-            }
-            using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Right - 1, Top = (int)newPanelRect.Bottom - 1 })
-            {
-                panelPictureBox.ScrollControlIntoView(c);
-                c.Parent = null;
-            }
+            PointF ptMirrorCenter = new PointF(pictureBox.Width * (mirrorBound_.Left + mirrorBound_.Right) / 2, pictureBox.Height * (mirrorBound_.Top + mirrorBound_.Bottom) / 2);
+            ScrollPictureBoxPointToCenter(ptMirrorCenter);
         }
     }
 }

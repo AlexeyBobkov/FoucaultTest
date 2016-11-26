@@ -6,24 +6,25 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FoucaultTestClasses;
 
 namespace FoucaultTest
 {
     public partial class CalcOptionsForm : Form
     {
-        public CalcOptionsForm(FoucaultTestClasses.Options options)
+        public CalcOptionsForm(Options options)
         {
             options_ = options;
             InitializeComponent();
         }
 
-        public FoucaultTestClasses.Options Options
+        public Options Options
         {
             get { return options_; }
         }
 
         private bool init_ = false;
-        private FoucaultTestClasses.Options options_;
+        private Options options_;
 
         private void CalcOptionsForm_Load(object sender, EventArgs e)
         {
@@ -85,6 +86,26 @@ namespace FoucaultTest
             {
                 options_.calibAveragingCnt_ = 60;
             }
+        }
+
+        private void buttonDefault_Click(object sender, EventArgs e)
+        {
+            options_ = new Options()
+            {
+                selectPenColor_ = Color.Red,
+                inactiveZoneColor_ = Color.Black,
+                activeZoneColor_ = Color.Red,
+                zoneHeight_ = 0.16,
+                sideTolerance_ = 10,
+                zoneAngle_ = 20,
+                timeAveragingCnt_ = 30,
+                calibAveragingCnt_ = 60
+            };
+            init_ = false;
+            textBoxAngle.Text = (options_.zoneAngle_ * 2).ToString();
+            textBoxTimeAveragingCount.Text = options_.timeAveragingCnt_.ToString();
+            textBoxCalibAveragingCount.Text = options_.calibAveragingCnt_.ToString();
+            init_ = true;
         }
     }
 }
