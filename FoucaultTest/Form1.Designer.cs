@@ -34,6 +34,7 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonEdgeDetect = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
+            this.checkBoxUseCalibration = new System.Windows.Forms.CheckBox();
             this.labelBrightnessCalib = new System.Windows.Forms.Label();
             this.buttonBrightnessCalib = new System.Windows.Forms.Button();
             this.checkBoxMedianCalc = new System.Windows.Forms.CheckBox();
@@ -53,6 +54,7 @@
             this.comboBoxZoneNum = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonAutoPosition = new System.Windows.Forms.Button();
             this.checkBoxFitToScreen = new System.Windows.Forms.CheckBox();
             this.buttonCopyPicture = new System.Windows.Forms.Button();
             this.labelScale = new System.Windows.Forms.Label();
@@ -64,8 +66,6 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
-            this.checkBoxUseCalibration = new System.Windows.Forms.CheckBox();
-            this.buttonAutoPosition = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -161,6 +161,20 @@
             this.tabPageFoucault.TabIndex = 1;
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUseCalibration
+            // 
+            this.checkBoxUseCalibration.AutoSize = true;
+            this.checkBoxUseCalibration.Checked = true;
+            this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseCalibration.Enabled = false;
+            this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 208);
+            this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
+            this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxUseCalibration.TabIndex = 7;
+            this.checkBoxUseCalibration.Text = "Use Calibration";
+            this.checkBoxUseCalibration.UseVisualStyleBackColor = true;
+            this.checkBoxUseCalibration.CheckedChanged += new System.EventHandler(this.checkBoxUseCalibration_CheckedChanged);
             // 
             // labelBrightnessCalib
             // 
@@ -359,12 +373,22 @@
             this.panel1.Size = new System.Drawing.Size(792, 124);
             this.panel1.TabIndex = 0;
             // 
+            // buttonAutoPosition
+            // 
+            this.buttonAutoPosition.Location = new System.Drawing.Point(540, 65);
+            this.buttonAutoPosition.Name = "buttonAutoPosition";
+            this.buttonAutoPosition.Size = new System.Drawing.Size(132, 32);
+            this.buttonAutoPosition.TabIndex = 8;
+            this.buttonAutoPosition.Text = "Auto Position";
+            this.buttonAutoPosition.UseVisualStyleBackColor = true;
+            this.buttonAutoPosition.Click += new System.EventHandler(this.buttonAutoPosition_Click);
+            // 
             // checkBoxFitToScreen
             // 
             this.checkBoxFitToScreen.AutoSize = true;
             this.checkBoxFitToScreen.Checked = true;
             this.checkBoxFitToScreen.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxFitToScreen.Location = new System.Drawing.Point(403, 72);
+            this.checkBoxFitToScreen.Location = new System.Drawing.Point(678, 31);
             this.checkBoxFitToScreen.Name = "checkBoxFitToScreen";
             this.checkBoxFitToScreen.Size = new System.Drawing.Size(86, 17);
             this.checkBoxFitToScreen.TabIndex = 7;
@@ -374,9 +398,9 @@
             // 
             // buttonCopyPicture
             // 
-            this.buttonCopyPicture.Location = new System.Drawing.Point(655, 65);
+            this.buttonCopyPicture.Location = new System.Drawing.Point(678, 65);
             this.buttonCopyPicture.Name = "buttonCopyPicture";
-            this.buttonCopyPicture.Size = new System.Drawing.Size(115, 32);
+            this.buttonCopyPicture.Size = new System.Drawing.Size(92, 32);
             this.buttonCopyPicture.TabIndex = 9;
             this.buttonCopyPicture.Text = "Copy Picture";
             this.buttonCopyPicture.UseVisualStyleBackColor = true;
@@ -385,7 +409,7 @@
             // labelScale
             // 
             this.labelScale.AutoSize = true;
-            this.labelScale.Location = new System.Drawing.Point(400, 14);
+            this.labelScale.Location = new System.Drawing.Point(289, 14);
             this.labelScale.Name = "labelScale";
             this.labelScale.Size = new System.Drawing.Size(34, 13);
             this.labelScale.TabIndex = 5;
@@ -394,7 +418,7 @@
             // hScrollBarScale
             // 
             this.hScrollBarScale.LargeChange = 1;
-            this.hScrollBarScale.Location = new System.Drawing.Point(403, 31);
+            this.hScrollBarScale.Location = new System.Drawing.Point(292, 31);
             this.hScrollBarScale.Minimum = -100;
             this.hScrollBarScale.Name = "hScrollBarScale";
             this.hScrollBarScale.Size = new System.Drawing.Size(367, 21);
@@ -422,9 +446,9 @@
             // 
             // buttonCameraSettings
             // 
-            this.buttonCameraSettings.Location = new System.Drawing.Point(165, 31);
+            this.buttonCameraSettings.Location = new System.Drawing.Point(143, 31);
             this.buttonCameraSettings.Name = "buttonCameraSettings";
-            this.buttonCameraSettings.Size = new System.Drawing.Size(126, 32);
+            this.buttonCameraSettings.Size = new System.Drawing.Size(121, 32);
             this.buttonCameraSettings.TabIndex = 4;
             this.buttonCameraSettings.Text = "Camera Settings";
             this.buttonCameraSettings.UseVisualStyleBackColor = true;
@@ -436,7 +460,7 @@
             this.comboBoxResolution.FormattingEnabled = true;
             this.comboBoxResolution.Location = new System.Drawing.Point(21, 72);
             this.comboBoxResolution.Name = "comboBoxResolution";
-            this.comboBoxResolution.Size = new System.Drawing.Size(126, 21);
+            this.comboBoxResolution.Size = new System.Drawing.Size(104, 21);
             this.comboBoxResolution.TabIndex = 3;
             this.comboBoxResolution.SelectedIndexChanged += new System.EventHandler(this.comboBoxResolution_SelectedIndexChanged);
             // 
@@ -446,7 +470,7 @@
             this.comboBoxCamera.FormattingEnabled = true;
             this.comboBoxCamera.Location = new System.Drawing.Point(21, 31);
             this.comboBoxCamera.Name = "comboBoxCamera";
-            this.comboBoxCamera.Size = new System.Drawing.Size(126, 21);
+            this.comboBoxCamera.Size = new System.Drawing.Size(104, 21);
             this.comboBoxCamera.TabIndex = 1;
             // 
             // panelPictureBox
@@ -469,30 +493,6 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            // 
-            // checkBoxUseCalibration
-            // 
-            this.checkBoxUseCalibration.AutoSize = true;
-            this.checkBoxUseCalibration.Checked = true;
-            this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseCalibration.Enabled = false;
-            this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 208);
-            this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
-            this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxUseCalibration.TabIndex = 7;
-            this.checkBoxUseCalibration.Text = "Use Calibration";
-            this.checkBoxUseCalibration.UseVisualStyleBackColor = true;
-            this.checkBoxUseCalibration.CheckedChanged += new System.EventHandler(this.checkBoxUseCalibration_CheckedChanged);
-            // 
-            // buttonAutoPosition
-            // 
-            this.buttonAutoPosition.Location = new System.Drawing.Point(512, 65);
-            this.buttonAutoPosition.Name = "buttonAutoPosition";
-            this.buttonAutoPosition.Size = new System.Drawing.Size(121, 32);
-            this.buttonAutoPosition.TabIndex = 8;
-            this.buttonAutoPosition.Text = "Auto Position";
-            this.buttonAutoPosition.UseVisualStyleBackColor = true;
-            this.buttonAutoPosition.Click += new System.EventHandler(this.buttonAutoPosition_Click);
             // 
             // MainForm
             // 
