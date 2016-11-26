@@ -570,6 +570,8 @@ namespace FoucaultTest
 
         private void checkBoxFitToScreen_CheckedChanged(object sender, EventArgs e)
         {
+            if (!init_ || ignoreCheckBoxFitToScreen_)
+                return;
             hScrollBarScale.Enabled = !checkBoxFitToScreen.Checked;
             CorrectPictureSize();
         }
