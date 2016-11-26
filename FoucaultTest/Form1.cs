@@ -717,6 +717,8 @@ namespace FoucaultTest
             float mirrorX = pictureBox.Width * (mirrorBound_.Left + mirrorBound_.Right) / 2;
             float mirrorY = pictureBox.Height * (mirrorBound_.Top + mirrorBound_.Bottom) / 2;
             RectangleF newPanelRect = new RectangleF(mirrorX - panelSize.Width / 2, mirrorY - panelSize.Height / 2, panelSize.Width, panelSize.Height);
+            newPanelRect.Offset(-panelPictureBox.HorizontalScroll.Value, -panelPictureBox.VerticalScroll.Value);
+
             using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Left, Top = (int)newPanelRect.Top })
             {
                 panelPictureBox.ScrollControlIntoView(c);
