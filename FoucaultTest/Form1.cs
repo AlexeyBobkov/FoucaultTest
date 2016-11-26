@@ -23,6 +23,8 @@ namespace FoucaultTest
         private VideoCaptureDevice videoSource_;
         private double[] zoneBounds_;   // zone descriptions
         private RectangleF mirrorBound_;
+        private bool ignoreHScrollBarScaleChange_ = false;
+        private bool ignoreCheckBoxFitToScreen_ = false;
         //private bool ignoreMirrorBoundChanged_ = false;
 
         // UI options
@@ -174,10 +176,10 @@ namespace FoucaultTest
             comboBoxZoneVisualization.Items.Add("None");
             comboBoxZoneVisualization.Items.Add("Zone Bounds");
             comboBoxZoneVisualization.Items.Add("Active Zone Only");
-            comboBoxZoneVisualization.Items.Add("Zone Bounds 2");
-            comboBoxZoneVisualization.Items.Add("Active Zone Only 2");
-            comboBoxZoneVisualization.SelectedIndex = 2;
-            zoneVisualization_ = ZoneVisualizationE.ActiveOnly;
+            //comboBoxZoneVisualization.Items.Add("Zone Bounds 2");
+            //comboBoxZoneVisualization.Items.Add("Active Zone Only 2");
+            comboBoxZoneVisualization.SelectedIndex = 1;
+            zoneVisualization_ = ZoneVisualizationE.ZoneBoundsOnly;
 
             // UI mode: select mirror bound first
             uiMode_ = UIModeE.SelectMirrorBound;
@@ -296,8 +298,10 @@ namespace FoucaultTest
 
                 if (zoneBrightnessCalib_ != null && checkBoxUseCalibration.Checked)
                 {
-                    l -= zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_];
-                    r -= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_];
+                    if (zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_] != 0)
+                        l *= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_] / zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_];
+                    //l -= zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_];
+                    //r -= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_];
                 }
                 float diff = AddAndCalcDiff(l - r);
                 textBoxBrightnessDiff.Text = diff.ToString(options_.timeAveragingCnt_ > 1 ? "F2" : fmt);
@@ -553,7 +557,7 @@ namespace FoucaultTest
 
         private void hScrollBarScale_Scroll(object sender, ScrollEventArgs e)
         {
-            if (!init_)
+            if (!init_ || ignoreHScrollBarScaleChange_)
                 return;
             CorrectPictureSize();
         }
@@ -681,6 +685,46 @@ namespace FoucaultTest
         private void checkBoxUseCalibration_CheckedChanged(object sender, EventArgs e)
         {
             ResetBrightnessQueue();
+        }
+
+        private void buttonAutoPosition_Click(object sender, EventArgs e)
+        {
+            if (pictureBox.Image == null || mirrorBound_.Width <= 0 || mirrorBound_.Left < 0 || mirrorBound_.Right > pictureBox.Image.Size.Width)
+                return;
+            Size pictureSize = pictureBox.Image.Size;
+            Size panelSize = panelPictureBox.ClientSize;
+            if (!panelPictureBox.VerticalScroll.Visible)
+                panelSize.Width -= SystemInformation.VerticalScrollBarWidth;
+            if (!panelPictureBox.HorizontalScroll.Visible)
+                panelSize.Height -= SystemInformation.HorizontalScrollBarHeight;
+            float scale = panelSize.Width * 0.95F / (mirrorBound_.Width * pictureSize.Width);
+
+            int newScrollBarScaleValue = (int)(hScrollBarScale.Maximum * Math.Log(scale, 8));
+
+            ignoreHScrollBarScaleChange_ = true;
+            hScrollBarScale.Enabled = true;
+            hScrollBarScale.Value = newScrollBarScaleValue;
+            ignoreHScrollBarScaleChange_ = false;
+
+            ignoreCheckBoxFitToScreen_ = true;
+            checkBoxFitToScreen.Checked = false;
+            ignoreCheckBoxFitToScreen_ = false;
+
+            CorrectPictureSize();
+
+            float mirrorX = pictureBox.Width * (mirrorBound_.Left + mirrorBound_.Right) / 2;
+            float mirrorY = pictureBox.Height * (mirrorBound_.Top + mirrorBound_.Bottom) / 2;
+            RectangleF newPanelRect = new RectangleF(mirrorX - panelSize.Width / 2, mirrorY - panelSize.Height / 2, panelSize.Width, panelSize.Height);
+            using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Left, Top = (int)newPanelRect.Top })
+            {
+                panelPictureBox.ScrollControlIntoView(c);
+                c.Parent = null;
+            }
+            using (Control c = new Control() { Parent = panelPictureBox, Width = 1, Height = 1, Left = (int)newPanelRect.Right - 1, Top = (int)newPanelRect.Bottom - 1 })
+            {
+                panelPictureBox.ScrollControlIntoView(c);
+                c.Parent = null;
+            }
         }
     }
 }
