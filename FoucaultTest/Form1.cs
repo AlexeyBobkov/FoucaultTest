@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define HAS_VIDEO_PROPERTIES
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -106,6 +108,20 @@ namespace FoucaultTest
             zoneBounds = zones.Count > 0 ? zones.ToArray() : null;
         }
 
+#if HAS_VIDEO_PROPERTIES
+        private void SetVideoProperties(VideoCaptureDevice videoSource)
+        {
+            int min, max, step, def;
+            VideoProcAmpFlags flags;
+
+            videoSource.GetVideoPropertyRange(VideoProcAmpProperty.Sharpness, out min, out max, out step, out def, out flags);
+            videoSource.SetVideoProperty(VideoProcAmpProperty.Sharpness, min, flags);
+
+            videoSource.GetVideoPropertyRange(VideoProcAmpProperty.Saturation, out min, out max, out step, out def, out flags);
+            videoSource.SetVideoProperty(VideoProcAmpProperty.Saturation, min, flags);
+        }
+#endif
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
@@ -149,6 +165,10 @@ namespace FoucaultTest
                 //Create NewFrame event handler
                 //(This one triggers every time a new frame/image is captured
                 videoSource_.NewFrame += new AForge.Video.NewFrameEventHandler(videoSource_NewFrame);
+
+#if HAS_VIDEO_PROPERTIES
+                SetVideoProperties(videoSource_);
+#endif
 
                 //Start recording
                 videoSource_.Start();
