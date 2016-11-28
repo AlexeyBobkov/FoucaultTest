@@ -221,10 +221,15 @@ namespace FoucaultTest
             }
         }
 
+        private delegate void SetNewFrameDelegate(Bitmap bitmap);
+        private void SetNewFrame(Bitmap bitmap)
+        {
+            pictureBox.Image = bitmap;
+            UpdateBrightness((Bitmap)bitmap.Clone());
+        }
         private void videoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            pictureBox.Image = (Bitmap)eventArgs.Frame.Clone();
-            BeginInvoke(new UpdateBrightnessDelegate(UpdateBrightness), (Bitmap)eventArgs.Frame.Clone());
+            BeginInvoke(new SetNewFrameDelegate(SetNewFrame), (Bitmap)eventArgs.Frame.Clone());
         }
 
         private void StartCalibration()
@@ -293,7 +298,6 @@ namespace FoucaultTest
             return brightnessDiffSum_ / brightnessDiffQueue_.Count;
         }
 
-        private delegate void UpdateBrightnessDelegate(Bitmap bitmap);
         private void UpdateBrightness(Bitmap bitmap)
         {
             if (calibrationLeft_ > 0)
