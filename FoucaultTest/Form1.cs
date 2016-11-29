@@ -24,11 +24,11 @@ namespace FoucaultTest
 
         private bool init_ = false;
         private VideoCaptureDevice videoSource_;
+        private string videoSourceName_;
         private double[] zoneBounds_;   // zone descriptions
         private RectangleF mirrorBound_;
         private bool ignoreHScrollBarScaleChange_ = false;
         private bool ignoreCheckBoxFitToScreen_ = false;
-        //private bool ignoreMirrorBoundChanged_ = false;
 
         // UI options
         private MainFormSettings settings_ = new MainFormSettings();
@@ -101,8 +101,36 @@ namespace FoucaultTest
         }
 
 #if HAS_VIDEO_PROPERTIES
+        private void SetVideoProperty(VideoCaptureDevice videoSource, VideoProcAmpProperty property, int val)
+        {
+            int min, max, step, def;
+            VideoProcAmpFlags flags;
+
+            try
+            {
+                videoSource.GetVideoPropertyRange(property, out min, out max, out step, out def, out flags);
+                if (val >= min && val <= max)
+                    videoSource.SetVideoProperty(property, val, flags);
+            }
+            catch (Exception)
+            {
+                //MessageBox.Show(ex.Message);
+            }
+        }
+        
         private void SetVideoProperties(VideoCaptureDevice videoSource)
         {
+            if (videoSourceName_ != null && videoSourceName_ == settings_.Camera)
+            {
+                SetVideoProperty(videoSource, VideoProcAmpProperty.Brightness, settings_.Brightness);
+                SetVideoProperty(videoSource, VideoProcAmpProperty.Contrast, settings_.Contrast);
+                SetVideoProperty(videoSource, VideoProcAmpProperty.Hue, settings_.Hue);
+                SetVideoProperty(videoSource, VideoProcAmpProperty.Saturation, settings_.Saturation);
+                SetVideoProperty(videoSource, VideoProcAmpProperty.Sharpness, settings_.Sharpness);
+                SetVideoProperty(videoSource, VideoProcAmpProperty.Gamma, settings_.Gamma);
+            }
+
+            /*
             int min, max, step, def;
             VideoProcAmpFlags flags;
 
@@ -111,6 +139,37 @@ namespace FoucaultTest
 
             videoSource.GetVideoPropertyRange(VideoProcAmpProperty.Saturation, out min, out max, out step, out def, out flags);
             videoSource.SetVideoProperty(VideoProcAmpProperty.Saturation, min, flags);
+             * */
+        }
+
+        private int GetVideoProperty(VideoCaptureDevice videoSource, VideoProcAmpProperty property)
+        {
+            int val;
+            VideoProcAmpFlags flags;
+            try
+            {
+                videoSource.GetVideoProperty(property, out val, out flags);
+                return val;
+            }
+            catch (Exception)
+            {
+                //MessageBox.Show(ex.Message);
+                return Int32.MinValue;
+            }
+        }
+
+        private void SaveVideoProperties(VideoCaptureDevice videoSource)
+        {
+            if (videoSourceName_ != null)
+            {
+                settings_.Camera = videoSourceName_;
+                settings_.Brightness = GetVideoProperty(videoSource, VideoProcAmpProperty.Brightness);
+                settings_.Contrast = GetVideoProperty(videoSource, VideoProcAmpProperty.Contrast);
+                settings_.Hue = GetVideoProperty(videoSource, VideoProcAmpProperty.Hue);
+                settings_.Saturation = GetVideoProperty(videoSource, VideoProcAmpProperty.Saturation);
+                settings_.Sharpness = GetVideoProperty(videoSource, VideoProcAmpProperty.Sharpness);
+                settings_.Gamma = GetVideoProperty(videoSource, VideoProcAmpProperty.Gamma);
+            }
         }
 #endif
 
@@ -135,6 +194,7 @@ namespace FoucaultTest
             {
                 //For example use first video device. You may check if this is your webcam.
                 videoSource_ = new VideoCaptureDevice(videosources[0].MonikerString);
+                videoSourceName_ = videosources[0].Name;
 
                 try
                 {
@@ -216,6 +276,9 @@ namespace FoucaultTest
             //Stop and free the webcam object if application is closing
             if (videoSource_ != null)
             {
+#if HAS_VIDEO_PROPERTIES
+                SaveVideoProperties(videoSource_);
+#endif
                 if(videoSource_.IsRunning)
                     videoSource_.SignalToStop();
                 videoSource_ = null;
@@ -596,7 +659,16 @@ namespace FoucaultTest
         private void buttonCameraSettings_Click(object sender, EventArgs e)
         {
             if (videoSource_ != null)
-                videoSource_.DisplayPropertyPage(IntPtr.Zero);
+            {
+                try
+                {
+                    videoSource_.DisplayPropertyPage(Handle);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         private void comboBoxResolution_SelectedIndexChanged(object sender, EventArgs e)
@@ -873,5 +945,64 @@ namespace FoucaultTest
             get { return (int)this["CalibAveragingCnt"]; }
             set { this["CalibAveragingCnt"] = value; }
         }
+
+        // camera attributes
+#if HAS_VIDEO_PROPERTIES
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public string Camera
+        {
+            get { return (string)this["Camera"]; }
+            set { this["Camera"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("-2147483648")]
+        public int Brightness
+        {
+            get { return (int)this["Brightness"]; }
+            set { this["Brightness"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("-2147483648")]
+        public int Contrast
+        {
+            get { return (int)this["Contrast"]; }
+            set { this["Brightness"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("-2147483648")]
+        public int Hue
+        {
+            get { return (int)this["Hue"]; }
+            set { this["Hue"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("-2147483648")]
+        public int Saturation
+        {
+            get { return (int)this["Saturation"]; }
+            set { this["Saturation"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("-2147483648")]
+        public int Sharpness
+        {
+            get { return (int)this["Sharpness"]; }
+            set { this["Sharpness"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("-2147483648")]
+        public int Gamma
+        {
+            get { return (int)this["Gamma"]; }
+            set { this["Gamma"] = value; }
+        }
+#endif
     }
 }
