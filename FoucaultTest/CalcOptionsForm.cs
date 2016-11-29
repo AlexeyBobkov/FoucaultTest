@@ -90,6 +90,7 @@ namespace FoucaultTest
 
         private void buttonDefault_Click(object sender, EventArgs e)
         {
+            /*
             options_ = new Options()
             {
                 SelectPenColor = Color.Red,
@@ -101,6 +102,12 @@ namespace FoucaultTest
                 TimeAveragingCnt = 30,
                 CalibAveragingCnt = 60
             };
+             **/
+            // we only reset the options changed in this dialog box
+            options_.ZoneAngle = 20;
+            options_.TimeAveragingCnt = 30;
+            options_.CalibAveragingCnt = 60;
+
             init_ = false;
             textBoxAngle.Text = (options_.ZoneAngle * 2).ToString();
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();

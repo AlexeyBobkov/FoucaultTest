@@ -325,7 +325,7 @@ namespace FoucaultTestClasses
 
         private void PaintZone(Graphics g, int i, bool active)
         {
-            Pen pen = active ? Pens.Red : Pens.Black;
+            Pen pen = new Pen(active ? options_.ActiveZoneColor : options_.InactiveZoneColor);
 
             float innerA = zoneData_[i].innerA_, innerB = zoneData_[i].innerB_;
             float outerA = zoneData_[i].outerA_, outerB = zoneData_[i].outerB_;
@@ -545,7 +545,7 @@ namespace FoucaultTestClasses
 
         private void PaintZone(Graphics g, int i, bool active)
         {
-            Pen pen = active ? Pens.Red : Pens.Black;
+            Pen pen = new Pen(active ? options_.ActiveZoneColor : options_.InactiveZoneColor);
 
             float zoneH = zoneData_[i].h_;
             float innerA = zoneData_[i].innerA_, innerB = zoneData_[i].innerB_;

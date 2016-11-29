@@ -380,7 +380,7 @@ namespace FoucaultTest
                 calcBrightness_.GetBrightness(bitmap, activeZone_, calcBrightnessMode_, ref l, ref r);
                 bitmap.Dispose();
 
-                string fmt = calcBrightness_.FloatFormat;
+                string fmt = calcBrightness_.FloatFormat(calcBrightnessMode_);
                 textBoxBrightnessLeft.Text = l.ToString(fmt);
                 textBoxBrightnessRight.Text = r.ToString(fmt);
 
