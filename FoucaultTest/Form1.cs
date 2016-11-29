@@ -662,7 +662,7 @@ namespace FoucaultTest
             {
                 try
                 {
-                    videoSource_.DisplayPropertyPage(Handle);
+                    videoSource_.DisplayPropertyPage(IntPtr.Zero);
                 }
                 catch(Exception ex)
                 {
@@ -969,7 +969,7 @@ namespace FoucaultTest
         public int Contrast
         {
             get { return (int)this["Contrast"]; }
-            set { this["Brightness"] = value; }
+            set { this["Contrast"] = value; }
         }
 
         [UserScopedSettingAttribute()]
