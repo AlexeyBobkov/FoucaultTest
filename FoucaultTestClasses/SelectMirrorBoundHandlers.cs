@@ -28,7 +28,7 @@ namespace FoucaultTestClasses
         public UISelNewMirrorBoundHandler(IPictureBase pict, Options options)
         {
             pict_ = pict;
-            pen_ = new Pen(options.selectPenColor_, 1);
+            pen_ = new Pen(options.SelectPenColor, 1);
             pen_.DashPattern = new float[] { 6.0F, 3.0F };
 
             using (System.IO.MemoryStream cursorMemoryStream = new System.IO.MemoryStream(Properties.Resources.Selrect))
@@ -98,7 +98,7 @@ namespace FoucaultTestClasses
         {
             pict_ = pict;
             options_ = options;
-            pen_ = new Pen(options.selectPenColor_, 1);
+            pen_ = new Pen(options.SelectPenColor, 1);
             pen_.DashPattern = new float[] { 6.0F, 3.0F };
             MirrorBound = mirrorBound;
             bound_ = pict_.Image2Client(mirrorBound);
@@ -236,29 +236,29 @@ namespace FoucaultTestClasses
 
         private Side GetSide(Point pt)
         {
-            if (pt.X >= bound_.Left - options_.sideTolerance_ && pt.X <= bound_.Left + options_.sideTolerance_)
+            if (pt.X >= bound_.Left - options_.SideTolerance && pt.X <= bound_.Left + options_.SideTolerance)
             {
-                if (pt.Y >= bound_.Top - options_.sideTolerance_ && pt.Y <= bound_.Top + options_.sideTolerance_)
+                if (pt.Y >= bound_.Top - options_.SideTolerance && pt.Y <= bound_.Top + options_.SideTolerance)
                     return Side.UpperLeft;
-                if (pt.Y >= bound_.Bottom - options_.sideTolerance_ && pt.Y <= bound_.Bottom + options_.sideTolerance_)
+                if (pt.Y >= bound_.Bottom - options_.SideTolerance && pt.Y <= bound_.Bottom + options_.SideTolerance)
                     return Side.LowerLeft;
                 if (pt.Y <= bound_.Bottom && pt.Y >= bound_.Top)
                     return Side.Left;
             }
-            if (pt.X >= bound_.Right - options_.sideTolerance_ && pt.X <= bound_.Right + options_.sideTolerance_)
+            if (pt.X >= bound_.Right - options_.SideTolerance && pt.X <= bound_.Right + options_.SideTolerance)
             {
-                if (pt.Y >= bound_.Top - options_.sideTolerance_ && pt.Y <= bound_.Top + options_.sideTolerance_)
+                if (pt.Y >= bound_.Top - options_.SideTolerance && pt.Y <= bound_.Top + options_.SideTolerance)
                     return Side.UpperRight;
-                if (pt.Y >= bound_.Bottom - options_.sideTolerance_ && pt.Y <= bound_.Bottom + options_.sideTolerance_)
+                if (pt.Y >= bound_.Bottom - options_.SideTolerance && pt.Y <= bound_.Bottom + options_.SideTolerance)
                     return Side.LowerRight;
                 if (pt.Y <= bound_.Bottom && pt.Y >= bound_.Top)
                     return Side.Right;
             }
             if (pt.X <= bound_.Right && pt.X >= bound_.Left)
             {
-                if (pt.Y >= bound_.Top - options_.sideTolerance_ && pt.Y <= bound_.Top + options_.sideTolerance_)
+                if (pt.Y >= bound_.Top - options_.SideTolerance && pt.Y <= bound_.Top + options_.SideTolerance)
                     return Side.Top;
-                if (pt.Y >= bound_.Bottom - options_.sideTolerance_ && pt.Y <= bound_.Bottom + options_.sideTolerance_)
+                if (pt.Y >= bound_.Bottom - options_.SideTolerance && pt.Y <= bound_.Bottom + options_.SideTolerance)
                     return Side.Bottom;
             }
             return Side.None;

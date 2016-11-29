@@ -100,7 +100,7 @@ namespace FoucaultTestClasses
                     //float angle = (float)((180 * options_.calcBrightnessPixelNum_) / (Math.PI * (outerA * outerA - innerA * innerA)));
                     //if (angle > 25)
                     //    angle = 25;
-                    float angle = (float)options_.zoneAngle_;
+                    float angle = (float)options_.ZoneAngle;
 
                     Region rl, rr;
                     using (var path = new GraphicsPath())

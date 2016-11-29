@@ -28,9 +28,9 @@ namespace FoucaultTest
 
         private void CalcOptionsForm_Load(object sender, EventArgs e)
         {
-            textBoxAngle.Text = (options_.zoneAngle_*2).ToString();
-            textBoxTimeAveragingCount.Text = options_.timeAveragingCnt_.ToString();
-            textBoxCalibAveragingCount.Text = options_.calibAveragingCnt_.ToString();
+            textBoxAngle.Text = (options_.ZoneAngle*2).ToString();
+            textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
+            textBoxCalibAveragingCount.Text = options_.CalibAveragingCnt.ToString();
             init_ = true;
         }
 
@@ -40,15 +40,15 @@ namespace FoucaultTest
                 return;
             try
             {
-                options_.zoneAngle_ = Convert.ToInt32(textBoxAngle.Text)/2;
-                if (options_.zoneAngle_ < 1)
-                    options_.zoneAngle_ = 1;
-                else if (options_.zoneAngle_ > 90)
-                    options_.zoneAngle_ = 90;
+                options_.ZoneAngle = Convert.ToInt32(textBoxAngle.Text)/2;
+                if (options_.ZoneAngle < 1)
+                    options_.ZoneAngle = 1;
+                else if (options_.ZoneAngle > 90)
+                    options_.ZoneAngle = 90;
             }
             catch (System.FormatException)
             {
-                options_.zoneAngle_ = 20;
+                options_.ZoneAngle = 20;
             }
         }
 
@@ -58,15 +58,15 @@ namespace FoucaultTest
                 return;
             try
             {
-                options_.timeAveragingCnt_ = Convert.ToInt32(textBoxTimeAveragingCount.Text);
-                if (options_.timeAveragingCnt_ < 1)
-                    options_.timeAveragingCnt_ = 1;
-                else if (options_.timeAveragingCnt_ > 500)
-                    options_.timeAveragingCnt_ = 500;
+                options_.TimeAveragingCnt = Convert.ToInt32(textBoxTimeAveragingCount.Text);
+                if (options_.TimeAveragingCnt < 1)
+                    options_.TimeAveragingCnt = 1;
+                else if (options_.TimeAveragingCnt > 500)
+                    options_.TimeAveragingCnt = 500;
             }
             catch (System.FormatException)
             {
-                options_.timeAveragingCnt_ = 30;
+                options_.TimeAveragingCnt = 30;
             }
         }
 
@@ -76,15 +76,15 @@ namespace FoucaultTest
                 return;
             try
             {
-                options_.calibAveragingCnt_ = Convert.ToInt32(textBoxCalibAveragingCount.Text);
-                if (options_.calibAveragingCnt_ < 1)
-                    options_.calibAveragingCnt_ = 1;
-                else if (options_.calibAveragingCnt_ > 500)
-                    options_.calibAveragingCnt_ = 500;
+                options_.CalibAveragingCnt = Convert.ToInt32(textBoxCalibAveragingCount.Text);
+                if (options_.CalibAveragingCnt < 1)
+                    options_.CalibAveragingCnt = 1;
+                else if (options_.CalibAveragingCnt > 500)
+                    options_.CalibAveragingCnt = 500;
             }
             catch (System.FormatException)
             {
-                options_.calibAveragingCnt_ = 60;
+                options_.CalibAveragingCnt = 60;
             }
         }
 
@@ -92,19 +92,19 @@ namespace FoucaultTest
         {
             options_ = new Options()
             {
-                selectPenColor_ = Color.Red,
-                inactiveZoneColor_ = Color.Black,
-                activeZoneColor_ = Color.Red,
-                zoneHeight_ = 0.16,
-                sideTolerance_ = 10,
-                zoneAngle_ = 20,
-                timeAveragingCnt_ = 30,
-                calibAveragingCnt_ = 60
+                SelectPenColor = Color.Red,
+                InactiveZoneColor = Color.Black,
+                ActiveZoneColor = Color.Red,
+                ZoneHeight = 0.16,
+                SideTolerance = 10,
+                ZoneAngle = 20,
+                TimeAveragingCnt = 30,
+                CalibAveragingCnt = 60
             };
             init_ = false;
-            textBoxAngle.Text = (options_.zoneAngle_ * 2).ToString();
-            textBoxTimeAveragingCount.Text = options_.timeAveragingCnt_.ToString();
-            textBoxCalibAveragingCount.Text = options_.calibAveragingCnt_.ToString();
+            textBoxAngle.Text = (options_.ZoneAngle * 2).ToString();
+            textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
+            textBoxCalibAveragingCount.Text = options_.CalibAveragingCnt.ToString();
             init_ = true;
         }
     }

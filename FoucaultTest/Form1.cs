@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using FoucaultTestClasses;
@@ -30,17 +31,8 @@ namespace FoucaultTest
         //private bool ignoreMirrorBoundChanged_ = false;
 
         // UI options
-        private Options options_ = new Options()
-        {
-            selectPenColor_ = Color.Red,
-            inactiveZoneColor_ = Color.Black,
-            activeZoneColor_ = Color.Red,
-            zoneHeight_ = 0.16,
-            sideTolerance_ = 10,
-            zoneAngle_ = 20,
-            timeAveragingCnt_ = 30,
-            calibAveragingCnt_ = 60
-        };
+        private MainFormSettings settings_ = new MainFormSettings();
+        private Options options_ = new Options();
 
         // UI mode and handlers
         private UIModeE uiMode_;
@@ -124,6 +116,15 @@ namespace FoucaultTest
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            options_.SelectPenColor = settings_.SelectPenColor;
+            options_.InactiveZoneColor = settings_.InactiveZoneColor;
+            options_.ActiveZoneColor = settings_.ActiveZoneColor;
+            options_.ZoneHeight = settings_.ZoneHeight;
+            options_.SideTolerance = settings_.SideTolerance;
+            options_.ZoneAngle = settings_.ZoneAngle;
+            options_.TimeAveragingCnt = settings_.TimeAveragingCnt;
+            options_.CalibAveragingCnt = settings_.CalibAveragingCnt;
+
             //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
 
             //List all available video sources. (That can be webcams as well as tv cards, etc)
@@ -219,6 +220,7 @@ namespace FoucaultTest
                     videoSource_.SignalToStop();
                 videoSource_ = null;
             }
+            settings_.Save();
         }
 
         private delegate void SetNewFrameDelegate(Bitmap bitmap);
@@ -250,7 +252,7 @@ namespace FoucaultTest
                 zoneBrightnessCalib_[zone].l_ = new float[(int)CalcBrightnessModeE.Size];
                 zoneBrightnessCalib_[zone].r_ = new float[(int)CalcBrightnessModeE.Size];
             }
-            calibrationLeft_ = options_.calibAveragingCnt_;
+            calibrationLeft_ = options_.CalibAveragingCnt;
         }
         private bool MakeCalibrationStep(Bitmap bitmap)
         {
@@ -271,7 +273,7 @@ namespace FoucaultTest
 
             if (calibrationLeft_ != 0)
             {
-                labelBrightnessCalib.Text = String.Format("Calibration: {0}% done", ((options_.calibAveragingCnt_ - calibrationLeft_) * 100) / options_.calibAveragingCnt_);
+                labelBrightnessCalib.Text = String.Format("Calibration: {0}% done", ((options_.CalibAveragingCnt - calibrationLeft_) * 100) / options_.CalibAveragingCnt);
                 return false;
             }
 
@@ -280,8 +282,8 @@ namespace FoucaultTest
             {
                 for (int mode = (int)CalcBrightnessModeE.Size; --mode >= 0; )
                 {
-                    zoneBrightnessCalib_[zone].l_[mode] /= options_.calibAveragingCnt_;
-                    zoneBrightnessCalib_[zone].r_[mode] /= options_.calibAveragingCnt_;
+                    zoneBrightnessCalib_[zone].l_[mode] /= options_.CalibAveragingCnt;
+                    zoneBrightnessCalib_[zone].r_[mode] /= options_.CalibAveragingCnt;
                 }
             }
             labelBrightnessCalib.Text = "Calibration done!";
@@ -293,7 +295,7 @@ namespace FoucaultTest
         {
             brightnessDiffSum_ += newDiff;
             brightnessDiffQueue_.Enqueue(newDiff);
-            while (brightnessDiffQueue_.Count > options_.timeAveragingCnt_)
+            while (brightnessDiffQueue_.Count > options_.TimeAveragingCnt)
                 brightnessDiffSum_ -= brightnessDiffQueue_.Dequeue();
             return brightnessDiffSum_ / brightnessDiffQueue_.Count;
         }
@@ -327,7 +329,7 @@ namespace FoucaultTest
                     //r -= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_];
                 }
                 float diff = AddAndCalcDiff(l - r);
-                textBoxBrightnessDiff.Text = diff.ToString(options_.timeAveragingCnt_ > 1 ? "F2" : fmt);
+                textBoxBrightnessDiff.Text = diff.ToString(options_.TimeAveragingCnt > 1 ? "F2" : fmt);
                 return;
             }
             bitmap.Dispose();
@@ -727,21 +729,21 @@ namespace FoucaultTest
                 return;
 
             bool fUpdateUIHandler = false, fUpdateCalcHandler = false, fResetBrightnessQueue = false, fResetCalibration = false;
-            if (options_.selectPenColor_ != form.Options.selectPenColor_ ||
-                options_.inactiveZoneColor_ != form.Options.inactiveZoneColor_ ||
-                options_.activeZoneColor_ != form.Options.activeZoneColor_ ||
-                options_.zoneHeight_ != form.Options.zoneHeight_)
+            if (options_.SelectPenColor != form.Options.SelectPenColor ||
+                options_.InactiveZoneColor != form.Options.InactiveZoneColor ||
+                options_.ActiveZoneColor != form.Options.ActiveZoneColor ||
+                options_.ZoneHeight != form.Options.ZoneHeight)
             {
                 fUpdateUIHandler = true;
             }
-            if (options_.zoneAngle_ != form.Options.zoneAngle_)
+            if (options_.ZoneAngle != form.Options.ZoneAngle)
             {
                 fUpdateUIHandler = true;
                 fUpdateCalcHandler = true;
             }
-            if (options_.timeAveragingCnt_ != form.Options.timeAveragingCnt_)
+            if (options_.TimeAveragingCnt != form.Options.TimeAveragingCnt)
                 fResetBrightnessQueue = true;
-            if (options_.calibAveragingCnt_ != form.Options.calibAveragingCnt_)
+            if (options_.CalibAveragingCnt != form.Options.CalibAveragingCnt)
                 fResetCalibration = true;
 
             options_ = form.Options;
@@ -754,6 +756,15 @@ namespace FoucaultTest
                 ResetBrightnessQueue();
             if (fUpdateCalcHandler || fResetCalibration)
                 ResetCalibration();
+
+            settings_.SelectPenColor = options_.SelectPenColor;
+            settings_.InactiveZoneColor = options_.InactiveZoneColor;
+            settings_.ActiveZoneColor = options_.ActiveZoneColor;
+            settings_.ZoneHeight = options_.ZoneHeight;
+            settings_.SideTolerance = options_.SideTolerance;
+            settings_.ZoneAngle = options_.ZoneAngle;
+            settings_.TimeAveragingCnt = options_.TimeAveragingCnt;
+            settings_.CalibAveragingCnt = options_.CalibAveragingCnt;
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
@@ -794,6 +805,73 @@ namespace FoucaultTest
 
             PointF ptMirrorCenter = new PointF(pictureBox.Width * (mirrorBound_.Left + mirrorBound_.Right) / 2, pictureBox.Height * (mirrorBound_.Top + mirrorBound_.Bottom) / 2);
             ScrollPictureBoxPointToCenter(ptMirrorCenter);
+        }
+    }
+
+    sealed class MainFormSettings : ApplicationSettingsBase
+    {
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("Red")]
+        public Color SelectPenColor
+        {
+            get { return (Color)this["SelectPenColor"]; }
+            set { this["SelectPenColor"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("Black")]
+        public Color InactiveZoneColor
+        {
+            get { return (Color)this["InactiveZoneColor"]; }
+            set { this["InactiveZoneColor"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("Red")]
+        public Color ActiveZoneColor
+        {
+            get { return (Color)this["ActiveZoneColor"]; }
+            set { this["ActiveZoneColor"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("0.16")]
+        public double ZoneHeight
+        {
+            get { return (double)this["ZoneHeight"]; }
+            set { this["ZoneHeight"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("10")]
+        public int SideTolerance
+        {
+            get { return (int)this["SideTolerance"]; }
+            set { this["SideTolerance"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("20")]
+        public float ZoneAngle
+        {
+            get { return (float)this["ZoneAngle"]; }
+            set { this["ZoneAngle"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("30")]
+        public int TimeAveragingCnt
+        {
+            get { return (int)this["TimeAveragingCnt"]; }
+            set { this["TimeAveragingCnt"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("60")]
+        public int CalibAveragingCnt
+        {
+            get { return (int)this["CalibAveragingCnt"]; }
+            set { this["CalibAveragingCnt"] = value; }
         }
     }
 }

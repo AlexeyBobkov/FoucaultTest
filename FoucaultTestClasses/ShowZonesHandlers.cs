@@ -174,8 +174,8 @@ namespace FoucaultTestClasses
                     Region r;
                     using (GraphicsPath path = new GraphicsPath())
                     {
-                        path.AddPie(mirrorCenterX_ - outerA, mirrorCenterY_ - outerB, 2 * outerA, 2 * outerB, 180 - options_.zoneAngle_, 2 * options_.zoneAngle_);
-                        path.AddPie(mirrorCenterX_ - outerA, mirrorCenterY_ - outerB, 2 * outerA, 2 * outerB, -options_.zoneAngle_, 2 * options_.zoneAngle_);
+                        path.AddPie(mirrorCenterX_ - outerA, mirrorCenterY_ - outerB, 2 * outerA, 2 * outerB, 180 - options_.ZoneAngle, 2 * options_.ZoneAngle);
+                        path.AddPie(mirrorCenterX_ - outerA, mirrorCenterY_ - outerB, 2 * outerA, 2 * outerB, -options_.ZoneAngle, 2 * options_.ZoneAngle);
                         r = new Region(path);
                     }
                     using (GraphicsPath path = new GraphicsPath())
@@ -272,7 +272,7 @@ namespace FoucaultTestClasses
                 {
                     double inner = ZoneBounds[i], outer = ZoneBounds[i + 1];
 
-                    float zoneH = (float)(options_.zoneHeight_ * ClientBound.Height / 2);
+                    float zoneH = (float)(options_.ZoneHeight * ClientBound.Height / 2);
                     float innerA = (float)(a * inner + 2), innerB = (float)(b * inner + 2);
                     float outerA = (float)(a * outer - 2), outerB = (float)(b * outer - 2);
 
@@ -330,10 +330,10 @@ namespace FoucaultTestClasses
             float innerA = zoneData_[i].innerA_, innerB = zoneData_[i].innerB_;
             float outerA = zoneData_[i].outerA_, outerB = zoneData_[i].outerB_;
 
-            PaintArcs(g, pen, mirrorCenterX_, mirrorCenterY_, outerA, outerB, options_.zoneAngle_);
-            PaintArcs(g, pen, mirrorCenterX_, mirrorCenterY_, innerA, innerB, options_.zoneAngle_);
+            PaintArcs(g, pen, mirrorCenterX_, mirrorCenterY_, outerA, outerB, options_.ZoneAngle);
+            PaintArcs(g, pen, mirrorCenterX_, mirrorCenterY_, innerA, innerB, options_.ZoneAngle);
 
-            double tgA = Math.Tan(options_.zoneAngle_ * Math.PI / 180);
+            double tgA = Math.Tan(options_.ZoneAngle * Math.PI / 180);
             float innerX = (float)Math.Sqrt(1 / (1 / (innerA * innerA) + (tgA * tgA) / (innerB * innerB)));
             float innerY = (float)(innerX * tgA);
             float outerX = (float)Math.Sqrt(1 / (1 / (outerA * outerA) + (tgA * tgA) / (outerB * outerB)));
@@ -387,7 +387,7 @@ namespace FoucaultTestClasses
                 {
                     double inner = ZoneBounds[i], outer = ZoneBounds[i + 1];
 
-                    float zoneH = (float)(options_.zoneHeight_ * ClientBound.Height / 2);
+                    float zoneH = (float)(options_.ZoneHeight * ClientBound.Height / 2);
                     float innerA = (float)(a * inner + 2), innerB = (float)(b * inner + 2);
                     float outerA = (float)(a * outer - 2), outerB = (float)(b * outer - 2);
 
@@ -491,7 +491,7 @@ namespace FoucaultTestClasses
                 {
                     double inner = ZoneBounds[i], outer = ZoneBounds[i + 1];
 
-                    float zoneH = (float)(options_.zoneHeight_ * ClientBound.Height / 2);
+                    float zoneH = (float)(options_.ZoneHeight * ClientBound.Height / 2);
                     float innerA = (float)(a * inner + 2), innerB = (float)(b * inner + 2);
                     float outerA = (float)(a * outer - 2), outerB = (float)(b * outer - 2);
 

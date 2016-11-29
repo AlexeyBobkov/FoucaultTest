@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Xml.Serialization;
 
 namespace FoucaultTestClasses
 {
@@ -25,13 +26,14 @@ namespace FoucaultTestClasses
     // options
     public struct Options
     {
-        public Color selectPenColor_;
-        public Color inactiveZoneColor_, activeZoneColor_;
-        public double zoneHeight_;
-        public int sideTolerance_;
-        public float zoneAngle_;
-        public int timeAveragingCnt_;
-        public int calibAveragingCnt_;
+        public Color SelectPenColor;
+        public Color InactiveZoneColor;
+        public Color ActiveZoneColor;
+        public double ZoneHeight;
+        public int SideTolerance;
+        public float ZoneAngle;
+        public int TimeAveragingCnt;
+        public int CalibAveragingCnt;
     };
 
     // UI handler interfaces
