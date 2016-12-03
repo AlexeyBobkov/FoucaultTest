@@ -878,6 +878,11 @@ namespace FoucaultTest
             PointF ptMirrorCenter = new PointF(pictureBox.Width * (mirrorBound_.Left + mirrorBound_.Right) / 2, pictureBox.Height * (mirrorBound_.Top + mirrorBound_.Bottom) / 2);
             ScrollPictureBoxPointToCenter(ptMirrorCenter);
         }
+
+        private void buttonConnectDI_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     sealed class MainFormSettings : ApplicationSettingsBase

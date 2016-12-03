@@ -66,6 +66,12 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.buttonConnectDI = new System.Windows.Forms.Button();
+            this.textBoxDIStatus = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxDIValue = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.labelDIUnit = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -351,12 +357,18 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 168F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(798, 792);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.labelDIUnit);
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.textBoxDIValue);
+            this.panel1.Controls.Add(this.label8);
+            this.panel1.Controls.Add(this.textBoxDIStatus);
+            this.panel1.Controls.Add(this.buttonConnectDI);
             this.panel1.Controls.Add(this.buttonAutoPosition);
             this.panel1.Controls.Add(this.checkBoxFitToScreen);
             this.panel1.Controls.Add(this.buttonCopyPicture);
@@ -368,14 +380,14 @@
             this.panel1.Controls.Add(this.comboBoxResolution);
             this.panel1.Controls.Add(this.comboBoxCamera);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 665);
+            this.panel1.Location = new System.Drawing.Point(3, 627);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(792, 124);
+            this.panel1.Size = new System.Drawing.Size(792, 162);
             this.panel1.TabIndex = 0;
             // 
             // buttonAutoPosition
             // 
-            this.buttonAutoPosition.Location = new System.Drawing.Point(540, 65);
+            this.buttonAutoPosition.Location = new System.Drawing.Point(250, 72);
             this.buttonAutoPosition.Name = "buttonAutoPosition";
             this.buttonAutoPosition.Size = new System.Drawing.Size(132, 32);
             this.buttonAutoPosition.TabIndex = 8;
@@ -388,7 +400,7 @@
             this.checkBoxFitToScreen.AutoSize = true;
             this.checkBoxFitToScreen.Checked = true;
             this.checkBoxFitToScreen.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxFitToScreen.Location = new System.Drawing.Point(678, 31);
+            this.checkBoxFitToScreen.Location = new System.Drawing.Point(144, 72);
             this.checkBoxFitToScreen.Name = "checkBoxFitToScreen";
             this.checkBoxFitToScreen.Size = new System.Drawing.Size(86, 17);
             this.checkBoxFitToScreen.TabIndex = 7;
@@ -398,9 +410,9 @@
             // 
             // buttonCopyPicture
             // 
-            this.buttonCopyPicture.Location = new System.Drawing.Point(678, 65);
+            this.buttonCopyPicture.Location = new System.Drawing.Point(250, 110);
             this.buttonCopyPicture.Name = "buttonCopyPicture";
-            this.buttonCopyPicture.Size = new System.Drawing.Size(92, 32);
+            this.buttonCopyPicture.Size = new System.Drawing.Size(132, 32);
             this.buttonCopyPicture.TabIndex = 9;
             this.buttonCopyPicture.Text = "Copy Picture";
             this.buttonCopyPicture.UseVisualStyleBackColor = true;
@@ -409,7 +421,7 @@
             // labelScale
             // 
             this.labelScale.AutoSize = true;
-            this.labelScale.Location = new System.Drawing.Point(289, 14);
+            this.labelScale.Location = new System.Drawing.Point(141, 14);
             this.labelScale.Name = "labelScale";
             this.labelScale.Size = new System.Drawing.Size(34, 13);
             this.labelScale.TabIndex = 5;
@@ -418,10 +430,10 @@
             // hScrollBarScale
             // 
             this.hScrollBarScale.LargeChange = 1;
-            this.hScrollBarScale.Location = new System.Drawing.Point(292, 31);
+            this.hScrollBarScale.Location = new System.Drawing.Point(144, 31);
             this.hScrollBarScale.Minimum = -100;
             this.hScrollBarScale.Name = "hScrollBarScale";
-            this.hScrollBarScale.Size = new System.Drawing.Size(367, 21);
+            this.hScrollBarScale.Size = new System.Drawing.Size(238, 21);
             this.hScrollBarScale.TabIndex = 6;
             this.hScrollBarScale.TabStop = true;
             this.hScrollBarScale.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScale_Scroll);
@@ -446,11 +458,11 @@
             // 
             // buttonCameraSettings
             // 
-            this.buttonCameraSettings.Location = new System.Drawing.Point(143, 31);
+            this.buttonCameraSettings.Location = new System.Drawing.Point(21, 110);
             this.buttonCameraSettings.Name = "buttonCameraSettings";
-            this.buttonCameraSettings.Size = new System.Drawing.Size(121, 32);
+            this.buttonCameraSettings.Size = new System.Drawing.Size(104, 32);
             this.buttonCameraSettings.TabIndex = 4;
-            this.buttonCameraSettings.Text = "Camera Settings";
+            this.buttonCameraSettings.Text = "Settings";
             this.buttonCameraSettings.UseVisualStyleBackColor = true;
             this.buttonCameraSettings.Click += new System.EventHandler(this.buttonCameraSettings_Click);
             // 
@@ -480,7 +492,7 @@
             this.panelPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPictureBox.Location = new System.Drawing.Point(3, 3);
             this.panelPictureBox.Name = "panelPictureBox";
-            this.panelPictureBox.Size = new System.Drawing.Size(792, 656);
+            this.panelPictureBox.Size = new System.Drawing.Size(792, 618);
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
@@ -493,6 +505,58 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            // 
+            // buttonConnectDI
+            // 
+            this.buttonConnectDI.Location = new System.Drawing.Point(661, 31);
+            this.buttonConnectDI.Name = "buttonConnectDI";
+            this.buttonConnectDI.Size = new System.Drawing.Size(112, 37);
+            this.buttonConnectDI.TabIndex = 12;
+            this.buttonConnectDI.Text = "Connect";
+            this.buttonConnectDI.UseVisualStyleBackColor = true;
+            this.buttonConnectDI.Click += new System.EventHandler(this.buttonConnectDI_Click);
+            // 
+            // textBoxDIStatus
+            // 
+            this.textBoxDIStatus.Location = new System.Drawing.Point(427, 31);
+            this.textBoxDIStatus.Name = "textBoxDIStatus";
+            this.textBoxDIStatus.ReadOnly = true;
+            this.textBoxDIStatus.Size = new System.Drawing.Size(216, 20);
+            this.textBoxDIStatus.TabIndex = 11;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(424, 14);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(102, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Dial Indicator Status";
+            // 
+            // textBoxDIValue
+            // 
+            this.textBoxDIValue.Location = new System.Drawing.Point(426, 72);
+            this.textBoxDIValue.Name = "textBoxDIValue";
+            this.textBoxDIValue.ReadOnly = true;
+            this.textBoxDIValue.Size = new System.Drawing.Size(72, 20);
+            this.textBoxDIValue.TabIndex = 14;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(423, 55);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Value:";
+            // 
+            // labelDIUnit
+            // 
+            this.labelDIUnit.Location = new System.Drawing.Point(504, 72);
+            this.labelDIUnit.Name = "labelDIUnit";
+            this.labelDIUnit.Size = new System.Drawing.Size(86, 21);
+            this.labelDIUnit.TabIndex = 15;
+            this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainForm
             // 
@@ -558,6 +622,12 @@
         private System.Windows.Forms.Label labelBrightnessCalib;
         private System.Windows.Forms.CheckBox checkBoxUseCalibration;
         private System.Windows.Forms.Button buttonAutoPosition;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxDIValue;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBoxDIStatus;
+        private System.Windows.Forms.Button buttonConnectDI;
+        private System.Windows.Forms.Label labelDIUnit;
     }
 }
 
