@@ -71,6 +71,7 @@ namespace FoucaultTest
         private double valDI_;
         private DIUnit valDIUnit_;
         private event EventHandler ValDIChanged;
+        private double[] zoneReadings_;
 
         private delegate void TimeoutDelegate(SerialConnection connection);
         private delegate void ReceiveDelegate(byte[] data);
@@ -663,6 +664,7 @@ namespace FoucaultTest
                 {
                     connectionDI_.Close();
                     connectionDI_ = null;
+                    valDIValid_ = false;
                     UpdateDIControls();
                 }
             }
@@ -867,16 +869,6 @@ namespace FoucaultTest
             UIModeChanged();
         }
 
-        private void buttonLoadZones_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonManualZones_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void comboBoxZoneNum_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!init_)
@@ -885,11 +877,6 @@ namespace FoucaultTest
             if (uiUpdateZoneData_ != null)
                 uiUpdateZoneData_.ActiveZone = activeZone_;
             ActiveZoneChanged();
-        }
-
-        private void checkBoxZoneNumAuto_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void comboBoxZoneVisualization_SelectedIndexChanged(object sender, EventArgs e)
@@ -1055,6 +1042,50 @@ namespace FoucaultTest
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseConnection(connectionDI_);
+        }
+
+        private void SaveZone(int zone)
+        {
+            if (valDIValid_)
+            {
+                if (zoneReadings_ == null)
+                    zoneReadings_ = new double[zoneBounds_.Length - 1];
+                if (zone >= 0 && zone < zoneReadings_.Length)
+                    zoneReadings_[zone] = valDI_;
+            }
+        }
+
+        private void buttonSaveAndNext_Click(object sender, EventArgs e)
+        {
+            SaveZone(comboBoxZoneNum.SelectedIndex);
+            if (comboBoxZoneNum.SelectedIndex < comboBoxZoneNum.Items.Count - 1)
+                comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex + 1;
+        }
+
+        private void buttonSaveAndPrev_Click(object sender, EventArgs e)
+        {
+            SaveZone(comboBoxZoneNum.SelectedIndex);
+            if (comboBoxZoneNum.SelectedIndex > 0)
+                comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex - 1;
+        }
+
+        private void buttonSaveZoneRedingsToFile_Click(object sender, EventArgs e)
+        {
+            if (zoneReadings_ == null)
+                zoneReadings_ = new double[zoneBounds_.Length - 1];
+
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "unknown.txt";
+            savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (savefile.ShowDialog() == DialogResult.OK)
+            {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(savefile.FileName))
+                {
+                    for(int i = 0; i < zoneReadings_.Length; ++i)
+                        sw.WriteLine(zoneReadings_[i].ToString());
+                }
+            }
         }
     }
 
