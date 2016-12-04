@@ -12,6 +12,7 @@ using System.Configuration;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using FoucaultTestClasses;
+using SerialPortSupport;
 
 namespace FoucaultTest
 {
@@ -58,6 +59,44 @@ namespace FoucaultTest
         private struct Zone
         {
             public double innerBound_, outerBound_;
+        }
+
+        // connection to Dial Indicator
+        private string portNameDI_;
+        private int baudRateDI_ = 115200;
+        private SerialConnection connectionDI_;
+
+        private enum DIUnit { Inch, Mm }
+        private bool valDIValid_ = false;
+        private double valDI_;
+        private DIUnit valDIUnit_;
+        private event EventHandler ValDIChanged;
+
+        private delegate void TimeoutDelegate(SerialConnection connection);
+        private delegate void ReceiveDelegate(byte[] data);
+        private class BaseConnectionHandler : SerialConnection.IReceiveHandler
+        {
+            public BaseConnectionHandler(MainForm parent, ReceiveDelegate receiveDelegate, SerialConnection connection)
+            {
+                parent_ = parent;
+                receiveDelegate_ = receiveDelegate;
+                connection_ = connection;
+            }
+
+            public void Error()
+            {
+                TimeoutDelegate d = new TimeoutDelegate(parent_.SerialError);
+                parent_.BeginInvoke(d, new object[] { connection_ });
+            }
+
+            public void Received(byte[] data)
+            {
+                parent_.BeginInvoke(receiveDelegate_, new object[] { data });
+            }
+
+            private MainForm parent_;
+            private ReceiveDelegate receiveDelegate_;
+            private SerialConnection connection_;
         }
 
         private int GetZoneNum() { return zoneBounds_ != null ? zoneBounds_.Length - 1 : 0; }
@@ -268,6 +307,8 @@ namespace FoucaultTest
 
             pictureBox.ImageSizeChanged += new EventHandler(PictureBoxImageSizeChanged);
 
+            ValDIChanged += new EventHandler(OnValDIChanged);
+
             init_ = true;
         }
 
@@ -451,6 +492,11 @@ namespace FoucaultTest
             ImageSizeChanged();
         }
 
+        private void OnValDIChanged(object sender, EventArgs e)
+        {
+            DIReadingsChanged();
+        }
+
         private void CorrectPictureSize()
         {
             double scale = PictureScale;
@@ -609,6 +655,84 @@ namespace FoucaultTest
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
+        private void CloseConnection(SerialConnection connection)
+        {
+            if (connection != null)
+            {
+                if (connection == connectionDI_)
+                {
+                    connectionDI_.Close();
+                    connectionDI_ = null;
+                    UpdateDIControls();
+                }
+            }
+        }
+        private void SerialError(SerialConnection connection)
+        {
+            CloseConnection(connection);
+        }
+        private void SendCommand(SerialConnection connection_, char cmd, int receiveCnt, ReceiveDelegate receiveDelegate)
+        {
+            if (connection_ != null)
+                connection_.SendReceiveRequest(new byte[] { (byte)cmd }, receiveCnt, new BaseConnectionHandler(this, receiveDelegate, connection_));
+        }
+
+        private void UpdateDIControls()
+        {
+            if (connectionDI_ == null)
+            {
+                textBoxDIStatus.Text = "Disconnected";
+                textBoxDIValue.Text = "";
+                labelDIUnit.Text = "";
+            }
+            else
+            {
+                textBoxDIStatus.Text = "Connected to " + portNameDI_;
+                if (valDIValid_)
+                {
+                    textBoxDIValue.Text = valDI_.ToString();
+                    labelDIUnit.Text = valDIUnit_ == DIUnit.Inch ? "inch" : "mm";
+                }
+                else
+                {
+                    textBoxDIValue.Text = "------";
+                    labelDIUnit.Text = "";
+                }
+            }
+        }
+
+        private void ReceiveDIPosition(byte[] data)
+        {
+            if (data.Length >= 10 && data[0] == 0)
+            {
+                bool prevValid = valDIValid_;
+                double prevVal = valDI_;
+                DIUnit prevUnit = valDIUnit_;
+                
+                int iv = ((int)data[2]) * 100000 + ((int)data[3]) * 10000 + ((int)data[4]) * 1000 + ((int)data[5]) * 100 + ((int)data[6]) * 10 + ((int)data[7]);
+                valDI_ = iv;
+                switch (data[8])
+                {
+                    case 2: valDI_ /= 100; break;
+                    case 3: valDI_ /= 1000; break;
+                    case 4: valDI_ /= 10000; break;
+                    case 5:
+                    default: valDI_ /= 100000; break;
+                }
+                if(data[1] != 0)
+                    valDI_ = -valDI_;
+                valDIUnit_ = data[9] != 0 ? DIUnit.Inch : DIUnit.Mm;
+                valDIValid_ = true;
+
+                if (prevValid && (prevVal != valDI_ || prevUnit != valDIUnit_) && ValDIChanged != null)
+                    ValDIChanged(this, new EventArgs());
+            }
+            else
+                valDIValid_ = false;
+            UpdateDIControls();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
         // change handlers
         private void MirrorBoundChanged()
         {
@@ -641,6 +765,10 @@ namespace FoucaultTest
             ResetBrightnessQueue();
         }
         private void ActiveZoneChanged()
+        {
+            ResetBrightnessQueue();
+        }
+        private void DIReadingsChanged()
         {
             ResetBrightnessQueue();
         }
@@ -881,7 +1009,52 @@ namespace FoucaultTest
 
         private void buttonConnectDI_Click(object sender, EventArgs e)
         {
+            ConnectionForm form = new ConnectionForm(portNameDI_, baudRateDI_);
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
 
+            if (form.DisconnectAll)
+            {
+                CloseConnection(connectionDI_);
+                return;
+            }
+
+            CloseConnection(connectionDI_);
+
+            portNameDI_ = form.PortName;
+            baudRateDI_ = form.BaudRate;
+
+            if (portNameDI_ != null)
+            {
+                SerialConnection connection = null;
+                try
+                {
+                    connection = new SerialConnection(portNameDI_, baudRateDI_);
+                }
+                catch (Exception)
+                {
+                }
+
+                if (connection != null)
+                {
+                    connectionDI_ = connection;
+                    valDIValid_ = false;
+                }
+            }
+            UpdateDIControls();
+        }
+
+        private void timerPoll_Tick(object sender, EventArgs e)
+        {
+            if (connectionDI_ != null)
+            {
+                SendCommand(connectionDI_, 'm', 10, this.ReceiveDIPosition);
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseConnection(connectionDI_);
         }
     }
 

@@ -62,6 +62,12 @@
     <Compile Include="CalcOptionsForm.Designer.cs">
       <DependentUpon>CalcOptionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionForm.Designer.cs">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CalcOptionsForm.resx">
       <DependentUpon>CalcOptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionForm.resx">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -103,6 +112,10 @@
     <ProjectReference Include="..\FoucaultTestClasses\FoucaultTestClasses.csproj">
       <Project>{BE100FC2-D7DB-49F5-94ED-C624260C2C5B}</Project>
       <Name>FoucaultTestClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SerialPortSupport\SerialPortSupport.csproj">
+      <Project>{B6947D80-234D-432E-A80A-15B81DF80683}</Project>
+      <Name>SerialPortSupport</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

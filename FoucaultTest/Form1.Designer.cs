@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageEdge = new System.Windows.Forms.TabPage();
@@ -54,6 +55,12 @@
             this.comboBoxZoneNum = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelDIUnit = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxDIValue = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxDIStatus = new System.Windows.Forms.TextBox();
+            this.buttonConnectDI = new System.Windows.Forms.Button();
             this.buttonAutoPosition = new System.Windows.Forms.Button();
             this.checkBoxFitToScreen = new System.Windows.Forms.CheckBox();
             this.buttonCopyPicture = new System.Windows.Forms.Button();
@@ -66,12 +73,7 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
-            this.buttonConnectDI = new System.Windows.Forms.Button();
-            this.textBoxDIStatus = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBoxDIValue = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.labelDIUnit = new System.Windows.Forms.Label();
+            this.timerPoll = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -385,6 +387,59 @@
             this.panel1.Size = new System.Drawing.Size(792, 162);
             this.panel1.TabIndex = 0;
             // 
+            // labelDIUnit
+            // 
+            this.labelDIUnit.Location = new System.Drawing.Point(504, 72);
+            this.labelDIUnit.Name = "labelDIUnit";
+            this.labelDIUnit.Size = new System.Drawing.Size(86, 21);
+            this.labelDIUnit.TabIndex = 15;
+            this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(423, 55);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Value:";
+            // 
+            // textBoxDIValue
+            // 
+            this.textBoxDIValue.Location = new System.Drawing.Point(426, 72);
+            this.textBoxDIValue.Name = "textBoxDIValue";
+            this.textBoxDIValue.ReadOnly = true;
+            this.textBoxDIValue.Size = new System.Drawing.Size(72, 20);
+            this.textBoxDIValue.TabIndex = 14;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(424, 14);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(102, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Dial Indicator Status";
+            // 
+            // textBoxDIStatus
+            // 
+            this.textBoxDIStatus.Location = new System.Drawing.Point(427, 31);
+            this.textBoxDIStatus.Name = "textBoxDIStatus";
+            this.textBoxDIStatus.ReadOnly = true;
+            this.textBoxDIStatus.Size = new System.Drawing.Size(216, 20);
+            this.textBoxDIStatus.TabIndex = 11;
+            this.textBoxDIStatus.Text = "Disconnected";
+            // 
+            // buttonConnectDI
+            // 
+            this.buttonConnectDI.Location = new System.Drawing.Point(661, 31);
+            this.buttonConnectDI.Name = "buttonConnectDI";
+            this.buttonConnectDI.Size = new System.Drawing.Size(112, 37);
+            this.buttonConnectDI.TabIndex = 12;
+            this.buttonConnectDI.Text = "Connect";
+            this.buttonConnectDI.UseVisualStyleBackColor = true;
+            this.buttonConnectDI.Click += new System.EventHandler(this.buttonConnectDI_Click);
+            // 
             // buttonAutoPosition
             // 
             this.buttonAutoPosition.Location = new System.Drawing.Point(250, 72);
@@ -506,57 +561,11 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
-            // buttonConnectDI
+            // timerPoll
             // 
-            this.buttonConnectDI.Location = new System.Drawing.Point(661, 31);
-            this.buttonConnectDI.Name = "buttonConnectDI";
-            this.buttonConnectDI.Size = new System.Drawing.Size(112, 37);
-            this.buttonConnectDI.TabIndex = 12;
-            this.buttonConnectDI.Text = "Connect";
-            this.buttonConnectDI.UseVisualStyleBackColor = true;
-            this.buttonConnectDI.Click += new System.EventHandler(this.buttonConnectDI_Click);
-            // 
-            // textBoxDIStatus
-            // 
-            this.textBoxDIStatus.Location = new System.Drawing.Point(427, 31);
-            this.textBoxDIStatus.Name = "textBoxDIStatus";
-            this.textBoxDIStatus.ReadOnly = true;
-            this.textBoxDIStatus.Size = new System.Drawing.Size(216, 20);
-            this.textBoxDIStatus.TabIndex = 11;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(424, 14);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(102, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "Dial Indicator Status";
-            // 
-            // textBoxDIValue
-            // 
-            this.textBoxDIValue.Location = new System.Drawing.Point(426, 72);
-            this.textBoxDIValue.Name = "textBoxDIValue";
-            this.textBoxDIValue.ReadOnly = true;
-            this.textBoxDIValue.Size = new System.Drawing.Size(72, 20);
-            this.textBoxDIValue.TabIndex = 14;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(423, 55);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(37, 13);
-            this.label9.TabIndex = 13;
-            this.label9.Text = "Value:";
-            // 
-            // labelDIUnit
-            // 
-            this.labelDIUnit.Location = new System.Drawing.Point(504, 72);
-            this.labelDIUnit.Name = "labelDIUnit";
-            this.labelDIUnit.Size = new System.Drawing.Size(86, 21);
-            this.labelDIUnit.TabIndex = 15;
-            this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Interval = 1000;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
             // MainForm
             // 
@@ -568,6 +577,7 @@
             this.Text = "Foucault Test";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.tabPageEdge.ResumeLayout(false);
@@ -628,6 +638,7 @@
         private System.Windows.Forms.TextBox textBoxDIStatus;
         private System.Windows.Forms.Button buttonConnectDI;
         private System.Windows.Forms.Label labelDIUnit;
+        private System.Windows.Forms.Timer timerPoll;
     }
 }
 
