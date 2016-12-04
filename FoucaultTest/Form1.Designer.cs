@@ -386,9 +386,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(424, 14);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(102, 13);
+            this.label8.Size = new System.Drawing.Size(69, 13);
             this.label8.TabIndex = 10;
-            this.label8.Text = "Dial Indicator Status";
+            this.label8.Text = "Dial Indicator";
             // 
             // textBoxDIStatus
             // 
