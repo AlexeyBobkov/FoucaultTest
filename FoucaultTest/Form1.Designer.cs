@@ -35,6 +35,10 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonEdgeDetect = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
+            this.buttonClearDIs = new System.Windows.Forms.Button();
+            this.buttonSaveZoneRedingsToFile = new System.Windows.Forms.Button();
+            this.buttonSaveAndPrev = new System.Windows.Forms.Button();
+            this.buttonSaveAndNext = new System.Windows.Forms.Button();
             this.checkBoxUseCalibration = new System.Windows.Forms.CheckBox();
             this.labelBrightnessCalib = new System.Windows.Forms.Label();
             this.buttonBrightnessCalib = new System.Windows.Forms.Button();
@@ -69,11 +73,8 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.buttonSaveAndNext = new System.Windows.Forms.Button();
-            this.buttonSaveAndPrev = new System.Windows.Forms.Button();
-            this.buttonSaveZoneRedingsToFile = new System.Windows.Forms.Button();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.timerPoll = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -144,6 +145,7 @@
             // 
             // tabPageFoucault
             // 
+            this.tabPageFoucault.Controls.Add(this.buttonClearDIs);
             this.tabPageFoucault.Controls.Add(this.buttonSaveZoneRedingsToFile);
             this.tabPageFoucault.Controls.Add(this.buttonSaveAndPrev);
             this.tabPageFoucault.Controls.Add(this.buttonSaveAndNext);
@@ -170,35 +172,75 @@
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
             // 
+            // buttonClearDIs
+            // 
+            this.buttonClearDIs.Location = new System.Drawing.Point(161, 90);
+            this.buttonClearDIs.Name = "buttonClearDIs";
+            this.buttonClearDIs.Size = new System.Drawing.Size(124, 30);
+            this.buttonClearDIs.TabIndex = 6;
+            this.buttonClearDIs.Text = "Clear DIs";
+            this.buttonClearDIs.UseVisualStyleBackColor = true;
+            this.buttonClearDIs.Click += new System.EventHandler(this.buttonClearDIs_Click);
+            // 
+            // buttonSaveZoneRedingsToFile
+            // 
+            this.buttonSaveZoneRedingsToFile.Location = new System.Drawing.Point(20, 90);
+            this.buttonSaveZoneRedingsToFile.Name = "buttonSaveZoneRedingsToFile";
+            this.buttonSaveZoneRedingsToFile.Size = new System.Drawing.Size(124, 30);
+            this.buttonSaveZoneRedingsToFile.TabIndex = 5;
+            this.buttonSaveZoneRedingsToFile.Text = "Save DIs to file";
+            this.buttonSaveZoneRedingsToFile.UseVisualStyleBackColor = true;
+            this.buttonSaveZoneRedingsToFile.Click += new System.EventHandler(this.buttonSaveZoneRedingsToFile_Click);
+            // 
+            // buttonSaveAndPrev
+            // 
+            this.buttonSaveAndPrev.Location = new System.Drawing.Point(161, 54);
+            this.buttonSaveAndPrev.Name = "buttonSaveAndPrev";
+            this.buttonSaveAndPrev.Size = new System.Drawing.Size(124, 30);
+            this.buttonSaveAndPrev.TabIndex = 4;
+            this.buttonSaveAndPrev.Text = "Save DI && Prev";
+            this.buttonSaveAndPrev.UseVisualStyleBackColor = true;
+            this.buttonSaveAndPrev.Click += new System.EventHandler(this.buttonSaveAndPrev_Click);
+            // 
+            // buttonSaveAndNext
+            // 
+            this.buttonSaveAndNext.Location = new System.Drawing.Point(20, 54);
+            this.buttonSaveAndNext.Name = "buttonSaveAndNext";
+            this.buttonSaveAndNext.Size = new System.Drawing.Size(124, 30);
+            this.buttonSaveAndNext.TabIndex = 3;
+            this.buttonSaveAndNext.Text = "Save DI && Next";
+            this.buttonSaveAndNext.UseVisualStyleBackColor = true;
+            this.buttonSaveAndNext.Click += new System.EventHandler(this.buttonSaveAndNext_Click);
+            // 
             // checkBoxUseCalibration
             // 
             this.checkBoxUseCalibration.AutoSize = true;
             this.checkBoxUseCalibration.Checked = true;
             this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUseCalibration.Enabled = false;
-            this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 207);
+            this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 201);
             this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
             this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxUseCalibration.TabIndex = 9;
+            this.checkBoxUseCalibration.TabIndex = 11;
             this.checkBoxUseCalibration.Text = "Use Calibration";
             this.checkBoxUseCalibration.UseVisualStyleBackColor = true;
             this.checkBoxUseCalibration.CheckedChanged += new System.EventHandler(this.checkBoxUseCalibration_CheckedChanged);
             // 
             // labelBrightnessCalib
             // 
-            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 168);
+            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 162);
             this.labelBrightnessCalib.Name = "labelBrightnessCalib";
             this.labelBrightnessCalib.Size = new System.Drawing.Size(124, 33);
-            this.labelBrightnessCalib.TabIndex = 8;
+            this.labelBrightnessCalib.TabIndex = 10;
             this.labelBrightnessCalib.Text = "No Caliration";
             this.labelBrightnessCalib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // buttonBrightnessCalib
             // 
-            this.buttonBrightnessCalib.Location = new System.Drawing.Point(20, 168);
+            this.buttonBrightnessCalib.Location = new System.Drawing.Point(20, 162);
             this.buttonBrightnessCalib.Name = "buttonBrightnessCalib";
             this.buttonBrightnessCalib.Size = new System.Drawing.Size(124, 33);
-            this.buttonBrightnessCalib.TabIndex = 7;
+            this.buttonBrightnessCalib.TabIndex = 9;
             this.buttonBrightnessCalib.Text = "Calibrate";
             this.buttonBrightnessCalib.UseVisualStyleBackColor = true;
             this.buttonBrightnessCalib.Click += new System.EventHandler(this.buttonBrightnessCalib_Click);
@@ -208,20 +250,20 @@
             this.checkBoxMedianCalc.AutoSize = true;
             this.checkBoxMedianCalc.Checked = true;
             this.checkBoxMedianCalc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMedianCalc.Location = new System.Drawing.Point(157, 334);
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(128, 328);
             this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
             this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxMedianCalc.TabIndex = 16;
+            this.checkBoxMedianCalc.TabIndex = 18;
             this.checkBoxMedianCalc.Text = "Median";
             this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
             this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
             // 
             // buttonFoucaultOptions
             // 
-            this.buttonFoucaultOptions.Location = new System.Drawing.Point(94, 416);
+            this.buttonFoucaultOptions.Location = new System.Drawing.Point(94, 410);
             this.buttonFoucaultOptions.Name = "buttonFoucaultOptions";
             this.buttonFoucaultOptions.Size = new System.Drawing.Size(124, 46);
-            this.buttonFoucaultOptions.TabIndex = 17;
+            this.buttonFoucaultOptions.TabIndex = 0;
             this.buttonFoucaultOptions.Text = "Options";
             this.buttonFoucaultOptions.UseVisualStyleBackColor = true;
             this.buttonFoucaultOptions.Click += new System.EventHandler(this.buttonFoucaultOptions_Click);
@@ -230,72 +272,72 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(16, 307);
+            this.label5.Location = new System.Drawing.Point(16, 301);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 24);
-            this.label5.TabIndex = 14;
+            this.label5.TabIndex = 16;
             this.label5.Text = "Difference";
             // 
             // textBoxBrightnessDiff
             // 
             this.textBoxBrightnessDiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(20, 334);
+            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(20, 328);
             this.textBoxBrightnessDiff.Name = "textBoxBrightnessDiff";
             this.textBoxBrightnessDiff.ReadOnly = true;
             this.textBoxBrightnessDiff.Size = new System.Drawing.Size(92, 31);
-            this.textBoxBrightnessDiff.TabIndex = 15;
+            this.textBoxBrightnessDiff.TabIndex = 17;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(153, 264);
+            this.label4.Location = new System.Drawing.Point(125, 258);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
-            this.label4.TabIndex = 12;
+            this.label4.TabIndex = 14;
             this.label4.Text = "Brighness Right";
             // 
             // textBoxBrightnessRight
             // 
-            this.textBoxBrightnessRight.Location = new System.Drawing.Point(156, 280);
+            this.textBoxBrightnessRight.Location = new System.Drawing.Point(128, 274);
             this.textBoxBrightnessRight.Name = "textBoxBrightnessRight";
             this.textBoxBrightnessRight.ReadOnly = true;
             this.textBoxBrightnessRight.Size = new System.Drawing.Size(91, 20);
-            this.textBoxBrightnessRight.TabIndex = 13;
+            this.textBoxBrightnessRight.TabIndex = 15;
             // 
             // textBoxBrightnessLeft
             // 
-            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(20, 280);
+            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(20, 274);
             this.textBoxBrightnessLeft.Name = "textBoxBrightnessLeft";
             this.textBoxBrightnessLeft.ReadOnly = true;
             this.textBoxBrightnessLeft.Size = new System.Drawing.Size(91, 20);
-            this.textBoxBrightnessLeft.TabIndex = 11;
+            this.textBoxBrightnessLeft.TabIndex = 13;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 264);
+            this.label3.Location = new System.Drawing.Point(16, 258);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 10;
+            this.label3.TabIndex = 12;
             this.label3.Text = "Brightness Left";
             // 
             // comboBoxZoneVisualization
             // 
             this.comboBoxZoneVisualization.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxZoneVisualization.FormattingEnabled = true;
-            this.comboBoxZoneVisualization.Location = new System.Drawing.Point(20, 67);
+            this.comboBoxZoneVisualization.Location = new System.Drawing.Point(161, 27);
             this.comboBoxZoneVisualization.Name = "comboBoxZoneVisualization";
-            this.comboBoxZoneVisualization.Size = new System.Drawing.Size(96, 21);
-            this.comboBoxZoneVisualization.TabIndex = 6;
+            this.comboBoxZoneVisualization.Size = new System.Drawing.Size(124, 21);
+            this.comboBoxZoneVisualization.TabIndex = 8;
             this.comboBoxZoneVisualization.SelectedIndexChanged += new System.EventHandler(this.comboBoxZoneVisualization_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 51);
+            this.label2.Location = new System.Drawing.Point(158, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 13);
-            this.label2.TabIndex = 5;
+            this.label2.TabIndex = 7;
             this.label2.Text = "Visualization";
             // 
             // label1
@@ -313,7 +355,7 @@
             this.comboBoxZoneNum.FormattingEnabled = true;
             this.comboBoxZoneNum.Location = new System.Drawing.Point(20, 27);
             this.comboBoxZoneNum.Name = "comboBoxZoneNum";
-            this.comboBoxZoneNum.Size = new System.Drawing.Size(96, 21);
+            this.comboBoxZoneNum.Size = new System.Drawing.Size(124, 21);
             this.comboBoxZoneNum.TabIndex = 1;
             this.comboBoxZoneNum.SelectedIndexChanged += new System.EventHandler(this.comboBoxZoneNum_SelectedIndexChanged);
             // 
@@ -369,9 +411,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(423, 55);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.Size = new System.Drawing.Size(64, 13);
             this.label9.TabIndex = 13;
-            this.label9.Text = "Value:";
+            this.label9.Text = "DI Reading:";
             // 
             // textBoxDIValue
             // 
@@ -520,42 +562,6 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
-            // timerPoll
-            // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 1000;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
-            // 
-            // buttonSaveAndNext
-            // 
-            this.buttonSaveAndNext.Location = new System.Drawing.Point(134, 27);
-            this.buttonSaveAndNext.Name = "buttonSaveAndNext";
-            this.buttonSaveAndNext.Size = new System.Drawing.Size(152, 30);
-            this.buttonSaveAndNext.TabIndex = 2;
-            this.buttonSaveAndNext.Text = "Save && Next";
-            this.buttonSaveAndNext.UseVisualStyleBackColor = true;
-            this.buttonSaveAndNext.Click += new System.EventHandler(this.buttonSaveAndNext_Click);
-            // 
-            // buttonSaveAndPrev
-            // 
-            this.buttonSaveAndPrev.Location = new System.Drawing.Point(135, 63);
-            this.buttonSaveAndPrev.Name = "buttonSaveAndPrev";
-            this.buttonSaveAndPrev.Size = new System.Drawing.Size(152, 30);
-            this.buttonSaveAndPrev.TabIndex = 3;
-            this.buttonSaveAndPrev.Text = "Save && Prev";
-            this.buttonSaveAndPrev.UseVisualStyleBackColor = true;
-            this.buttonSaveAndPrev.Click += new System.EventHandler(this.buttonSaveAndPrev_Click);
-            // 
-            // buttonSaveZoneRedingsToFile
-            // 
-            this.buttonSaveZoneRedingsToFile.Location = new System.Drawing.Point(135, 99);
-            this.buttonSaveZoneRedingsToFile.Name = "buttonSaveZoneRedingsToFile";
-            this.buttonSaveZoneRedingsToFile.Size = new System.Drawing.Size(152, 30);
-            this.buttonSaveZoneRedingsToFile.TabIndex = 4;
-            this.buttonSaveZoneRedingsToFile.Text = "Save to file";
-            this.buttonSaveZoneRedingsToFile.UseVisualStyleBackColor = true;
-            this.buttonSaveZoneRedingsToFile.Click += new System.EventHandler(this.buttonSaveZoneRedingsToFile_Click);
-            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -565,6 +571,12 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Interval = 1000;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
             // MainForm
             // 
@@ -638,6 +650,7 @@
         private System.Windows.Forms.Button buttonSaveAndPrev;
         private System.Windows.Forms.Button buttonSaveAndNext;
         private System.Windows.Forms.Button buttonSaveZoneRedingsToFile;
+        private System.Windows.Forms.Button buttonClearDIs;
     }
 }
 

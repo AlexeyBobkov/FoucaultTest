@@ -71,7 +71,11 @@ namespace FoucaultTest
         private double valDI_;
         private DIUnit valDIUnit_;
         private event EventHandler ValDIChanged;
-        private double[] zoneReadings_;
+        private struct ZoneReading
+        {
+            public List<double> seq_;
+        }
+        private ZoneReading[] zoneReadings_;
 
         private delegate void TimeoutDelegate(SerialConnection connection);
         private delegate void ReceiveDelegate(byte[] data);
@@ -309,6 +313,9 @@ namespace FoucaultTest
             pictureBox.ImageSizeChanged += new EventHandler(PictureBoxImageSizeChanged);
 
             ValDIChanged += new EventHandler(OnValDIChanged);
+
+            portNameDI_ = settings_.PortNameDI;
+            baudRateDI_ = settings_.BaudRateDI;
 
             init_ = true;
         }
@@ -1008,8 +1015,8 @@ namespace FoucaultTest
 
             CloseConnection(connectionDI_);
 
-            portNameDI_ = form.PortName;
-            baudRateDI_ = form.BaudRate;
+            settings_.PortNameDI = portNameDI_ = form.PortName;
+            settings_.BaudRateDI = baudRateDI_ = form.BaudRate;
 
             if (portNameDI_ != null)
             {
@@ -1049,9 +1056,13 @@ namespace FoucaultTest
             if (valDIValid_)
             {
                 if (zoneReadings_ == null)
-                    zoneReadings_ = new double[zoneBounds_.Length - 1];
+                    zoneReadings_ = new ZoneReading[zoneBounds_.Length - 1];
                 if (zone >= 0 && zone < zoneReadings_.Length)
-                    zoneReadings_[zone] = valDI_;
+                {
+                    if (zoneReadings_[zone].seq_ == null)
+                        zoneReadings_[zone].seq_ = new List<double>();
+                    zoneReadings_[zone].seq_.Add(valDI_);
+                }
             }
         }
 
@@ -1072,20 +1083,41 @@ namespace FoucaultTest
         private void buttonSaveZoneRedingsToFile_Click(object sender, EventArgs e)
         {
             if (zoneReadings_ == null)
-                zoneReadings_ = new double[zoneBounds_.Length - 1];
+                return;
 
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.FileName = "unknown.txt";
             savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
 
-            if (savefile.ShowDialog() == DialogResult.OK)
+            if (savefile.ShowDialog() != DialogResult.OK)
+                return;
+
+            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(savefile.FileName))
             {
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(savefile.FileName))
+                for (int i = 0; i < zoneReadings_.Length; ++i)
                 {
-                    for(int i = 0; i < zoneReadings_.Length; ++i)
-                        sw.WriteLine(zoneReadings_[i].ToString());
+                    if (zoneReadings_[i].seq_ == null || zoneReadings_[i].seq_.Count <= 0)
+                        sw.WriteLine("N/A");
+                    else if (zoneReadings_[i].seq_.Count == 1)
+                        sw.WriteLine(zoneReadings_[i].seq_[0].ToString());
+                    else
+                    {
+                        string s = "";
+                        for (int j = 0; j < zoneReadings_[i].seq_.Count; ++j)
+                        {
+                            if (j != 0)
+                                s += ",";
+                            s += zoneReadings_[i].seq_[j].ToString();
+                        }
+                        sw.WriteLine("AVERAGE(" + s + ")");
+                    }
                 }
             }
+        }
+
+        private void buttonClearDIs_Click(object sender, EventArgs e)
+        {
+            zoneReadings_ = null;
         }
     }
 
@@ -1213,5 +1245,20 @@ namespace FoucaultTest
             set { this["Gamma"] = value; }
         }
 #endif
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public string PortNameDI
+        {
+            get { return (string)this["PortNameDI"]; }
+            set { this["PortNameDI"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("115200")]
+        public int BaudRateDI
+        {
+            get { return (int)this["BaudRateDI"]; }
+            set { this["BaudRateDI"] = value; }
+        }
     }
 }
