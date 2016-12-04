@@ -575,7 +575,7 @@
             // timerPoll
             // 
             this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 1000;
+            this.timerPoll.Interval = 500;
             this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
             // MainForm

@@ -65,6 +65,7 @@ namespace FoucaultTest
         private string portNameDI_;
         private int baudRateDI_ = 115200;
         private SerialConnection connectionDI_;
+        private DateTime lastTimer_;
 
         private enum DIUnit { Inch, Mm }
         private bool valDIValid_ = false;
@@ -316,6 +317,7 @@ namespace FoucaultTest
 
             portNameDI_ = settings_.PortNameDI;
             baudRateDI_ = settings_.BaudRateDI;
+            lastTimer_ = DateTime.Now;
 
             init_ = true;
         }
@@ -340,6 +342,11 @@ namespace FoucaultTest
         {
             pictureBox.Image = bitmap;
             UpdateBrightness((Bitmap)bitmap.Clone());
+
+            TimeSpan timeout = TimeSpan.FromMilliseconds(timerPoll.Interval * 2);
+            if (DateTime.Now - lastTimer_ > timeout)
+                timerPoll_Tick(this, new EventArgs());
+
         }
         private void videoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
@@ -1042,6 +1049,7 @@ namespace FoucaultTest
         {
             if (connectionDI_ != null)
             {
+                lastTimer_ = DateTime.Now;
                 SendCommand(connectionDI_, 'm', 10, this.ReceiveDIPosition);
             }
         }

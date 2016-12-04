@@ -39,7 +39,7 @@ namespace SerialPortSupport
         };
 
         public SerialConnection(string portName, int baudRate)
-            : this(portName, baudRate, Parity.None, 8, StopBits.One, Handshake.None, 1000, 1000)
+            : this(portName, baudRate, Parity.None, 8, StopBits.One, Handshake.None, 2000, 2000)
         {
         }
 
