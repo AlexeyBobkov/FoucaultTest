@@ -704,7 +704,7 @@ namespace FoucaultTest
                 textBoxDIStatus.Text = "Connected to " + portNameDI_;
                 if (valDIValid_)
                 {
-                    textBoxDIValue.Text = valDI_.ToString();
+                    textBoxDIValue.Text = checkBoxHideDI.Checked ? "Hidden" : valDI_.ToString();
                     labelDIUnit.Text = valDIUnit_ == DIUnit.Inch ? "inch" : "mm";
                 }
                 else
@@ -1134,6 +1134,11 @@ namespace FoucaultTest
         private void buttonClearDIs_Click(object sender, EventArgs e)
         {
             zoneReadings_ = null;
+        }
+
+        private void checkBoxHideDI_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDIControls();
         }
     }
 

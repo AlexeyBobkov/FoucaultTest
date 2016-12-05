@@ -75,6 +75,7 @@
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
+            this.checkBoxHideDI = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -376,6 +377,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBoxHideDI);
             this.panel1.Controls.Add(this.labelDIUnit);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.textBoxDIValue);
@@ -402,7 +404,7 @@
             // 
             this.labelDIUnit.Location = new System.Drawing.Point(504, 72);
             this.labelDIUnit.Name = "labelDIUnit";
-            this.labelDIUnit.Size = new System.Drawing.Size(86, 21);
+            this.labelDIUnit.Size = new System.Drawing.Size(43, 21);
             this.labelDIUnit.TabIndex = 15;
             this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -578,6 +580,17 @@
             this.timerPoll.Interval = 300;
             this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
+            // checkBoxHideDI
+            // 
+            this.checkBoxHideDI.AutoSize = true;
+            this.checkBoxHideDI.Location = new System.Drawing.Point(553, 72);
+            this.checkBoxHideDI.Name = "checkBoxHideDI";
+            this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
+            this.checkBoxHideDI.TabIndex = 16;
+            this.checkBoxHideDI.Text = "Hide";
+            this.checkBoxHideDI.UseVisualStyleBackColor = true;
+            this.checkBoxHideDI.CheckedChanged += new System.EventHandler(this.checkBoxHideDI_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -651,6 +664,7 @@
         private System.Windows.Forms.Button buttonSaveAndNext;
         private System.Windows.Forms.Button buttonSaveZoneRedingsToFile;
         private System.Windows.Forms.Button buttonClearDIs;
+        private System.Windows.Forms.CheckBox checkBoxHideDI;
     }
 }
 
