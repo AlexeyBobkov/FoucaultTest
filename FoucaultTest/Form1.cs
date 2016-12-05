@@ -65,7 +65,7 @@ namespace FoucaultTest
         private string portNameDI_;
         private int baudRateDI_ = 115200;
         private SerialConnection connectionDI_;
-        private DateTime lastTimer_;
+        private DateTime lastDIRequest_;
 
         private enum DIUnit { Inch, Mm }
         private bool valDIValid_ = false;
@@ -317,7 +317,7 @@ namespace FoucaultTest
 
             portNameDI_ = settings_.PortNameDI;
             baudRateDI_ = settings_.BaudRateDI;
-            lastTimer_ = DateTime.Now;
+            lastDIRequest_ = DateTime.Now;
 
             init_ = true;
         }
@@ -343,9 +343,7 @@ namespace FoucaultTest
             pictureBox.Image = bitmap;
             UpdateBrightness((Bitmap)bitmap.Clone());
 
-            TimeSpan timeout = TimeSpan.FromMilliseconds(timerPoll.Interval * 2);
-            if (DateTime.Now - lastTimer_ > timeout)
-                timerPoll_Tick(this, new EventArgs());
+            SendDIRequest();
 
         }
         private void videoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
@@ -717,6 +715,20 @@ namespace FoucaultTest
             }
         }
 
+        private void SendDIRequest()
+        {
+            if (connectionDI_ != null)
+            {
+                DateTime now = DateTime.Now;
+                TimeSpan timeout = TimeSpan.FromMilliseconds(1000);
+                if (now - lastDIRequest_ > timeout)
+                {
+                    lastDIRequest_ = now;
+                    SendCommand(connectionDI_, 'm', 10, this.ReceiveDIPosition);
+                }
+            }
+        }
+        
         private void ReceiveDIPosition(byte[] data)
         {
             if (data.Length >= 10 && data[0] == 0)
@@ -1047,11 +1059,7 @@ namespace FoucaultTest
 
         private void timerPoll_Tick(object sender, EventArgs e)
         {
-            if (connectionDI_ != null)
-            {
-                lastTimer_ = DateTime.Now;
-                SendCommand(connectionDI_, 'm', 10, this.ReceiveDIPosition);
-            }
+            SendDIRequest();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
