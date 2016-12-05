@@ -35,7 +35,7 @@ namespace FoucaultTest
             string[] ports = SerialPortSupport.SerialConnection.MakeCorrectPortNames(SerialPort.GetPortNames());
             comboBoxSerialPort.Items.Add("Select Port");
             comboBoxSerialPort.Items.AddRange(ports);
-            comboBoxSerialPort.Items.Add("Disconnect All");
+            comboBoxSerialPort.Items.Add("Disconnect");
             if (portName_ != null)
             {
                 i = comboBoxSerialPort.Items.IndexOf(portName_);
