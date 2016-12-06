@@ -35,10 +35,10 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonEdgeDetect = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
-            this.buttonClearDIs = new System.Windows.Forms.Button();
+            this.checkBoxAdvanceBack = new System.Windows.Forms.CheckBox();
+            this.checkBoxAdvanceFwd = new System.Windows.Forms.CheckBox();
+            this.buttonStoreDI = new System.Windows.Forms.Button();
             this.buttonSaveZoneRedingsToFile = new System.Windows.Forms.Button();
-            this.buttonSaveAndPrev = new System.Windows.Forms.Button();
-            this.buttonSaveAndNext = new System.Windows.Forms.Button();
             this.checkBoxUseCalibration = new System.Windows.Forms.CheckBox();
             this.labelBrightnessCalib = new System.Windows.Forms.Label();
             this.buttonBrightnessCalib = new System.Windows.Forms.Button();
@@ -56,6 +56,7 @@
             this.comboBoxZoneNum = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxHideDI = new System.Windows.Forms.CheckBox();
             this.labelDIUnit = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxDIValue = new System.Windows.Forms.TextBox();
@@ -75,7 +76,7 @@
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.checkBoxHideDI = new System.Windows.Forms.CheckBox();
+            this.buttonEditZoneReadings = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -146,10 +147,11 @@
             // 
             // tabPageFoucault
             // 
-            this.tabPageFoucault.Controls.Add(this.buttonClearDIs);
+            this.tabPageFoucault.Controls.Add(this.buttonEditZoneReadings);
+            this.tabPageFoucault.Controls.Add(this.checkBoxAdvanceBack);
+            this.tabPageFoucault.Controls.Add(this.checkBoxAdvanceFwd);
+            this.tabPageFoucault.Controls.Add(this.buttonStoreDI);
             this.tabPageFoucault.Controls.Add(this.buttonSaveZoneRedingsToFile);
-            this.tabPageFoucault.Controls.Add(this.buttonSaveAndPrev);
-            this.tabPageFoucault.Controls.Add(this.buttonSaveAndNext);
             this.tabPageFoucault.Controls.Add(this.checkBoxUseCalibration);
             this.tabPageFoucault.Controls.Add(this.labelBrightnessCalib);
             this.tabPageFoucault.Controls.Add(this.buttonBrightnessCalib);
@@ -173,45 +175,49 @@
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
             // 
-            // buttonClearDIs
+            // checkBoxAdvanceBack
             // 
-            this.buttonClearDIs.Location = new System.Drawing.Point(161, 90);
-            this.buttonClearDIs.Name = "buttonClearDIs";
-            this.buttonClearDIs.Size = new System.Drawing.Size(124, 30);
-            this.buttonClearDIs.TabIndex = 6;
-            this.buttonClearDIs.Text = "Clear DIs";
-            this.buttonClearDIs.UseVisualStyleBackColor = true;
-            this.buttonClearDIs.Click += new System.EventHandler(this.buttonClearDIs_Click);
+            this.checkBoxAdvanceBack.AutoSize = true;
+            this.checkBoxAdvanceBack.Location = new System.Drawing.Point(161, 118);
+            this.checkBoxAdvanceBack.Name = "checkBoxAdvanceBack";
+            this.checkBoxAdvanceBack.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxAdvanceBack.TabIndex = 6;
+            this.checkBoxAdvanceBack.Text = "Advance Back";
+            this.checkBoxAdvanceBack.UseVisualStyleBackColor = true;
+            this.checkBoxAdvanceBack.CheckedChanged += new System.EventHandler(this.checkBoxAdvanceBack_CheckedChanged);
+            // 
+            // checkBoxAdvanceFwd
+            // 
+            this.checkBoxAdvanceFwd.AutoSize = true;
+            this.checkBoxAdvanceFwd.Checked = true;
+            this.checkBoxAdvanceFwd.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAdvanceFwd.Location = new System.Drawing.Point(18, 118);
+            this.checkBoxAdvanceFwd.Name = "checkBoxAdvanceFwd";
+            this.checkBoxAdvanceFwd.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxAdvanceFwd.TabIndex = 5;
+            this.checkBoxAdvanceFwd.Text = "Advance Forward";
+            this.checkBoxAdvanceFwd.UseVisualStyleBackColor = true;
+            this.checkBoxAdvanceFwd.CheckedChanged += new System.EventHandler(this.checkBoxAdvanceFwd_CheckedChanged);
+            // 
+            // buttonStoreDI
+            // 
+            this.buttonStoreDI.Location = new System.Drawing.Point(161, 30);
+            this.buttonStoreDI.Name = "buttonStoreDI";
+            this.buttonStoreDI.Size = new System.Drawing.Size(124, 64);
+            this.buttonStoreDI.TabIndex = 4;
+            this.buttonStoreDI.Text = "Store DI Reading";
+            this.buttonStoreDI.UseVisualStyleBackColor = true;
+            this.buttonStoreDI.Click += new System.EventHandler(this.buttonStoreDI_Click);
             // 
             // buttonSaveZoneRedingsToFile
             // 
-            this.buttonSaveZoneRedingsToFile.Location = new System.Drawing.Point(20, 90);
+            this.buttonSaveZoneRedingsToFile.Location = new System.Drawing.Point(78, 195);
             this.buttonSaveZoneRedingsToFile.Name = "buttonSaveZoneRedingsToFile";
-            this.buttonSaveZoneRedingsToFile.Size = new System.Drawing.Size(124, 30);
-            this.buttonSaveZoneRedingsToFile.TabIndex = 5;
-            this.buttonSaveZoneRedingsToFile.Text = "Save DIs to file";
+            this.buttonSaveZoneRedingsToFile.Size = new System.Drawing.Size(155, 39);
+            this.buttonSaveZoneRedingsToFile.TabIndex = 8;
+            this.buttonSaveZoneRedingsToFile.Text = "Save && Clear";
             this.buttonSaveZoneRedingsToFile.UseVisualStyleBackColor = true;
             this.buttonSaveZoneRedingsToFile.Click += new System.EventHandler(this.buttonSaveZoneRedingsToFile_Click);
-            // 
-            // buttonSaveAndPrev
-            // 
-            this.buttonSaveAndPrev.Location = new System.Drawing.Point(161, 54);
-            this.buttonSaveAndPrev.Name = "buttonSaveAndPrev";
-            this.buttonSaveAndPrev.Size = new System.Drawing.Size(124, 30);
-            this.buttonSaveAndPrev.TabIndex = 4;
-            this.buttonSaveAndPrev.Text = "Save DI && Prev";
-            this.buttonSaveAndPrev.UseVisualStyleBackColor = true;
-            this.buttonSaveAndPrev.Click += new System.EventHandler(this.buttonSaveAndPrev_Click);
-            // 
-            // buttonSaveAndNext
-            // 
-            this.buttonSaveAndNext.Location = new System.Drawing.Point(20, 54);
-            this.buttonSaveAndNext.Name = "buttonSaveAndNext";
-            this.buttonSaveAndNext.Size = new System.Drawing.Size(124, 30);
-            this.buttonSaveAndNext.TabIndex = 3;
-            this.buttonSaveAndNext.Text = "Save DI && Next";
-            this.buttonSaveAndNext.UseVisualStyleBackColor = true;
-            this.buttonSaveAndNext.Click += new System.EventHandler(this.buttonSaveAndNext_Click);
             // 
             // checkBoxUseCalibration
             // 
@@ -219,29 +225,29 @@
             this.checkBoxUseCalibration.Checked = true;
             this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUseCalibration.Enabled = false;
-            this.checkBoxUseCalibration.Location = new System.Drawing.Point(20, 201);
+            this.checkBoxUseCalibration.Location = new System.Drawing.Point(19, 302);
             this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
             this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxUseCalibration.TabIndex = 11;
+            this.checkBoxUseCalibration.TabIndex = 12;
             this.checkBoxUseCalibration.Text = "Use Calibration";
             this.checkBoxUseCalibration.UseVisualStyleBackColor = true;
             this.checkBoxUseCalibration.CheckedChanged += new System.EventHandler(this.checkBoxUseCalibration_CheckedChanged);
             // 
             // labelBrightnessCalib
             // 
-            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 162);
+            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 263);
             this.labelBrightnessCalib.Name = "labelBrightnessCalib";
             this.labelBrightnessCalib.Size = new System.Drawing.Size(124, 33);
-            this.labelBrightnessCalib.TabIndex = 10;
+            this.labelBrightnessCalib.TabIndex = 11;
             this.labelBrightnessCalib.Text = "No Caliration";
             this.labelBrightnessCalib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // buttonBrightnessCalib
             // 
-            this.buttonBrightnessCalib.Location = new System.Drawing.Point(20, 162);
+            this.buttonBrightnessCalib.Location = new System.Drawing.Point(18, 263);
             this.buttonBrightnessCalib.Name = "buttonBrightnessCalib";
             this.buttonBrightnessCalib.Size = new System.Drawing.Size(124, 33);
-            this.buttonBrightnessCalib.TabIndex = 9;
+            this.buttonBrightnessCalib.TabIndex = 10;
             this.buttonBrightnessCalib.Text = "Calibrate";
             this.buttonBrightnessCalib.UseVisualStyleBackColor = true;
             this.buttonBrightnessCalib.Click += new System.EventHandler(this.buttonBrightnessCalib_Click);
@@ -251,20 +257,20 @@
             this.checkBoxMedianCalc.AutoSize = true;
             this.checkBoxMedianCalc.Checked = true;
             this.checkBoxMedianCalc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMedianCalc.Location = new System.Drawing.Point(128, 328);
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(197, 375);
             this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
             this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxMedianCalc.TabIndex = 18;
+            this.checkBoxMedianCalc.TabIndex = 19;
             this.checkBoxMedianCalc.Text = "Median";
             this.checkBoxMedianCalc.UseVisualStyleBackColor = true;
             this.checkBoxMedianCalc.CheckedChanged += new System.EventHandler(this.checkBoxMedianCalc_CheckedChanged);
             // 
             // buttonFoucaultOptions
             // 
-            this.buttonFoucaultOptions.Location = new System.Drawing.Point(94, 410);
+            this.buttonFoucaultOptions.Location = new System.Drawing.Point(100, 501);
             this.buttonFoucaultOptions.Name = "buttonFoucaultOptions";
             this.buttonFoucaultOptions.Size = new System.Drawing.Size(124, 46);
-            this.buttonFoucaultOptions.TabIndex = 0;
+            this.buttonFoucaultOptions.TabIndex = 20;
             this.buttonFoucaultOptions.Text = "Options";
             this.buttonFoucaultOptions.UseVisualStyleBackColor = true;
             this.buttonFoucaultOptions.Click += new System.EventHandler(this.buttonFoucaultOptions_Click);
@@ -273,91 +279,91 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(16, 301);
+            this.label5.Location = new System.Drawing.Point(14, 402);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 24);
-            this.label5.TabIndex = 16;
+            this.label5.TabIndex = 17;
             this.label5.Text = "Difference";
             // 
             // textBoxBrightnessDiff
             // 
             this.textBoxBrightnessDiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(20, 328);
+            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(18, 429);
             this.textBoxBrightnessDiff.Name = "textBoxBrightnessDiff";
             this.textBoxBrightnessDiff.ReadOnly = true;
-            this.textBoxBrightnessDiff.Size = new System.Drawing.Size(92, 31);
-            this.textBoxBrightnessDiff.TabIndex = 17;
+            this.textBoxBrightnessDiff.Size = new System.Drawing.Size(73, 31);
+            this.textBoxBrightnessDiff.TabIndex = 18;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(125, 258);
+            this.label4.Location = new System.Drawing.Point(97, 359);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
-            this.label4.TabIndex = 14;
+            this.label4.TabIndex = 15;
             this.label4.Text = "Brighness Right";
             // 
             // textBoxBrightnessRight
             // 
-            this.textBoxBrightnessRight.Location = new System.Drawing.Point(128, 274);
+            this.textBoxBrightnessRight.Location = new System.Drawing.Point(100, 375);
             this.textBoxBrightnessRight.Name = "textBoxBrightnessRight";
             this.textBoxBrightnessRight.ReadOnly = true;
-            this.textBoxBrightnessRight.Size = new System.Drawing.Size(91, 20);
-            this.textBoxBrightnessRight.TabIndex = 15;
+            this.textBoxBrightnessRight.Size = new System.Drawing.Size(73, 20);
+            this.textBoxBrightnessRight.TabIndex = 16;
             // 
             // textBoxBrightnessLeft
             // 
-            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(20, 274);
+            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(18, 375);
             this.textBoxBrightnessLeft.Name = "textBoxBrightnessLeft";
             this.textBoxBrightnessLeft.ReadOnly = true;
-            this.textBoxBrightnessLeft.Size = new System.Drawing.Size(91, 20);
-            this.textBoxBrightnessLeft.TabIndex = 13;
+            this.textBoxBrightnessLeft.Size = new System.Drawing.Size(73, 20);
+            this.textBoxBrightnessLeft.TabIndex = 14;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 258);
+            this.label3.Location = new System.Drawing.Point(14, 359);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 12;
+            this.label3.TabIndex = 13;
             this.label3.Text = "Brightness Left";
             // 
             // comboBoxZoneVisualization
             // 
             this.comboBoxZoneVisualization.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxZoneVisualization.FormattingEnabled = true;
-            this.comboBoxZoneVisualization.Location = new System.Drawing.Point(161, 27);
+            this.comboBoxZoneVisualization.Location = new System.Drawing.Point(18, 30);
             this.comboBoxZoneVisualization.Name = "comboBoxZoneVisualization";
             this.comboBoxZoneVisualization.Size = new System.Drawing.Size(124, 21);
-            this.comboBoxZoneVisualization.TabIndex = 8;
+            this.comboBoxZoneVisualization.TabIndex = 1;
             this.comboBoxZoneVisualization.SelectedIndexChanged += new System.EventHandler(this.comboBoxZoneVisualization_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(158, 11);
+            this.label2.Location = new System.Drawing.Point(15, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 13);
-            this.label2.TabIndex = 7;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Visualization";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 11);
+            this.label1.Location = new System.Drawing.Point(15, 57);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 13);
-            this.label1.TabIndex = 0;
+            this.label1.TabIndex = 2;
             this.label1.Text = "Zone #";
             // 
             // comboBoxZoneNum
             // 
             this.comboBoxZoneNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxZoneNum.FormattingEnabled = true;
-            this.comboBoxZoneNum.Location = new System.Drawing.Point(20, 27);
+            this.comboBoxZoneNum.Location = new System.Drawing.Point(18, 73);
             this.comboBoxZoneNum.Name = "comboBoxZoneNum";
             this.comboBoxZoneNum.Size = new System.Drawing.Size(124, 21);
-            this.comboBoxZoneNum.TabIndex = 1;
+            this.comboBoxZoneNum.TabIndex = 3;
             this.comboBoxZoneNum.SelectedIndexChanged += new System.EventHandler(this.comboBoxZoneNum_SelectedIndexChanged);
             // 
             // tableLayoutPanel2
@@ -400,6 +406,17 @@
             this.panel1.Size = new System.Drawing.Size(792, 162);
             this.panel1.TabIndex = 0;
             // 
+            // checkBoxHideDI
+            // 
+            this.checkBoxHideDI.AutoSize = true;
+            this.checkBoxHideDI.Location = new System.Drawing.Point(553, 72);
+            this.checkBoxHideDI.Name = "checkBoxHideDI";
+            this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
+            this.checkBoxHideDI.TabIndex = 16;
+            this.checkBoxHideDI.Text = "Hide";
+            this.checkBoxHideDI.UseVisualStyleBackColor = true;
+            this.checkBoxHideDI.CheckedChanged += new System.EventHandler(this.checkBoxHideDI_CheckedChanged);
+            // 
             // labelDIUnit
             // 
             this.labelDIUnit.Location = new System.Drawing.Point(504, 72);
@@ -430,9 +447,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(424, 14);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(69, 13);
+            this.label8.Size = new System.Drawing.Size(99, 13);
             this.label8.TabIndex = 10;
-            this.label8.Text = "Dial Indicator";
+            this.label8.Text = "Dial Indicator (\"DI\")";
             // 
             // textBoxDIStatus
             // 
@@ -580,16 +597,15 @@
             this.timerPoll.Interval = 300;
             this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
-            // checkBoxHideDI
+            // buttonEditZoneReadings
             // 
-            this.checkBoxHideDI.AutoSize = true;
-            this.checkBoxHideDI.Location = new System.Drawing.Point(553, 72);
-            this.checkBoxHideDI.Name = "checkBoxHideDI";
-            this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
-            this.checkBoxHideDI.TabIndex = 16;
-            this.checkBoxHideDI.Text = "Hide";
-            this.checkBoxHideDI.UseVisualStyleBackColor = true;
-            this.checkBoxHideDI.CheckedChanged += new System.EventHandler(this.checkBoxHideDI_CheckedChanged);
+            this.buttonEditZoneReadings.Location = new System.Drawing.Point(79, 150);
+            this.buttonEditZoneReadings.Name = "buttonEditZoneReadings";
+            this.buttonEditZoneReadings.Size = new System.Drawing.Size(154, 39);
+            this.buttonEditZoneReadings.TabIndex = 7;
+            this.buttonEditZoneReadings.Text = "Edit DIs";
+            this.buttonEditZoneReadings.UseVisualStyleBackColor = true;
+            this.buttonEditZoneReadings.Click += new System.EventHandler(this.buttonEditZoneReadings_Click);
             // 
             // MainForm
             // 
@@ -660,11 +676,12 @@
         private System.Windows.Forms.Button buttonConnectDI;
         private System.Windows.Forms.Label labelDIUnit;
         private System.Windows.Forms.Timer timerPoll;
-        private System.Windows.Forms.Button buttonSaveAndPrev;
-        private System.Windows.Forms.Button buttonSaveAndNext;
         private System.Windows.Forms.Button buttonSaveZoneRedingsToFile;
-        private System.Windows.Forms.Button buttonClearDIs;
         private System.Windows.Forms.CheckBox checkBoxHideDI;
+        private System.Windows.Forms.CheckBox checkBoxAdvanceBack;
+        private System.Windows.Forms.CheckBox checkBoxAdvanceFwd;
+        private System.Windows.Forms.Button buttonStoreDI;
+        private System.Windows.Forms.Button buttonEditZoneReadings;
     }
 }
 

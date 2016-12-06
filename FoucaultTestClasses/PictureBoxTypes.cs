@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace FoucaultTestClasses
 {
@@ -94,5 +95,10 @@ namespace FoucaultTestClasses
         double[] ZoneBounds { get; set; }
         string FloatFormat(CalcBrightnessModeE mode);
         void GetBrightness(Bitmap bitmap, int activeZone, CalcBrightnessModeE mode, ref float l, ref float r);
+    }
+
+    public struct ZoneReading
+    {
+        public List<double> seq_;
     }
 }

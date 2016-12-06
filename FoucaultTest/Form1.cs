@@ -43,6 +43,7 @@ namespace FoucaultTest
         private ICalcBrightness calcBrightness_;
         private Queue<float> brightnessDiffQueue_ = new Queue<float>();
         private float brightnessDiffSum_ = 0;
+        private bool stopUpdateVideoFrames_ = false;
 
         // zones
         private ZoneVisualizationE zoneVisualization_;
@@ -72,10 +73,6 @@ namespace FoucaultTest
         private double valDI_;
         private DIUnit valDIUnit_;
         private event EventHandler ValDIChanged;
-        private struct ZoneReading
-        {
-            public List<double> seq_;
-        }
         private ZoneReading[] zoneReadings_;
 
         private delegate void TimeoutDelegate(SerialConnection connection);
@@ -337,12 +334,31 @@ namespace FoucaultTest
             settings_.Save();
         }
 
+        private DialogResult ShowDialog(Form form)
+        {
+            stopUpdateVideoFrames_ = true;
+            try
+            {
+                DialogResult res = form.ShowDialog();
+                stopUpdateVideoFrames_ = false;
+                return res;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                stopUpdateVideoFrames_ = false;
+                return DialogResult.Cancel;
+            }
+        }
+
         private delegate void SetNewFrameDelegate(Bitmap bitmap);
         private void SetNewFrame(Bitmap bitmap)
         {
-            pictureBox.Image = bitmap;
-            UpdateBrightness((Bitmap)bitmap.Clone());
-
+            if (!stopUpdateVideoFrames_)
+            {
+                pictureBox.Image = bitmap;
+                UpdateBrightness((Bitmap)bitmap.Clone());
+            }
             SendDIRequest();
 
         }
@@ -938,7 +954,7 @@ namespace FoucaultTest
         private void buttonFoucaultOptions_Click(object sender, EventArgs e)
         {
             CalcOptionsForm form = new CalcOptionsForm(options_);
-            if (form.ShowDialog() != DialogResult.OK)
+            if (ShowDialog(form) != DialogResult.OK)
                 return;
 
             bool fUpdateUIHandler = false, fUpdateCalcHandler = false, fResetBrightnessQueue = false, fResetCalibration = false;
@@ -1023,7 +1039,7 @@ namespace FoucaultTest
         private void buttonConnectDI_Click(object sender, EventArgs e)
         {
             ConnectionForm form = new ConnectionForm(portNameDI_, baudRateDI_);
-            if (form.ShowDialog() != DialogResult.OK)
+            if (ShowDialog(form) != DialogResult.OK)
                 return;
 
             if (form.DisconnectAll)
@@ -1067,7 +1083,7 @@ namespace FoucaultTest
             CloseConnection(connectionDI_);
         }
 
-        private void SaveZone(int zone)
+        private bool SaveZone(int zone)
         {
             if (valDIValid_)
             {
@@ -1079,21 +1095,9 @@ namespace FoucaultTest
                         zoneReadings_[zone].seq_ = new List<double>();
                     zoneReadings_[zone].seq_.Add(valDI_);
                 }
+                return true;
             }
-        }
-
-        private void buttonSaveAndNext_Click(object sender, EventArgs e)
-        {
-            SaveZone(comboBoxZoneNum.SelectedIndex);
-            if (comboBoxZoneNum.SelectedIndex < comboBoxZoneNum.Items.Count - 1)
-                comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex + 1;
-        }
-
-        private void buttonSaveAndPrev_Click(object sender, EventArgs e)
-        {
-            SaveZone(comboBoxZoneNum.SelectedIndex);
-            if (comboBoxZoneNum.SelectedIndex > 0)
-                comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex - 1;
+            return false;
         }
 
         private void buttonSaveZoneRedingsToFile_Click(object sender, EventArgs e)
@@ -1105,40 +1109,90 @@ namespace FoucaultTest
             savefile.FileName = "unknown.txt";
             savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
 
-            if (savefile.ShowDialog() != DialogResult.OK)
-                return;
-
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(savefile.FileName))
+            stopUpdateVideoFrames_ = true;
+            try
             {
-                for (int i = 0; i < zoneReadings_.Length; ++i)
+                DialogResult res = savefile.ShowDialog();
+                stopUpdateVideoFrames_ = false;
+                if (res != DialogResult.OK)
+                    return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                stopUpdateVideoFrames_ = false;
+                return;
+            }
+
+            try
+            {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(savefile.FileName))
                 {
-                    if (zoneReadings_[i].seq_ == null || zoneReadings_[i].seq_.Count <= 0)
-                        sw.WriteLine("N/A");
-                    else if (zoneReadings_[i].seq_.Count == 1)
-                        sw.WriteLine(zoneReadings_[i].seq_[0].ToString());
-                    else
+                    for (int i = 0; i < zoneReadings_.Length; ++i)
                     {
-                        string s = "";
-                        for (int j = 0; j < zoneReadings_[i].seq_.Count; ++j)
+                        if (zoneReadings_[i].seq_ == null || zoneReadings_[i].seq_.Count <= 0)
+                            sw.WriteLine("N/A");
+                        else if (zoneReadings_[i].seq_.Count == 1)
+                            sw.WriteLine(zoneReadings_[i].seq_[0].ToString());
+                        else
                         {
-                            if (j != 0)
-                                s += ",";
-                            s += zoneReadings_[i].seq_[j].ToString();
+                            string s = "";
+                            for (int j = 0; j < zoneReadings_[i].seq_.Count; ++j)
+                            {
+                                if (j > 0)
+                                    s += ",";
+                                s += zoneReadings_[i].seq_[j].ToString();
+                            }
+                            sw.WriteLine(s);
                         }
-                        sw.WriteLine("AVERAGE(" + s + ")");
                     }
                 }
+                zoneReadings_ = null;
             }
-        }
-
-        private void buttonClearDIs_Click(object sender, EventArgs e)
-        {
-            zoneReadings_ = null;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void checkBoxHideDI_CheckedChanged(object sender, EventArgs e)
         {
             UpdateDIControls();
+        }
+
+        private void buttonStoreDI_Click(object sender, EventArgs e)
+        {
+            if (SaveZone(comboBoxZoneNum.SelectedIndex))
+            {
+                if (checkBoxAdvanceFwd.Checked && comboBoxZoneNum.SelectedIndex < comboBoxZoneNum.Items.Count - 1)
+                    comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex + 1;
+                else if (checkBoxAdvanceBack.Checked && comboBoxZoneNum.SelectedIndex > 0)
+                    comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex - 1;
+            }
+            else
+                Console.Beep();
+        }
+
+        private void checkBoxAdvanceFwd_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAdvanceFwd.Checked && checkBoxAdvanceBack.Checked)
+                checkBoxAdvanceBack.Checked = false;
+        }
+
+        private void checkBoxAdvanceBack_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAdvanceFwd.Checked && checkBoxAdvanceBack.Checked)
+                checkBoxAdvanceFwd.Checked = false;
+        }
+
+        private void buttonEditZoneReadings_Click(object sender, EventArgs e)
+        {
+            if (zoneBounds_ != null)
+            {
+                EditDIReadings form = new EditDIReadings(zoneReadings_, zoneBounds_.Length - 1);
+                if (ShowDialog(form) == DialogResult.OK)
+                    zoneReadings_ = form.ZoneReadings;
+            }
         }
     }
 
