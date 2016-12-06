@@ -1147,7 +1147,6 @@ namespace FoucaultTest
                         }
                     }
                 }
-                zoneReadings_ = null;
             }
             catch (Exception ex)
             {
@@ -1193,6 +1192,15 @@ namespace FoucaultTest
                 if (ShowDialog(form) == DialogResult.OK)
                     zoneReadings_ = form.ZoneReadings;
             }
+        }
+
+        private void buttonClearDIs_Click(object sender, EventArgs e)
+        {
+            stopUpdateVideoFrames_ = true;
+            DialogResult res = MessageBox.Show("Clear all? you sure?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            stopUpdateVideoFrames_ = false;
+            if (res == DialogResult.Yes)
+                zoneReadings_ = null;
         }
     }
 

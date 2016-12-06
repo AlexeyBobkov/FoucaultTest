@@ -30,6 +30,18 @@ namespace FoucaultTest
             if(ParseEditReadings())
                 DialogResult = DialogResult.OK;
         }
+
+        private void InitZoneNum()
+        {
+            string s = "";
+            for (int i = 1; i <= maxZoneNumber_; ++i)
+            {
+                if (i > 1)
+                    s += Environment.NewLine;
+                s += i.ToString();
+            }
+            labelZoneNum.Text = s;
+        }
         
         private void InitEditReadings()
         {
@@ -63,12 +75,13 @@ namespace FoucaultTest
                 if (zoneReadings_ == null)
                     return true;
 
-                switch(MessageBox.Show("Clear all? you sure?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+                switch(MessageBox.Show("Clear all? you sure?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
                 {
-                    case DialogResult.OK:
+                    case DialogResult.Yes:
                         zoneReadings_ = null;
                         return true;
-                    case DialogResult.Cancel:
+                    case DialogResult.No:
+                    default:
                         InitEditReadings();
                         return false;
                 }
@@ -79,7 +92,7 @@ namespace FoucaultTest
                 string[] lines = textBoxReadings.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 ZoneReading[] newZoneReadings = new ZoneReading[lines.Length < maxZoneNumber_ ? lines.Length : maxZoneNumber_];
                 for (int i = newZoneReadings.Length; --i >= 0; )
-                    newZoneReadings[i].seq_ = lines[i].Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Select<string, double>(double.Parse).ToList();
+                    newZoneReadings[i].seq_ = lines[i].Split(new char[] { ',', ';', ':' }, StringSplitOptions.RemoveEmptyEntries).Select<string, double>(double.Parse).ToList();
 
                 zoneReadings_ = newZoneReadings;
             }
@@ -93,6 +106,7 @@ namespace FoucaultTest
 
         private void EditDIReadings_Load(object sender, EventArgs e)
         {
+            InitZoneNum();
             InitEditReadings();
         }
     }
