@@ -63,7 +63,7 @@ namespace FoucaultTest
                 if (zoneReadings_ == null)
                     return true;
 
-                switch(MessageBox.Show("Clear it? you sure?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+                switch(MessageBox.Show("Clear all? you sure?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
                 {
                     case DialogResult.OK:
                         zoneReadings_ = null;
