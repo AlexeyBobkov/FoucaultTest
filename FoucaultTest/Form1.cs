@@ -776,6 +776,13 @@ namespace FoucaultTest
             UpdateDIControls();
         }
 
+        private string MakeFileName()
+        {
+            DateTime dt = DateTime.Now;
+            return String.Format("ZoneDIReadings{0}-{1}-{2}_{3}-{4}-{5}.txt",
+                dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"));
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////
         // change handlers
         private void MirrorBoundChanged()
@@ -1106,7 +1113,7 @@ namespace FoucaultTest
                 return;
 
             SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = "unknown.txt";
+            savefile.FileName = MakeFileName();
             savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
 
             stopUpdateVideoFrames_ = true;
