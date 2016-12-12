@@ -258,20 +258,28 @@ namespace FoucaultTest
                                 idx = i;
                             }
                         }
-                        //Set the highest resolution as active
+
+                        if (videoSourceName_ != null && videoSourceName_ == settings_.Camera)
+                        {
+                            int i = comboBoxResolution.Items.IndexOf(settings_.Resolution);
+                            if (i >= 0)
+                                idx = i;
+                        } // else set the highest resolution as active
+
                         videoSource_.VideoResolution = videoSource_.VideoCapabilities[idx];
                         comboBoxResolution.SelectedIndex = idx;
                     }
+
+#if HAS_VIDEO_PROPERTIES
+                    SetVideoProperties(videoSource_);
+#endif
+
                 }
                 catch { }
 
                 //Create NewFrame event handler
                 //(This one triggers every time a new frame/image is captured
                 videoSource_.NewFrame += new AForge.Video.NewFrameEventHandler(videoSource_NewFrame);
-
-#if HAS_VIDEO_PROPERTIES
-                SetVideoProperties(videoSource_);
-#endif
 
                 //Start recording
                 videoSource_.Start();
@@ -860,6 +868,7 @@ namespace FoucaultTest
                 videoSource_.VideoResolution = videoSource_.VideoCapabilities[comboBoxResolution.SelectedIndex];
                 CorrectPictureSize();
                 videoSource_.Start();
+                settings_.Resolution = (string)comboBoxResolution.SelectedItem;
             }
         }
 
@@ -1278,7 +1287,6 @@ namespace FoucaultTest
         }
 
         // camera attributes
-#if HAS_VIDEO_PROPERTIES
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("")]
         public string Camera
@@ -1287,6 +1295,15 @@ namespace FoucaultTest
             set { this["Camera"] = value; }
         }
 
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public string Resolution
+        {
+            get { return (string)this["Resolution"]; }
+            set { this["Resolution"] = value; }
+        }
+
+#if HAS_VIDEO_PROPERTIES
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("-2147483648")]
         public int Brightness
