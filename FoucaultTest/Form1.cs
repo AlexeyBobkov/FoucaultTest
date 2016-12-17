@@ -1263,7 +1263,7 @@ namespace FoucaultTest
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("20")]
+        [DefaultSettingValueAttribute("30")]
         public float ZoneAngle
         {
             get { return (float)this["ZoneAngle"]; }
@@ -1271,7 +1271,7 @@ namespace FoucaultTest
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("30")]
+        [DefaultSettingValueAttribute("60")]
         public int TimeAveragingCnt
         {
             get { return (int)this["TimeAveragingCnt"]; }
