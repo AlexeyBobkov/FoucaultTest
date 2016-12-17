@@ -549,12 +549,15 @@ namespace FoucaultTest
             {
                 panelPictureBox.AutoScroll = true;
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                PointF ptOld = GetPanelCenter();
-                SizeF szOld = pictureBox.Size;
-                if (videoSource_ != null)
-                    pictureBox.Size = new Size((int)(videoSource_.VideoResolution.FrameSize.Width * scale),
-                                               (int)(videoSource_.VideoResolution.FrameSize.Height * scale));
-                ScrollPictureBoxPointToCenter(new PointF(ptOld.X * pictureBox.Size.Width / szOld.Width, ptOld.Y * pictureBox.Size.Height / szOld.Height));
+                if (pictureBox.Image != null)
+                {
+                    PointF ptOld = GetPanelCenter();
+                    SizeF szOld = pictureBox.Size;
+                    if (videoSource_ != null)
+                        pictureBox.Size = new Size((int)(videoSource_.VideoResolution.FrameSize.Width * scale),
+                                                   (int)(videoSource_.VideoResolution.FrameSize.Height * scale));
+                    ScrollPictureBoxPointToCenter(new PointF(ptOld.X * pictureBox.Size.Width / szOld.Width, ptOld.Y * pictureBox.Size.Height / szOld.Height));
+                }
             }
         }
 
