@@ -318,7 +318,7 @@ namespace FoucaultTest
                     if (camera.Length != 0)
                     {
                         string s = String.Format("The camera \"{1}\" used last time is not found. Do you want to continue?{0}{0}"+
-                                                 "\"Yes\" to continue (old camera settings will be lost!){0}" +
+                                                 "\"Yes\" to continue (some or all previous camera settings may be lost!){0}" +
                                                  "\"No\" to exit apptication.", Environment.NewLine, camera);
                         if (MessageBox.Show(s, "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
                         {
