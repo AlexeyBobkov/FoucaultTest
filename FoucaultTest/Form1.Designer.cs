@@ -76,8 +76,8 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -591,6 +591,8 @@
             this.comboBoxCamera.Name = "comboBoxCamera";
             this.comboBoxCamera.Size = new System.Drawing.Size(104, 21);
             this.comboBoxCamera.TabIndex = 1;
+            this.comboBoxCamera.SelectedIndexChanged += new System.EventHandler(this.comboBoxCamera_SelectedIndexChanged);
+            this.comboBoxCamera.DropDown += new System.EventHandler(this.comboBoxCamera_DropDown);
             // 
             // panelPictureBox
             // 
@@ -603,6 +605,12 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Interval = 300;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
+            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -612,12 +620,6 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            // 
-            // timerPoll
-            // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 300;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
             // MainForm
             // 

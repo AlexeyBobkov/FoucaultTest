@@ -215,29 +215,10 @@ namespace FoucaultTest
         }
 #endif
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void StartVideoSource()
         {
-            options_.SelectPenColor = settings_.SelectPenColor;
-            options_.InactiveZoneColor = settings_.InactiveZoneColor;
-            options_.ActiveZoneColor = settings_.ActiveZoneColor;
-            options_.ZoneHeight = settings_.ZoneHeight;
-            options_.SideTolerance = settings_.SideTolerance;
-            options_.ZoneAngle = settings_.ZoneAngle;
-            options_.TimeAveragingCnt = settings_.TimeAveragingCnt;
-            options_.CalibAveragingCnt = settings_.CalibAveragingCnt;
-
-            //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
-
-            //List all available video sources. (That can be webcams as well as tv cards, etc)
-            FilterInfoCollection videosources = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-
-            //Check if atleast one video source is available
-            if (videosources != null && videosources.Capacity > 0)
+            if (videoSource_ != null)
             {
-                //For example use first video device. You may check if this is your webcam.
-                videoSource_ = new VideoCaptureDevice(videosources[0].MonikerString);
-                videoSourceName_ = videosources[0].Name;
-
                 try
                 {
                     //Check if the video device provides a list of supported resolutions
@@ -284,6 +265,61 @@ namespace FoucaultTest
                 //Start recording
                 videoSource_.Start();
             }
+        }
+
+        private void StopVideoSource(bool saveProperties)
+        {
+            if (videoSource_ != null)
+            {
+#if HAS_VIDEO_PROPERTIES
+                if(saveProperties)
+                    SaveVideoProperties(videoSource_);
+#endif
+                if (videoSource_.IsRunning)
+                {
+                    videoSource_.SignalToStop();
+                    videoSource_.WaitForStop();
+                }
+                videoSource_ = null;
+                videoSourceName_ = null;
+            }
+            comboBoxResolution.Items.Clear();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            options_.SelectPenColor = settings_.SelectPenColor;
+            options_.InactiveZoneColor = settings_.InactiveZoneColor;
+            options_.ActiveZoneColor = settings_.ActiveZoneColor;
+            options_.ZoneHeight = settings_.ZoneHeight;
+            options_.SideTolerance = settings_.SideTolerance;
+            options_.ZoneAngle = settings_.ZoneAngle;
+            options_.TimeAveragingCnt = settings_.TimeAveragingCnt;
+            options_.CalibAveragingCnt = settings_.CalibAveragingCnt;
+
+            //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
+
+            //List all available video sources. (That can be webcams as well as tv cards, etc)
+            FilterInfoCollection videosources = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+            //Check if atleast one video source is available
+            if (videosources != null && videosources.Count > 0)
+            {
+                int idx = -1;
+                for (int i = 0; i < videosources.Count; ++i)
+                {
+                    comboBoxCamera.Items.Add(videosources[i].Name);
+                    if (idx < 0 && settings_.Camera == videosources[i].Name)
+                        idx = i;
+                }
+                if (idx < 0)
+                    idx = 0;
+                
+                videoSource_ = new VideoCaptureDevice(videosources[idx].MonikerString);
+                videoSourceName_ = videosources[idx].Name;
+                comboBoxCamera.SelectedIndex = idx;
+                StartVideoSource();
+            }
 
             comboBoxResolution.Enabled =
             buttonCameraSettings.Enabled =
@@ -329,16 +365,7 @@ namespace FoucaultTest
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //Stop and free the webcam object if application is closing
-            if (videoSource_ != null)
-            {
-#if HAS_VIDEO_PROPERTIES
-                SaveVideoProperties(videoSource_);
-#endif
-                if(videoSource_.IsRunning)
-                    videoSource_.SignalToStop();
-                videoSource_ = null;
-            }
+            StopVideoSource(true);
             settings_.Save();
         }
 
@@ -867,7 +894,8 @@ namespace FoucaultTest
                 return;
             if (videoSource_ != null)
             {
-                videoSource_.Stop();
+                videoSource_.SignalToStop();
+                videoSource_.WaitForStop();
                 videoSource_.VideoResolution = videoSource_.VideoCapabilities[comboBoxResolution.SelectedIndex];
                 CorrectPictureSize();
                 videoSource_.Start();
@@ -1220,6 +1248,69 @@ namespace FoucaultTest
             stopUpdateVideoFrames_ = false;
             if (res == DialogResult.Yes)
                 zoneReadings_ = null;
+        }
+
+        private int RebuildCameraArrayAndGetIndex(FilterInfoCollection videosources)
+        {
+            comboBoxCamera.Items.Clear();
+            int idx = -1;
+            for (int i = 0; i < videosources.Count; ++i)
+            {
+                comboBoxCamera.Items.Add(videosources[i].Name);
+                if (idx < 0 && (string)comboBoxCamera.SelectedItem == videosources[i].Name)
+                    idx = i;
+            }
+            if (idx < 0)
+                idx = 0;
+
+            init_ = false;
+            comboBoxCamera.SelectedIndex = idx;
+            init_ = true;
+
+            return idx;
+        }
+        
+        private void comboBoxCamera_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!init_)
+                return;
+
+            int idx = comboBoxCamera.SelectedIndex;
+
+            FilterInfoCollection videosources = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            if (videosources != null && videosources.Count > 0)
+            {
+                if (videosources.Count != comboBoxCamera.Items.Count ||
+                    comboBoxCamera.SelectedIndex >= videosources.Count ||
+                    videosources[comboBoxCamera.SelectedIndex].Name != (string)comboBoxCamera.SelectedItem)
+                {
+                    // rebuild camera array
+                    idx = RebuildCameraArrayAndGetIndex(videosources);
+                }
+
+                StopVideoSource(true);
+                videoSource_ = new VideoCaptureDevice(videosources[idx].MonikerString);
+                videoSourceName_ = videosources[idx].Name;
+                StartVideoSource();
+            }
+        }
+
+        private void comboBoxCamera_DropDown(object sender, EventArgs e)
+        {
+            if (!init_)
+                return;
+
+            FilterInfoCollection videosources = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            if (videosources != null && videosources.Count > 0)
+            {
+                if (videosources.Count != comboBoxCamera.Items.Count ||
+                    comboBoxCamera.SelectedIndex >= videosources.Count ||
+                    videosources[comboBoxCamera.SelectedIndex].Name != (string)comboBoxCamera.SelectedItem)
+                {
+                    // rebuild camera array
+                    RebuildCameraArrayAndGetIndex(videosources);
+                }
+            }
         }
     }
 
