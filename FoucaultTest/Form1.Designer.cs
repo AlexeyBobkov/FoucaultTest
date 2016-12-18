@@ -76,8 +76,8 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.timerPoll = new System.Windows.Forms.Timer(this.components);
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.timerPoll = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -183,7 +183,7 @@
             this.buttonClearDIs.Name = "buttonClearDIs";
             this.buttonClearDIs.Size = new System.Drawing.Size(155, 39);
             this.buttonClearDIs.TabIndex = 21;
-            this.buttonClearDIs.Text = "Clear All DIs";
+            this.buttonClearDIs.Text = "Clear Readings";
             this.buttonClearDIs.UseVisualStyleBackColor = true;
             this.buttonClearDIs.Click += new System.EventHandler(this.buttonClearDIs_Click);
             // 
@@ -193,7 +193,7 @@
             this.buttonEditZoneReadings.Name = "buttonEditZoneReadings";
             this.buttonEditZoneReadings.Size = new System.Drawing.Size(154, 39);
             this.buttonEditZoneReadings.TabIndex = 7;
-            this.buttonEditZoneReadings.Text = "Edit DIs";
+            this.buttonEditZoneReadings.Text = "Edit Readings";
             this.buttonEditZoneReadings.UseVisualStyleBackColor = true;
             this.buttonEditZoneReadings.Click += new System.EventHandler(this.buttonEditZoneReadings_Click);
             // 
@@ -227,7 +227,7 @@
             this.buttonStoreDI.Name = "buttonStoreDI";
             this.buttonStoreDI.Size = new System.Drawing.Size(124, 64);
             this.buttonStoreDI.TabIndex = 4;
-            this.buttonStoreDI.Text = "Store DI Reading";
+            this.buttonStoreDI.Text = "Store Reading";
             this.buttonStoreDI.UseVisualStyleBackColor = true;
             this.buttonStoreDI.Click += new System.EventHandler(this.buttonStoreDI_Click);
             // 
@@ -237,7 +237,7 @@
             this.buttonSaveZoneRedingsToFile.Name = "buttonSaveZoneRedingsToFile";
             this.buttonSaveZoneRedingsToFile.Size = new System.Drawing.Size(155, 39);
             this.buttonSaveZoneRedingsToFile.TabIndex = 8;
-            this.buttonSaveZoneRedingsToFile.Text = "Save";
+            this.buttonSaveZoneRedingsToFile.Text = "Save Readings";
             this.buttonSaveZoneRedingsToFile.UseVisualStyleBackColor = true;
             this.buttonSaveZoneRedingsToFile.Click += new System.EventHandler(this.buttonSaveZoneRedingsToFile_Click);
             // 
@@ -452,9 +452,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(423, 55);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(64, 13);
+            this.label9.Size = new System.Drawing.Size(50, 13);
             this.label9.TabIndex = 13;
-            this.label9.Text = "DI Reading:";
+            this.label9.Text = "Reading:";
             // 
             // textBoxDIValue
             // 
@@ -469,9 +469,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(424, 14);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(99, 13);
+            this.label8.Size = new System.Drawing.Size(105, 13);
             this.label8.TabIndex = 10;
-            this.label8.Text = "Dial Indicator (\"DI\")";
+            this.label8.Text = "Dial Indicator Status:";
             // 
             // textBoxDIStatus
             // 
@@ -605,12 +605,6 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
-            // timerPoll
-            // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 300;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
-            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -620,6 +614,12 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Interval = 300;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
             // MainForm
             // 
