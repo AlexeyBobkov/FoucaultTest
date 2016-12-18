@@ -96,10 +96,6 @@ namespace FoucaultTestClasses
                     float innerA = (float)(a * inner), innerB = (float)(b * inner);
                     float outerA = (float)(a * outer), outerB = (float)(b * outer);
 
-                    // we assume that the ellipse is almost a circle
-                    //float angle = (float)((180 * options_.calcBrightnessPixelNum_) / (Math.PI * (outerA * outerA - innerA * innerA)));
-                    //if (angle > 25)
-                    //    angle = 25;
                     float angle = (float)options_.ZoneAngle;
 
                     Region rl, rr;

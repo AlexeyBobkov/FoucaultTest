@@ -19,9 +19,7 @@ namespace FoucaultTestClasses
     {
         Off,
         ZoneBoundsOnly,
-        ActiveOnly,
-        ZoneBoundsOnly2,
-        ActiveOnly2
+        ActiveOnly
     };
 
     // options

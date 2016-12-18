@@ -689,22 +689,6 @@ namespace FoucaultTest
                                 uiUpdateZoneData_ = h;
                             }
                             break;
-
-                        case ZoneVisualizationE.ZoneBoundsOnly2:
-                            {
-                                var h = new UIShowZoneBoundsHandler2(pictureBox, mirrorBound_, options_);
-                                uiHandler = h;
-                                uiUpdateZoneData_ = h;
-                            }
-                            break;
-
-                        case ZoneVisualizationE.ActiveOnly2:
-                            {
-                                var h = new UIShowActiveZoneHandler2(pictureBox, mirrorBound_, options_);
-                                uiHandler = h;
-                                uiUpdateZoneData_ = h;
-                            }
-                            break;
                     }
                     break;
             }
@@ -999,14 +983,6 @@ namespace FoucaultTest
 
                 case 2:
                     zoneVisualization_ = ZoneVisualizationE.ActiveOnly;
-                    break;
-
-                case 3:
-                    zoneVisualization_ = ZoneVisualizationE.ZoneBoundsOnly2;
-                    break;
-
-                case 4:
-                    zoneVisualization_ = ZoneVisualizationE.ActiveOnly2;
                     break;
             }
             VisualizationChanged();
