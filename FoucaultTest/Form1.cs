@@ -306,14 +306,28 @@ namespace FoucaultTest
             if (videosources != null && videosources.Count > 0)
             {
                 int idx = -1;
+                string camera = settings_.Camera;
                 for (int i = 0; i < videosources.Count; ++i)
                 {
                     comboBoxCamera.Items.Add(videosources[i].Name);
-                    if (idx < 0 && settings_.Camera == videosources[i].Name)
+                    if (idx < 0 && camera == videosources[i].Name)
                         idx = i;
                 }
                 if (idx < 0)
+                {
+                    if (camera.Length != 0)
+                    {
+                        string s = String.Format("The camera \"{1}\" used last time is not found. Do you want to continue?{0}{0}"+
+                                                 "\"Yes\" to continue (old camera settings will be lost!){0}" +
+                                                 "\"No\" to exit apptication.", Environment.NewLine, camera);
+                        if (MessageBox.Show(s, "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                        {
+                            Application.Exit();
+                            return;
+                        }
+                    }
                     idx = 0;
+                }
                 
                 videoSource_ = new VideoCaptureDevice(videosources[idx].MonikerString);
                 videoSourceName_ = videosources[idx].Name;
