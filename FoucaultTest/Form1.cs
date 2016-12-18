@@ -37,8 +37,8 @@ namespace FoucaultTest
 
         // UI mode and handlers
         private UIModeE uiMode_;
-        private PictureUIUpdateZoneData uiUpdateZoneData_;
-        private PictureUISelMirrorBoundData uiSelMirrorBoundData_;
+        private IPictureUIUpdateZoneData uiUpdateZoneData_;
+        private IPictureUISelMirrorBoundData uiSelMirrorBoundData_;
         private CalcBrightnessModeE calcBrightnessMode_ = CalcBrightnessModeE.Median;
         private ICalcBrightness calcBrightness_;
         private Queue<float> brightnessDiffQueue_ = new Queue<float>();
@@ -643,7 +643,7 @@ namespace FoucaultTest
                 uiUpdateZoneData_ = null;
             }
 
-            PictureUIHandler uiHandler;
+            IPictureUIHandler uiHandler;
             switch (uiMode_)
             {
                 default:

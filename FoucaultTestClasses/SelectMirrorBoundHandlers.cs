@@ -8,7 +8,7 @@ using System.Drawing;
 namespace FoucaultTestClasses
 {
     // default UI handler
-    public class UIOffHandler : PictureUIHandler
+    public class UIOffHandler : IPictureUIHandler
     {
         public UIOffHandler(IPictureBase pict) { pict_ = pict; }
 
@@ -23,7 +23,7 @@ namespace FoucaultTestClasses
     }
 
     // Select new bound UI handler
-    public class UISelNewMirrorBoundHandler : PictureUIHandler, PictureUISelMirrorBoundData
+    public class UISelNewMirrorBoundHandler : IPictureUIHandler, IPictureUISelMirrorBoundData
     {
         public UISelNewMirrorBoundHandler(IPictureBase pict, Options options)
         {
@@ -92,7 +92,7 @@ namespace FoucaultTestClasses
     }
 
     // Select mirror bound UI handler
-    public class UISelMirrorBoundHandler : PictureUIHandler, PictureUISelMirrorBoundData
+    public class UISelMirrorBoundHandler : IPictureUIHandler, IPictureUISelMirrorBoundData
     {
         public UISelMirrorBoundHandler(IPictureBase pict, RectangleF mirrorBound, Options options)
         {

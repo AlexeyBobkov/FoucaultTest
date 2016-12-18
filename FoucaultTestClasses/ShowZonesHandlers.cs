@@ -10,7 +10,7 @@ namespace FoucaultTestClasses
 {
     ////////////////////////////////////////////////////////////////////////////////////
     // Show Zone Base UI handler
-    public abstract class UIShowZoneBaseHandler : PictureUIHandler, PictureUIUpdateZoneData
+    public abstract class UIShowZoneBaseHandler : IPictureUIHandler, IPictureUIUpdateZoneData
     {
         public UIShowZoneBaseHandler(IPictureBase pict, RectangleF mirrorBound)
         {

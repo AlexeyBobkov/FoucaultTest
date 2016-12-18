@@ -38,7 +38,7 @@ namespace FoucaultTestClasses
     };
 
     // UI handler interfaces
-    public interface PictureUIHandler : IDisposable
+    public interface IPictureUIHandler : IDisposable
     {
         void OnPaint(PaintEventArgs e);
         void OnMouseDown(MouseEventArgs e);
@@ -46,12 +46,12 @@ namespace FoucaultTestClasses
         void OnMouseUp(MouseEventArgs e);
         bool IsImageUpdateEnabled();
     }
-    public interface PictureUISelMirrorBoundData : IDisposable
+    public interface IPictureUISelMirrorBoundData : IDisposable
     {
         RectangleF MirrorBound { get; set; }
         event EventHandler MirrorBoundChanged;
     }
-    public interface PictureUIUpdateZoneData : IDisposable
+    public interface IPictureUIUpdateZoneData : IDisposable
     {
         RectangleF MirrorBound { get; set; }
         double[] ZoneBounds { get; set; }

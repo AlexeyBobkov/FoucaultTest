@@ -93,7 +93,7 @@ namespace FoucaultTestClasses
             base.Invalidate(rc);
         }
 
-        public void SetUIHandler(PictureUIHandler h)
+        public void SetUIHandler(IPictureUIHandler h)
         {
             if (uiHandler_ != null)
                 uiHandler_.Dispose();
@@ -116,7 +116,7 @@ namespace FoucaultTestClasses
         protected override void OnMouseMove(MouseEventArgs e)   { if (uiHandler_ != null) uiHandler_.OnMouseMove(e); }
         protected override void OnMouseUp(MouseEventArgs e)     { if (uiHandler_ != null) uiHandler_.OnMouseUp(e); }
 
-        private PictureUIHandler uiHandler_;
+        private IPictureUIHandler uiHandler_;
 
         // conversion
         private object lockConversion_ = new object();
