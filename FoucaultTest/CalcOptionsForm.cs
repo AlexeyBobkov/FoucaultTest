@@ -104,8 +104,8 @@ namespace FoucaultTest
             };
              **/
             // we only reset the options changed in this dialog box
-            options_.ZoneAngle = 20;
-            options_.TimeAveragingCnt = 30;
+            options_.ZoneAngle = 30;
+            options_.TimeAveragingCnt = 60;
             options_.CalibAveragingCnt = 60;
 
             init_ = false;

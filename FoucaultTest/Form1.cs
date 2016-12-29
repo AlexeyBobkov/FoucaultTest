@@ -44,6 +44,7 @@ namespace FoucaultTest
         private Queue<float> brightnessDiffQueue_ = new Queue<float>();
         private float brightnessDiffSum_ = 0;
         private bool stopUpdateVideoFrames_ = false;
+        private bool videoFrameIsProcessing_ = false;
 
         // zones
         private ZoneVisualizationE zoneVisualization_;
@@ -406,15 +407,18 @@ namespace FoucaultTest
         {
             if (!stopUpdateVideoFrames_)
             {
+                videoFrameIsProcessing_ = true;
                 pictureBox.Image = bitmap;
                 UpdateBrightness((Bitmap)bitmap.Clone());
+                videoFrameIsProcessing_ = false;
             }
             SendDIRequest();
 
         }
         private void videoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            BeginInvoke(new SetNewFrameDelegate(SetNewFrame), (Bitmap)eventArgs.Frame.Clone());
+            if (!videoFrameIsProcessing_)
+                BeginInvoke(new SetNewFrameDelegate(SetNewFrame), (Bitmap)eventArgs.Frame.Clone());
         }
 
         private void StartCalibration()
