@@ -436,7 +436,7 @@
             // 
             // labelOffset
             // 
-            this.labelOffset.Location = new System.Drawing.Point(505, 72);
+            this.labelOffset.Location = new System.Drawing.Point(565, 72);
             this.labelOffset.Name = "labelOffset";
             this.labelOffset.Size = new System.Drawing.Size(84, 26);
             this.labelOffset.TabIndex = 14;
@@ -445,7 +445,7 @@
             // 
             // buttonSetZero
             // 
-            this.buttonSetZero.Location = new System.Drawing.Point(427, 72);
+            this.buttonSetZero.Location = new System.Drawing.Point(487, 72);
             this.buttonSetZero.Name = "buttonSetZero";
             this.buttonSetZero.Size = new System.Drawing.Size(72, 26);
             this.buttonSetZero.TabIndex = 13;
@@ -456,7 +456,7 @@
             // checkBoxHideDI
             // 
             this.checkBoxHideDI.AutoSize = true;
-            this.checkBoxHideDI.Location = new System.Drawing.Point(595, 123);
+            this.checkBoxHideDI.Location = new System.Drawing.Point(655, 123);
             this.checkBoxHideDI.Name = "checkBoxHideDI";
             this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
             this.checkBoxHideDI.TabIndex = 19;
@@ -466,7 +466,7 @@
             // 
             // labelDIUnit
             // 
-            this.labelDIUnit.Location = new System.Drawing.Point(505, 122);
+            this.labelDIUnit.Location = new System.Drawing.Point(565, 122);
             this.labelDIUnit.Name = "labelDIUnit";
             this.labelDIUnit.Size = new System.Drawing.Size(45, 21);
             this.labelDIUnit.TabIndex = 18;
@@ -475,7 +475,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(424, 106);
+            this.label9.Location = new System.Drawing.Point(484, 106);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(50, 13);
             this.label9.TabIndex = 16;
@@ -483,7 +483,7 @@
             // 
             // textBoxDIValue
             // 
-            this.textBoxDIValue.Location = new System.Drawing.Point(427, 122);
+            this.textBoxDIValue.Location = new System.Drawing.Point(487, 122);
             this.textBoxDIValue.Name = "textBoxDIValue";
             this.textBoxDIValue.ReadOnly = true;
             this.textBoxDIValue.Size = new System.Drawing.Size(72, 20);
@@ -492,7 +492,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(424, 14);
+            this.label8.Location = new System.Drawing.Point(484, 14);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(105, 13);
             this.label8.TabIndex = 10;
@@ -500,16 +500,16 @@
             // 
             // textBoxDIStatus
             // 
-            this.textBoxDIStatus.Location = new System.Drawing.Point(427, 31);
+            this.textBoxDIStatus.Location = new System.Drawing.Point(487, 31);
             this.textBoxDIStatus.Name = "textBoxDIStatus";
             this.textBoxDIStatus.ReadOnly = true;
-            this.textBoxDIStatus.Size = new System.Drawing.Size(216, 20);
+            this.textBoxDIStatus.Size = new System.Drawing.Size(147, 20);
             this.textBoxDIStatus.TabIndex = 11;
             this.textBoxDIStatus.Text = "Disconnected";
             // 
             // buttonConnectDI
             // 
-            this.buttonConnectDI.Location = new System.Drawing.Point(659, 15);
+            this.buttonConnectDI.Location = new System.Drawing.Point(655, 15);
             this.buttonConnectDI.Name = "buttonConnectDI";
             this.buttonConnectDI.Size = new System.Drawing.Size(112, 37);
             this.buttonConnectDI.TabIndex = 12;
@@ -519,7 +519,7 @@
             // 
             // buttonAutoPosition
             // 
-            this.buttonAutoPosition.Location = new System.Drawing.Point(250, 72);
+            this.buttonAutoPosition.Location = new System.Drawing.Point(315, 72);
             this.buttonAutoPosition.Name = "buttonAutoPosition";
             this.buttonAutoPosition.Size = new System.Drawing.Size(132, 32);
             this.buttonAutoPosition.TabIndex = 8;
@@ -532,7 +532,7 @@
             this.checkBoxFitToScreen.AutoSize = true;
             this.checkBoxFitToScreen.Checked = true;
             this.checkBoxFitToScreen.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxFitToScreen.Location = new System.Drawing.Point(144, 72);
+            this.checkBoxFitToScreen.Location = new System.Drawing.Point(209, 72);
             this.checkBoxFitToScreen.Name = "checkBoxFitToScreen";
             this.checkBoxFitToScreen.Size = new System.Drawing.Size(86, 17);
             this.checkBoxFitToScreen.TabIndex = 7;
@@ -542,7 +542,7 @@
             // 
             // buttonCopyPicture
             // 
-            this.buttonCopyPicture.Location = new System.Drawing.Point(250, 110);
+            this.buttonCopyPicture.Location = new System.Drawing.Point(315, 110);
             this.buttonCopyPicture.Name = "buttonCopyPicture";
             this.buttonCopyPicture.Size = new System.Drawing.Size(132, 32);
             this.buttonCopyPicture.TabIndex = 9;
@@ -553,7 +553,7 @@
             // labelScale
             // 
             this.labelScale.AutoSize = true;
-            this.labelScale.Location = new System.Drawing.Point(141, 14);
+            this.labelScale.Location = new System.Drawing.Point(206, 14);
             this.labelScale.Name = "labelScale";
             this.labelScale.Size = new System.Drawing.Size(34, 13);
             this.labelScale.TabIndex = 5;
@@ -562,7 +562,7 @@
             // hScrollBarScale
             // 
             this.hScrollBarScale.LargeChange = 1;
-            this.hScrollBarScale.Location = new System.Drawing.Point(144, 31);
+            this.hScrollBarScale.Location = new System.Drawing.Point(209, 31);
             this.hScrollBarScale.Minimum = -100;
             this.hScrollBarScale.Name = "hScrollBarScale";
             this.hScrollBarScale.Size = new System.Drawing.Size(238, 21);
@@ -592,7 +592,7 @@
             // 
             this.buttonCameraSettings.Location = new System.Drawing.Point(21, 110);
             this.buttonCameraSettings.Name = "buttonCameraSettings";
-            this.buttonCameraSettings.Size = new System.Drawing.Size(104, 32);
+            this.buttonCameraSettings.Size = new System.Drawing.Size(149, 32);
             this.buttonCameraSettings.TabIndex = 4;
             this.buttonCameraSettings.Text = "Settings";
             this.buttonCameraSettings.UseVisualStyleBackColor = true;
@@ -604,7 +604,7 @@
             this.comboBoxResolution.FormattingEnabled = true;
             this.comboBoxResolution.Location = new System.Drawing.Point(21, 72);
             this.comboBoxResolution.Name = "comboBoxResolution";
-            this.comboBoxResolution.Size = new System.Drawing.Size(104, 21);
+            this.comboBoxResolution.Size = new System.Drawing.Size(149, 21);
             this.comboBoxResolution.TabIndex = 3;
             this.comboBoxResolution.SelectedIndexChanged += new System.EventHandler(this.comboBoxResolution_SelectedIndexChanged);
             // 
@@ -614,7 +614,7 @@
             this.comboBoxCamera.FormattingEnabled = true;
             this.comboBoxCamera.Location = new System.Drawing.Point(21, 31);
             this.comboBoxCamera.Name = "comboBoxCamera";
-            this.comboBoxCamera.Size = new System.Drawing.Size(104, 21);
+            this.comboBoxCamera.Size = new System.Drawing.Size(149, 21);
             this.comboBoxCamera.TabIndex = 1;
             this.comboBoxCamera.SelectedIndexChanged += new System.EventHandler(this.comboBoxCamera_SelectedIndexChanged);
             this.comboBoxCamera.DropDown += new System.EventHandler(this.comboBoxCamera_DropDown);
@@ -641,7 +641,7 @@
             this.checkBoxUseOffset.AutoSize = true;
             this.checkBoxUseOffset.Checked = true;
             this.checkBoxUseOffset.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseOffset.Location = new System.Drawing.Point(595, 76);
+            this.checkBoxUseOffset.Location = new System.Drawing.Point(655, 76);
             this.checkBoxUseOffset.Name = "checkBoxUseOffset";
             this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
             this.checkBoxUseOffset.TabIndex = 15;
