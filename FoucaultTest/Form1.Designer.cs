@@ -79,8 +79,8 @@
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.checkBoxUseOffset = new System.Windows.Forms.CheckBox();
+            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -438,9 +438,9 @@
             // 
             this.labelOffset.Location = new System.Drawing.Point(505, 72);
             this.labelOffset.Name = "labelOffset";
-            this.labelOffset.Size = new System.Drawing.Size(43, 26);
+            this.labelOffset.Size = new System.Drawing.Size(84, 26);
             this.labelOffset.TabIndex = 14;
-            this.labelOffset.Text = "( 0 )";
+            this.labelOffset.Text = "0";
             this.labelOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // buttonSetZero
@@ -456,7 +456,7 @@
             // checkBoxHideDI
             // 
             this.checkBoxHideDI.AutoSize = true;
-            this.checkBoxHideDI.Location = new System.Drawing.Point(554, 124);
+            this.checkBoxHideDI.Location = new System.Drawing.Point(595, 123);
             this.checkBoxHideDI.Name = "checkBoxHideDI";
             this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
             this.checkBoxHideDI.TabIndex = 19;
@@ -468,7 +468,7 @@
             // 
             this.labelDIUnit.Location = new System.Drawing.Point(505, 122);
             this.labelDIUnit.Name = "labelDIUnit";
-            this.labelDIUnit.Size = new System.Drawing.Size(43, 21);
+            this.labelDIUnit.Size = new System.Drawing.Size(45, 21);
             this.labelDIUnit.TabIndex = 18;
             this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -509,7 +509,7 @@
             // 
             // buttonConnectDI
             // 
-            this.buttonConnectDI.Location = new System.Drawing.Point(661, 31);
+            this.buttonConnectDI.Location = new System.Drawing.Point(659, 15);
             this.buttonConnectDI.Name = "buttonConnectDI";
             this.buttonConnectDI.Size = new System.Drawing.Size(112, 37);
             this.buttonConnectDI.TabIndex = 12;
@@ -636,6 +636,19 @@
             this.timerPoll.Interval = 300;
             this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
+            // checkBoxUseOffset
+            // 
+            this.checkBoxUseOffset.AutoSize = true;
+            this.checkBoxUseOffset.Checked = true;
+            this.checkBoxUseOffset.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseOffset.Location = new System.Drawing.Point(595, 76);
+            this.checkBoxUseOffset.Name = "checkBoxUseOffset";
+            this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxUseOffset.TabIndex = 15;
+            this.checkBoxUseOffset.Text = "Use Offset";
+            this.checkBoxUseOffset.UseVisualStyleBackColor = true;
+            this.checkBoxUseOffset.CheckedChanged += new System.EventHandler(this.checkBoxUseOffset_CheckedChanged);
+            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -645,19 +658,6 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            // 
-            // checkBoxUseOffset
-            // 
-            this.checkBoxUseOffset.AutoSize = true;
-            this.checkBoxUseOffset.Checked = true;
-            this.checkBoxUseOffset.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseOffset.Location = new System.Drawing.Point(554, 77);
-            this.checkBoxUseOffset.Name = "checkBoxUseOffset";
-            this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
-            this.checkBoxUseOffset.TabIndex = 15;
-            this.checkBoxUseOffset.Text = "Use Offset";
-            this.checkBoxUseOffset.UseVisualStyleBackColor = true;
-            this.checkBoxUseOffset.CheckedChanged += new System.EventHandler(this.checkBoxUseOffset_CheckedChanged);
             // 
             // MainForm
             // 

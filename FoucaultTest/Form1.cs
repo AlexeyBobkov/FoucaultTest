@@ -771,7 +771,7 @@ namespace FoucaultTest
                     labelDIUnit.Text = "";
                 }
             }
-            labelOffset.Text = "( " + valDIOffset_.ToString() + " )";
+            labelOffset.Text = valDIOffset_.ToString();
         }
 
         private void SendDIRequest()
