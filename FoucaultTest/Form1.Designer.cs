@@ -58,6 +58,8 @@
             this.comboBoxZoneNum = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelOffset = new System.Windows.Forms.Label();
+            this.buttonSetZero = new System.Windows.Forms.Button();
             this.checkBoxHideDI = new System.Windows.Forms.CheckBox();
             this.labelDIUnit = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -76,8 +78,9 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.checkBoxUseOffset = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -405,6 +408,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBoxUseOffset);
+            this.panel1.Controls.Add(this.labelOffset);
+            this.panel1.Controls.Add(this.buttonSetZero);
             this.panel1.Controls.Add(this.checkBoxHideDI);
             this.panel1.Controls.Add(this.labelDIUnit);
             this.panel1.Controls.Add(this.label9);
@@ -428,41 +434,60 @@
             this.panel1.Size = new System.Drawing.Size(792, 162);
             this.panel1.TabIndex = 0;
             // 
+            // labelOffset
+            // 
+            this.labelOffset.Location = new System.Drawing.Point(505, 72);
+            this.labelOffset.Name = "labelOffset";
+            this.labelOffset.Size = new System.Drawing.Size(43, 26);
+            this.labelOffset.TabIndex = 14;
+            this.labelOffset.Text = "( 0 )";
+            this.labelOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // buttonSetZero
+            // 
+            this.buttonSetZero.Location = new System.Drawing.Point(427, 72);
+            this.buttonSetZero.Name = "buttonSetZero";
+            this.buttonSetZero.Size = new System.Drawing.Size(72, 26);
+            this.buttonSetZero.TabIndex = 13;
+            this.buttonSetZero.Text = "Offset";
+            this.buttonSetZero.UseVisualStyleBackColor = true;
+            this.buttonSetZero.Click += new System.EventHandler(this.buttonSetZero_Click);
+            // 
             // checkBoxHideDI
             // 
             this.checkBoxHideDI.AutoSize = true;
-            this.checkBoxHideDI.Location = new System.Drawing.Point(553, 72);
+            this.checkBoxHideDI.Location = new System.Drawing.Point(554, 124);
             this.checkBoxHideDI.Name = "checkBoxHideDI";
             this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
-            this.checkBoxHideDI.TabIndex = 16;
+            this.checkBoxHideDI.TabIndex = 19;
             this.checkBoxHideDI.Text = "Hide";
             this.checkBoxHideDI.UseVisualStyleBackColor = true;
             this.checkBoxHideDI.CheckedChanged += new System.EventHandler(this.checkBoxHideDI_CheckedChanged);
             // 
             // labelDIUnit
             // 
-            this.labelDIUnit.Location = new System.Drawing.Point(504, 72);
+            this.labelDIUnit.Location = new System.Drawing.Point(505, 122);
             this.labelDIUnit.Name = "labelDIUnit";
             this.labelDIUnit.Size = new System.Drawing.Size(43, 21);
-            this.labelDIUnit.TabIndex = 15;
+            this.labelDIUnit.TabIndex = 18;
             this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(423, 55);
+            this.label9.Location = new System.Drawing.Point(424, 106);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(50, 13);
-            this.label9.TabIndex = 13;
+            this.label9.TabIndex = 16;
             this.label9.Text = "Reading:";
             // 
             // textBoxDIValue
             // 
-            this.textBoxDIValue.Location = new System.Drawing.Point(426, 72);
+            this.textBoxDIValue.Location = new System.Drawing.Point(427, 122);
             this.textBoxDIValue.Name = "textBoxDIValue";
             this.textBoxDIValue.ReadOnly = true;
             this.textBoxDIValue.Size = new System.Drawing.Size(72, 20);
-            this.textBoxDIValue.TabIndex = 14;
+            this.textBoxDIValue.TabIndex = 17;
             // 
             // label8
             // 
@@ -605,6 +630,12 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Interval = 300;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
+            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -615,11 +646,18 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
-            // timerPoll
+            // checkBoxUseOffset
             // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 300;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
+            this.checkBoxUseOffset.AutoSize = true;
+            this.checkBoxUseOffset.Checked = true;
+            this.checkBoxUseOffset.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseOffset.Location = new System.Drawing.Point(554, 77);
+            this.checkBoxUseOffset.Name = "checkBoxUseOffset";
+            this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxUseOffset.TabIndex = 15;
+            this.checkBoxUseOffset.Text = "Use Offset";
+            this.checkBoxUseOffset.UseVisualStyleBackColor = true;
+            this.checkBoxUseOffset.CheckedChanged += new System.EventHandler(this.checkBoxUseOffset_CheckedChanged);
             // 
             // MainForm
             // 
@@ -697,6 +735,9 @@
         private System.Windows.Forms.Button buttonStoreDI;
         private System.Windows.Forms.Button buttonEditZoneReadings;
         private System.Windows.Forms.Button buttonClearDIs;
+        private System.Windows.Forms.Button buttonSetZero;
+        private System.Windows.Forms.Label labelOffset;
+        private System.Windows.Forms.CheckBox checkBoxUseOffset;
     }
 }
 

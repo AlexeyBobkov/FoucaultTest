@@ -70,6 +70,7 @@ namespace FoucaultTest
 
         private enum DIUnit { Inch, Mm }
         private bool valDIValid_ = false;
+        private double valDIOffset_;
         private double valDI_;
         private DIUnit valDIUnit_;
         private event EventHandler ValDIChanged;
@@ -743,6 +744,11 @@ namespace FoucaultTest
                 connection_.SendReceiveRequest(new byte[] { (byte)cmd }, receiveCnt, new BaseConnectionHandler(this, receiveDelegate, connection_));
         }
 
+        private double ValueDI
+        {
+            get { return checkBoxUseOffset.Checked ? valDI_ - valDIOffset_ : valDI_; }
+        }
+
         private void UpdateDIControls()
         {
             if (connectionDI_ == null)
@@ -756,7 +762,7 @@ namespace FoucaultTest
                 textBoxDIStatus.Text = "Connected to " + portNameDI_;
                 if (valDIValid_)
                 {
-                    textBoxDIValue.Text = checkBoxHideDI.Checked ? "Hidden" : valDI_.ToString();
+                    textBoxDIValue.Text = checkBoxHideDI.Checked ? "Hidden" : ValueDI.ToString();
                     labelDIUnit.Text = valDIUnit_ == DIUnit.Inch ? "inch" : "mm";
                 }
                 else
@@ -765,6 +771,7 @@ namespace FoucaultTest
                     labelDIUnit.Text = "";
                 }
             }
+            labelOffset.Text = "( " + valDIOffset_.ToString() + " )";
         }
 
         private void SendDIRequest()
@@ -1130,7 +1137,7 @@ namespace FoucaultTest
                 {
                     if (zoneReadings_[zone].seq_ == null)
                         zoneReadings_[zone].seq_ = new List<double>();
-                    zoneReadings_[zone].seq_.Add(valDI_);
+                    zoneReadings_[zone].seq_.Add(ValueDI);
                 }
                 return true;
             }
@@ -1301,6 +1308,22 @@ namespace FoucaultTest
                     RebuildCameraArrayAndGetIndex(videosources);
                 }
             }
+        }
+
+        private void buttonSetZero_Click(object sender, EventArgs e)
+        {
+            if (valDIValid_)
+            {
+                valDIOffset_ = valDI_;
+                UpdateDIControls();
+            }
+            else
+                Console.Beep();
+        }
+
+        private void checkBoxUseOffset_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDIControls();
         }
     }
 
