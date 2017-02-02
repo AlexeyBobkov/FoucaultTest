@@ -33,7 +33,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageEdge = new System.Windows.Forms.TabPage();
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
-            this.buttonEdgeDetect = new System.Windows.Forms.Button();
+            this.buttonLoadMirrorData = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
             this.buttonClearDIs = new System.Windows.Forms.Button();
             this.buttonEditZoneReadings = new System.Windows.Forms.Button();
@@ -58,6 +58,7 @@
             this.comboBoxZoneNum = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxUseOffset = new System.Windows.Forms.CheckBox();
             this.labelOffset = new System.Windows.Forms.Label();
             this.buttonSetZero = new System.Windows.Forms.Button();
             this.checkBoxHideDI = new System.Windows.Forms.CheckBox();
@@ -78,9 +79,8 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.checkBoxUseOffset = new System.Windows.Forms.CheckBox();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.timerPoll = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -121,7 +121,7 @@
             // tabPageEdge
             // 
             this.tabPageEdge.Controls.Add(this.buttonDelMirrorBound);
-            this.tabPageEdge.Controls.Add(this.buttonEdgeDetect);
+            this.tabPageEdge.Controls.Add(this.buttonLoadMirrorData);
             this.tabPageEdge.Location = new System.Drawing.Point(4, 22);
             this.tabPageEdge.Name = "tabPageEdge";
             this.tabPageEdge.Padding = new System.Windows.Forms.Padding(3);
@@ -140,14 +140,15 @@
             this.buttonDelMirrorBound.UseVisualStyleBackColor = true;
             this.buttonDelMirrorBound.Click += new System.EventHandler(this.buttonDelMirrorBound_Click);
             // 
-            // buttonEdgeDetect
+            // buttonLoadMirrorData
             // 
-            this.buttonEdgeDetect.Location = new System.Drawing.Point(74, 144);
-            this.buttonEdgeDetect.Name = "buttonEdgeDetect";
-            this.buttonEdgeDetect.Size = new System.Drawing.Size(167, 64);
-            this.buttonEdgeDetect.TabIndex = 1;
-            this.buttonEdgeDetect.Text = "Edge Auto Detect";
-            this.buttonEdgeDetect.UseVisualStyleBackColor = true;
+            this.buttonLoadMirrorData.Location = new System.Drawing.Point(74, 144);
+            this.buttonLoadMirrorData.Name = "buttonLoadMirrorData";
+            this.buttonLoadMirrorData.Size = new System.Drawing.Size(167, 64);
+            this.buttonLoadMirrorData.TabIndex = 1;
+            this.buttonLoadMirrorData.Text = "Load Mirror Data";
+            this.buttonLoadMirrorData.UseVisualStyleBackColor = true;
+            this.buttonLoadMirrorData.Click += new System.EventHandler(this.buttonLoadMirrorData_Click);
             // 
             // tabPageFoucault
             // 
@@ -434,6 +435,19 @@
             this.panel1.Size = new System.Drawing.Size(792, 162);
             this.panel1.TabIndex = 0;
             // 
+            // checkBoxUseOffset
+            // 
+            this.checkBoxUseOffset.AutoSize = true;
+            this.checkBoxUseOffset.Checked = true;
+            this.checkBoxUseOffset.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseOffset.Location = new System.Drawing.Point(655, 76);
+            this.checkBoxUseOffset.Name = "checkBoxUseOffset";
+            this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxUseOffset.TabIndex = 15;
+            this.checkBoxUseOffset.Text = "Use Offset";
+            this.checkBoxUseOffset.UseVisualStyleBackColor = true;
+            this.checkBoxUseOffset.CheckedChanged += new System.EventHandler(this.checkBoxUseOffset_CheckedChanged);
+            // 
             // labelOffset
             // 
             this.labelOffset.Location = new System.Drawing.Point(565, 72);
@@ -630,25 +644,6 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
-            // timerPoll
-            // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 300;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
-            // 
-            // checkBoxUseOffset
-            // 
-            this.checkBoxUseOffset.AutoSize = true;
-            this.checkBoxUseOffset.Checked = true;
-            this.checkBoxUseOffset.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseOffset.Location = new System.Drawing.Point(655, 76);
-            this.checkBoxUseOffset.Name = "checkBoxUseOffset";
-            this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
-            this.checkBoxUseOffset.TabIndex = 15;
-            this.checkBoxUseOffset.Text = "Use Offset";
-            this.checkBoxUseOffset.UseVisualStyleBackColor = true;
-            this.checkBoxUseOffset.CheckedChanged += new System.EventHandler(this.checkBoxUseOffset_CheckedChanged);
-            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -658,6 +653,12 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Interval = 300;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
             // MainForm
             // 
@@ -695,7 +696,7 @@
         private System.Windows.Forms.ComboBox comboBoxZoneVisualization;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button buttonEdgeDetect;
+        private System.Windows.Forms.Button buttonLoadMirrorData;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxBrightnessDiff;

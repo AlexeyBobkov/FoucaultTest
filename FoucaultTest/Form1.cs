@@ -26,6 +26,7 @@ namespace FoucaultTest
         private bool init_ = false;
         private VideoCaptureDevice videoSource_;
         private string videoSourceName_;
+        private double mirrorD_, mirrorROC_;
         private double[] zoneBounds_;   // zone descriptions
         private RectangleF mirrorBound_;
         private bool ignoreHScrollBarScaleChange_ = false;
@@ -108,40 +109,77 @@ namespace FoucaultTest
 
         private Zone GetZone(int index) { return new Zone() { innerBound_ = zoneBounds_[index], outerBound_ = zoneBounds_[index + 1] }; }
 
-        private static void LoadZonesFromFile(string path, ref double[] zoneBounds)
+        private static bool LoadMirrorDataFile(string path, ref double mirrorD, ref double mirrorROC, ref double[] zoneBounds, ref string error)
         {
             List<double> zones = new List<double>();
+            double mD = 0, mROC = 0;
             try
             {
                 using (System.IO.StreamReader sr = new System.IO.StreamReader(path))
                 {
                     string line;
+
+                    // line 1: MirrorDiameter, MirrorROC
                     line = sr.ReadLine();
                     if (line == null)
-                        return;
-                    double mirrorD = Convert.ToDouble(line);
-                    if (mirrorD <= 0)
-                        return;
-
-                    line = sr.ReadLine();
-                    if (line == null)
-                        return;
-
-                    string[] parts = line.Split(',');
-                    double prev = 0;
-                    foreach (string part in parts)
                     {
-                        double curr = Convert.ToDouble(part) * 2 / mirrorD;
+                        error = "file is empty";
+                        return false;
+                    }
+                    string[] parts = line.Split(',');
+                    if (parts.Length < 2)
+                    {
+                        error = "line 1 shoild contain MirrorD, MirrorROC";
+                        return false;
+                    }
+                    mD = Convert.ToDouble(parts[0]);
+                    if (mD <= 0)
+                    {
+                        error = "line 1: bad MirrorD";
+                        return false;
+                    }
+                    mROC = Convert.ToDouble(parts[1]);
+                    if (mROC <= 0)
+                    {
+                        error = "line 1: bad MirrorROC";
+                        return false;
+                    }
+
+                    // line 2: Zones
+                    line = sr.ReadLine();
+                    if (line == null)
+                    {
+                        error = "line 2: should contain zone boundaries";
+                        return false;
+                    }
+                    parts = line.Split(',');
+                    double prev = 0;
+                    for (int i = 0; i < parts.Length; ++i)
+                    {
+                        double curr = Convert.ToDouble(parts[i]) * 2 / mD;
                         if (curr <= prev)
-                            return;
+                        {
+                            error = String.Format("line 2: zone #{0} < zone #{1}", i, i-1);
+                            return false;
+                        }
                         zones.Add(prev = curr);
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                error = ex.Message;
+                return false;
             }
-            zoneBounds = zones.Count > 0 ? zones.ToArray() : null;
+            if (zones.Count <= 0)
+            {
+                error = "line 2: should contain zone boundaries";
+                return false;
+            }
+            zoneBounds = zones.ToArray();
+            mirrorD = mD;
+            mirrorROC = mROC;
+            return true;
         }
 
 #if HAS_VIDEO_PROPERTIES
@@ -339,20 +377,15 @@ namespace FoucaultTest
 
             comboBoxResolution.Enabled =
             buttonCameraSettings.Enabled =
-            buttonCopyPicture.Enabled =
-            buttonEdgeDetect.Enabled = videoSource_ != null;
+            buttonCopyPicture.Enabled = videoSource_ != null;
 
             CorrectPictureSize();
 
-            // load zones
-            string startupPath = Application.StartupPath + @"\";
-            LoadZonesFromFile(startupPath + "Zones.csv", ref zoneBounds_);
-            if (GetZoneNum() > 0)
-            {
-                for (int i = 1; i <= GetZoneNum(); ++i)
-                    comboBoxZoneNum.Items.Add(i);
-                comboBoxZoneNum.SelectedIndex = 0;
-            }
+            // load mirror data and zones
+            zoneBounds_ = settings_.Zones;
+            mirrorD_ = settings_.MirrorD;
+            mirrorROC_ = settings_.MirrorROC;
+            UpdateZonesUI();
 
             // visualization
             comboBoxZoneVisualization.Items.Add("None");
@@ -733,6 +766,17 @@ namespace FoucaultTest
             brightnessDiffSum_ = 0;
         }
 
+        private void UpdateZonesUI()
+        {
+            comboBoxZoneNum.Items.Clear();
+            if (GetZoneNum() > 0)
+            {
+                for (int i = 1; i <= GetZoneNum(); ++i)
+                    comboBoxZoneNum.Items.Add(i);
+                comboBoxZoneNum.SelectedIndex = 0;
+            }
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////
         private void CloseConnection(SerialConnection connection)
         {
@@ -878,6 +922,18 @@ namespace FoucaultTest
         private void DIReadingsChanged()
         {
             ResetBrightnessQueue();
+        }
+        private void MirrorAndZonesChanged()
+        {
+            settings_.Zones = zoneBounds_;
+            settings_.MirrorD = mirrorD_;
+            settings_.MirrorROC = mirrorROC_;
+
+            UpdateZonesUI();
+            UpdateUIHandler();
+            UpdateCalcHandler(false);
+            ResetBrightnessQueue();
+            ResetCalibration();
         }
         ////////////////////////////////////////////////////////////////////////////////////
 
@@ -1142,7 +1198,7 @@ namespace FoucaultTest
 
         private bool SaveZone(int zone)
         {
-            if (valDIValid_)
+            if (valDIValid_ && zoneBounds_ != null)
             {
                 if (zoneReadings_ == null)
                     zoneReadings_ = new ZoneReading[zoneBounds_.Length - 1];
@@ -1338,6 +1394,36 @@ namespace FoucaultTest
         {
             UpdateDIControls();
         }
+
+        private void buttonLoadMirrorData_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openfile = new OpenFileDialog();
+            openfile.InitialDirectory = Application.StartupPath + @"\";
+            openfile.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            openfile.FilterIndex = 1;
+            openfile.RestoreDirectory = true;
+
+            stopUpdateVideoFrames_ = true;
+            try
+            {
+                DialogResult res = openfile.ShowDialog();
+                stopUpdateVideoFrames_ = false;
+                if (res != DialogResult.OK)
+                    return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                stopUpdateVideoFrames_ = false;
+                return;
+            }
+
+            string error = "";
+            if (LoadMirrorDataFile(openfile.FileName, ref mirrorD_, ref mirrorROC_, ref zoneBounds_, ref error))
+                MirrorAndZonesChanged();
+            else
+                MessageBox.Show(String.Format("Error loading file {0}: {1}", openfile.FileName, error));
+        }
     }
 
     sealed class MainFormSettings : ApplicationSettingsBase
@@ -1486,6 +1572,27 @@ namespace FoucaultTest
         {
             get { return (int)this["BaudRateDI"]; }
             set { this["BaudRateDI"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public double MirrorD
+        {
+            get { return (double)this["MirrorD"]; }
+            set { this["MirrorD"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public double MirrorROC
+        {
+            get { return (double)this["MirrorROC"]; }
+            set { this["MirrorROC"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public double[] Zones
+        {
+            get { return (double[])this["Zones"]; }
+            set { this["Zones"] = value; }
         }
     }
 }
