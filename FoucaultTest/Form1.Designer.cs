@@ -78,6 +78,7 @@
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
+            this.buttonAutoMeasurements = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -149,6 +150,7 @@
             // 
             // tabPageFoucault
             // 
+            this.tabPageFoucault.Controls.Add(this.buttonAutoMeasurements);
             this.tabPageFoucault.Controls.Add(this.buttonClearDIs);
             this.tabPageFoucault.Controls.Add(this.buttonEditZoneReadings);
             this.tabPageFoucault.Controls.Add(this.checkBoxAdvanceBack);
@@ -244,7 +246,7 @@
             this.checkBoxMedianCalc.AutoSize = true;
             this.checkBoxMedianCalc.Checked = true;
             this.checkBoxMedianCalc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMedianCalc.Location = new System.Drawing.Point(197, 423);
+            this.checkBoxMedianCalc.Location = new System.Drawing.Point(197, 324);
             this.checkBoxMedianCalc.Name = "checkBoxMedianCalc";
             this.checkBoxMedianCalc.Size = new System.Drawing.Size(61, 17);
             this.checkBoxMedianCalc.TabIndex = 19;
@@ -254,7 +256,7 @@
             // 
             // buttonFoucaultOptions
             // 
-            this.buttonFoucaultOptions.Location = new System.Drawing.Point(89, 541);
+            this.buttonFoucaultOptions.Location = new System.Drawing.Point(100, 489);
             this.buttonFoucaultOptions.Name = "buttonFoucaultOptions";
             this.buttonFoucaultOptions.Size = new System.Drawing.Size(124, 46);
             this.buttonFoucaultOptions.TabIndex = 20;
@@ -266,7 +268,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(14, 450);
+            this.label5.Location = new System.Drawing.Point(14, 351);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 24);
             this.label5.TabIndex = 17;
@@ -275,7 +277,7 @@
             // textBoxBrightnessDiff
             // 
             this.textBoxBrightnessDiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(18, 477);
+            this.textBoxBrightnessDiff.Location = new System.Drawing.Point(18, 378);
             this.textBoxBrightnessDiff.Name = "textBoxBrightnessDiff";
             this.textBoxBrightnessDiff.ReadOnly = true;
             this.textBoxBrightnessDiff.Size = new System.Drawing.Size(73, 31);
@@ -284,7 +286,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(97, 407);
+            this.label4.Location = new System.Drawing.Point(97, 308);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 15;
@@ -292,7 +294,7 @@
             // 
             // textBoxBrightnessRight
             // 
-            this.textBoxBrightnessRight.Location = new System.Drawing.Point(100, 423);
+            this.textBoxBrightnessRight.Location = new System.Drawing.Point(100, 324);
             this.textBoxBrightnessRight.Name = "textBoxBrightnessRight";
             this.textBoxBrightnessRight.ReadOnly = true;
             this.textBoxBrightnessRight.Size = new System.Drawing.Size(73, 20);
@@ -300,7 +302,7 @@
             // 
             // textBoxBrightnessLeft
             // 
-            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(18, 423);
+            this.textBoxBrightnessLeft.Location = new System.Drawing.Point(18, 324);
             this.textBoxBrightnessLeft.Name = "textBoxBrightnessLeft";
             this.textBoxBrightnessLeft.ReadOnly = true;
             this.textBoxBrightnessLeft.Size = new System.Drawing.Size(73, 20);
@@ -309,7 +311,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 407);
+            this.label3.Location = new System.Drawing.Point(14, 308);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 13;
@@ -621,6 +623,16 @@
             this.timerPoll.Interval = 300;
             this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
+            // buttonAutoMeasurements
+            // 
+            this.buttonAutoMeasurements.Location = new System.Drawing.Point(161, 378);
+            this.buttonAutoMeasurements.Name = "buttonAutoMeasurements";
+            this.buttonAutoMeasurements.Size = new System.Drawing.Size(124, 31);
+            this.buttonAutoMeasurements.TabIndex = 22;
+            this.buttonAutoMeasurements.Text = "Start Auto";
+            this.buttonAutoMeasurements.UseVisualStyleBackColor = true;
+            this.buttonAutoMeasurements.Click += new System.EventHandler(this.buttonAutoMeasurements_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -697,6 +709,7 @@
         private System.Windows.Forms.Button buttonSetZero;
         private System.Windows.Forms.Label labelOffset;
         private System.Windows.Forms.CheckBox checkBoxUseOffset;
+        private System.Windows.Forms.Button buttonAutoMeasurements;
     }
 }
 

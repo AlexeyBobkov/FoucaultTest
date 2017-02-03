@@ -30,6 +30,8 @@ namespace FoucaultTest
         {
             textBoxAngle.Text = (options_.ZoneAngle*2).ToString();
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
+            textBoxAutoPrecision.Text = options_.AutoPrecision.ToString();
+            textBoxStabilizationTime.Text = options_.AutoStabilizationTime.ToString();
             init_ = true;
         }
 
@@ -69,27 +71,51 @@ namespace FoucaultTest
             }
         }
 
+        private void textBoxAutoPrecision_TextChanged(object sender, EventArgs e)
+        {
+            if (!init_)
+                return;
+            try
+            {
+                options_.AutoPrecision = Convert.ToDouble(textBoxAutoPrecision.Text);
+                if (options_.AutoPrecision <= 0)
+                    options_.AutoPrecision = 1;
+            }
+            catch (System.FormatException)
+            {
+                options_.AutoPrecision = 1;
+            }
+        }
+
+        private void textBoxStabilizationTime_TextChanged(object sender, EventArgs e)
+        {
+            if (!init_)
+                return;
+            try
+            {
+                options_.AutoStabilizationTime = Convert.ToDouble(textBoxStabilizationTime.Text);
+                if (options_.AutoStabilizationTime <= 0)
+                    options_.AutoStabilizationTime = 3.0;
+            }
+            catch (System.FormatException)
+            {
+                options_.AutoStabilizationTime = 3.0;
+            }
+        }
+
         private void buttonDefault_Click(object sender, EventArgs e)
         {
-            /*
-            options_ = new Options()
-            {
-                SelectPenColor = Color.Red,
-                InactiveZoneColor = Color.Black,
-                ActiveZoneColor = Color.Red,
-                ZoneHeight = 0.16,
-                SideTolerance = 10,
-                ZoneAngle = 20,
-                TimeAveragingCnt = 30,
-            };
-             **/
             // we only reset the options changed in this dialog box
             options_.ZoneAngle = 30;
             options_.TimeAveragingCnt = 60;
+            options_.AutoPrecision = 1.0;
+            options_.AutoStabilizationTime = 3.0;
 
             init_ = false;
             textBoxAngle.Text = (options_.ZoneAngle * 2).ToString();
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
+            textBoxAutoPrecision.Text = options_.AutoPrecision.ToString();
+            textBoxStabilizationTime.Text = options_.AutoStabilizationTime.ToString();
             init_ = true;
         }
     }

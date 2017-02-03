@@ -32,6 +32,8 @@ namespace FoucaultTestClasses
         public int SideTolerance;
         public float ZoneAngle;
         public int TimeAveragingCnt;
+        public double AutoPrecision;
+        public double AutoStabilizationTime;
     };
 
     // UI handler interfaces

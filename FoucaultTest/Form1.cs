@@ -70,6 +70,9 @@ namespace FoucaultTest
         private event EventHandler ValDIChanged;
         private ZoneReading[] zoneReadings_;
 
+        // auto mode data
+        private bool autoModeOn_ = false;
+
         private delegate void TimeoutDelegate(SerialConnection connection);
         private delegate void ReceiveDelegate(byte[] data);
         private class BaseConnectionHandler : SerialConnection.IReceiveHandler
@@ -327,6 +330,8 @@ namespace FoucaultTest
             options_.SideTolerance = settings_.SideTolerance;
             options_.ZoneAngle = settings_.ZoneAngle;
             options_.TimeAveragingCnt = settings_.TimeAveragingCnt;
+            options_.AutoPrecision = settings_.AutoPrecision;
+            options_.AutoStabilizationTime = settings_.AutoStabilizationTime;
 
             //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
 
@@ -574,7 +579,7 @@ namespace FoucaultTest
                 calcBrightness_.Dispose();
                 calcBrightness_ = null;
             }
-            if (uiMode_ == UIModeE.ShowZones && zoneBounds_ != null && !mirrorBound_.IsEmpty && pictureBox.Image != null)
+            if (uiMode_ == UIModeE.ShowZones && GetZoneNum() > 0 && !mirrorBound_.IsEmpty && pictureBox.Image != null)
             {
                 Size imageSize = pictureBox.Image.Size;
                 RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
@@ -1009,6 +1014,8 @@ namespace FoucaultTest
             settings_.SideTolerance = options_.SideTolerance;
             settings_.ZoneAngle = options_.ZoneAngle;
             settings_.TimeAveragingCnt = options_.TimeAveragingCnt;
+            settings_.AutoPrecision = options_.AutoPrecision;
+            settings_.AutoStabilizationTime = options_.AutoStabilizationTime;
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
@@ -1090,7 +1097,7 @@ namespace FoucaultTest
 
         private bool SaveZone(int zone)
         {
-            if (valDIValid_ && zoneBounds_ != null)
+            if (valDIValid_ && GetZoneNum() > 0)
             {
                 if (zoneReadings_ == null)
                     zoneReadings_ = new ZoneReading[zoneBounds_.Length - 1];
@@ -1191,7 +1198,7 @@ namespace FoucaultTest
 
         private void buttonEditZoneReadings_Click(object sender, EventArgs e)
         {
-            if (zoneBounds_ != null)
+            if (GetZoneNum() > 0)
             {
                 EditDIReadings form = new EditDIReadings(zoneReadings_, zoneBounds_.Length - 1);
                 if (ShowDialog(form) == DialogResult.OK)
@@ -1315,6 +1322,20 @@ namespace FoucaultTest
                 MirrorAndZonesChanged();
             else
                 MessageBox.Show(String.Format("Error loading file {0}: {1}", openfile.FileName, error));
+        }
+
+        private void buttonAutoMeasurements_Click(object sender, EventArgs e)
+        {
+            if (autoModeOn_)
+            {
+                autoModeOn_ = false;
+                buttonAutoMeasurements.Text = "Start Auto";
+            }
+            else
+            {
+                autoModeOn_ = true;
+                buttonAutoMeasurements.Text = "Stop Auto";
+            }
         }
     }
 
@@ -1477,6 +1498,20 @@ namespace FoucaultTest
         {
             get { return (double[])this["Zones"]; }
             set { this["Zones"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("1.0")]
+        public double AutoPrecision
+        {
+            get { return (double)this["AutoPrecision"]; }
+            set { this["AutoPrecision"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("3.0")]
+        public double AutoStabilizationTime
+        {
+            get { return (double)this["AutoStabilizationTime"]; }
+            set { this["AutoStabilizationTime"] = value; }
         }
     }
 }
