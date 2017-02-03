@@ -51,14 +51,6 @@ namespace FoucaultTest
         private ZoneVisualizationE zoneVisualization_;
         private int activeZone_;
 
-        // calibration
-        private struct ZoneBrightness
-        {
-            public float[] l_, r_;  // data for every mode of averaging
-        }
-        private int calibrationLeft_ = 0;
-        private ZoneBrightness[] zoneBrightnessCalib_;
-
         private struct Zone
         {
             public double innerBound_, outerBound_;
@@ -335,7 +327,6 @@ namespace FoucaultTest
             options_.SideTolerance = settings_.SideTolerance;
             options_.ZoneAngle = settings_.ZoneAngle;
             options_.TimeAveragingCnt = settings_.TimeAveragingCnt;
-            options_.CalibAveragingCnt = settings_.CalibAveragingCnt;
 
             //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
 
@@ -462,63 +453,6 @@ namespace FoucaultTest
                 }
             }
         }
-
-        private void StartCalibration()
-        {
-            if (zoneBounds_ == null || zoneBounds_.Length <= 1 || uiMode_ != UIModeE.ShowZones || mirrorBound_.IsEmpty || pictureBox.Image == null)
-            {
-                Console.Beep();
-                labelBrightnessCalib.Text = "Can't start calibration!";
-                return;
-            }
-            labelBrightnessCalib.Text = "Calibration started...";
-            checkBoxUseCalibration.Enabled = false;
-            ResetBrightnessQueue();
-
-            zoneBrightnessCalib_ = new ZoneBrightness[zoneBounds_.Length - 1];
-            for (int zone = zoneBrightnessCalib_.Length; --zone >= 0; )
-            {
-                zoneBrightnessCalib_[zone].l_ = new float[(int)CalcBrightnessModeE.Size];
-                zoneBrightnessCalib_[zone].r_ = new float[(int)CalcBrightnessModeE.Size];
-            }
-            calibrationLeft_ = options_.CalibAveragingCnt;
-        }
-        private bool MakeCalibrationStep(Bitmap bitmap)
-        {
-            if(calibrationLeft_ <= 0)
-                return true;
-            --calibrationLeft_;
-
-            for (int zone = zoneBrightnessCalib_.Length; --zone >= 0; )
-            {
-                for (int mode = (int)CalcBrightnessModeE.Size; --mode >= 0; )
-                {
-                    float l = 0, r = 0;
-                    calcBrightness_.GetBrightness(bitmap, zone, (CalcBrightnessModeE)mode, ref l, ref r);
-                    zoneBrightnessCalib_[zone].l_[mode] += l;
-                    zoneBrightnessCalib_[zone].r_[mode] += r;
-                }
-            }
-
-            if (calibrationLeft_ != 0)
-            {
-                labelBrightnessCalib.Text = String.Format("Calibration: {0}% done", ((options_.CalibAveragingCnt - calibrationLeft_) * 100) / options_.CalibAveragingCnt);
-                return false;
-            }
-
-            // calibratuon ended
-            for (int zone = zoneBrightnessCalib_.Length; --zone >= 0; )
-            {
-                for (int mode = (int)CalcBrightnessModeE.Size; --mode >= 0; )
-                {
-                    zoneBrightnessCalib_[zone].l_[mode] /= options_.CalibAveragingCnt;
-                    zoneBrightnessCalib_[zone].r_[mode] /= options_.CalibAveragingCnt;
-                }
-            }
-            labelBrightnessCalib.Text = "Calibration done!";
-            checkBoxUseCalibration.Enabled = true;
-            return true;
-        }
         
         private float AddAndCalcDiff(float newDiff)
         {
@@ -531,15 +465,6 @@ namespace FoucaultTest
 
         private void UpdateBrightness(Bitmap bitmap)
         {
-            if (calibrationLeft_ > 0)
-            {
-                // calibration in progress
-                if (!MakeCalibrationStep(bitmap))
-                {
-                    bitmap.Dispose();
-                    return;
-                }
-            }
             if (calcBrightness_ != null)
             {
                 float l = 0, r = 0;
@@ -550,13 +475,6 @@ namespace FoucaultTest
                 textBoxBrightnessLeft.Text = l.ToString(fmt);
                 textBoxBrightnessRight.Text = r.ToString(fmt);
 
-                if (zoneBrightnessCalib_ != null && checkBoxUseCalibration.Checked)
-                {
-                    if (zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_] != 0)
-                        l *= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_] / zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_];
-                    //l -= zoneBrightnessCalib_[activeZone_].l_[(int)calcBrightnessMode_];
-                    //r -= zoneBrightnessCalib_[activeZone_].r_[(int)calcBrightnessMode_];
-                }
                 float diff = AddAndCalcDiff(l - r);
                 textBoxBrightnessDiff.Text = diff.ToString(options_.TimeAveragingCnt > 1 ? "F2" : fmt);
                 return;
@@ -752,14 +670,6 @@ namespace FoucaultTest
             pictureBox.Invalidate();
         }
 
-        private void ResetCalibration()
-        {
-            zoneBrightnessCalib_ = null;
-            calibrationLeft_ = 0;
-            labelBrightnessCalib.Text = "No calibration";
-            checkBoxUseCalibration.Enabled = false;
-        }
-
         private void ResetBrightnessQueue()
         {
             brightnessDiffQueue_.Clear();
@@ -890,14 +800,12 @@ namespace FoucaultTest
             UpdateUIHandler();
             UpdateCalcHandler(false);
             ResetBrightnessQueue();
-            ResetCalibration();
         }
         private void ImageSizeChanged()
         {
             UpdateUIHandler();
             UpdateCalcHandler(true);
             ResetBrightnessQueue();
-            ResetCalibration();
         }
         private void UIModeChanged()
         {
@@ -933,7 +841,6 @@ namespace FoucaultTest
             UpdateUIHandler();
             UpdateCalcHandler(false);
             ResetBrightnessQueue();
-            ResetCalibration();
         }
         ////////////////////////////////////////////////////////////////////////////////////
 
@@ -1070,7 +977,7 @@ namespace FoucaultTest
             if (ShowDialog(form) != DialogResult.OK)
                 return;
 
-            bool fUpdateUIHandler = false, fUpdateCalcHandler = false, fResetBrightnessQueue = false, fResetCalibration = false;
+            bool fUpdateUIHandler = false, fUpdateCalcHandler = false, fResetBrightnessQueue = false;
             if (options_.SelectPenColor != form.Options.SelectPenColor ||
                 options_.InactiveZoneColor != form.Options.InactiveZoneColor ||
                 options_.ActiveZoneColor != form.Options.ActiveZoneColor ||
@@ -1085,8 +992,6 @@ namespace FoucaultTest
             }
             if (options_.TimeAveragingCnt != form.Options.TimeAveragingCnt)
                 fResetBrightnessQueue = true;
-            if (options_.CalibAveragingCnt != form.Options.CalibAveragingCnt)
-                fResetCalibration = true;
 
             options_ = form.Options;
 
@@ -1096,8 +1001,6 @@ namespace FoucaultTest
                 UpdateCalcHandler(true);
             if (fUpdateCalcHandler || fResetBrightnessQueue)
                 ResetBrightnessQueue();
-            if (fUpdateCalcHandler || fResetCalibration)
-                ResetCalibration();
 
             settings_.SelectPenColor = options_.SelectPenColor;
             settings_.InactiveZoneColor = options_.InactiveZoneColor;
@@ -1106,22 +1009,11 @@ namespace FoucaultTest
             settings_.SideTolerance = options_.SideTolerance;
             settings_.ZoneAngle = options_.ZoneAngle;
             settings_.TimeAveragingCnt = options_.TimeAveragingCnt;
-            settings_.CalibAveragingCnt = options_.CalibAveragingCnt;
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
         {
             CalcTypeChanged();
-        }
-
-        private void buttonBrightnessCalib_Click(object sender, EventArgs e)
-        {
-            StartCalibration();
-        }
-
-        private void checkBoxUseCalibration_CheckedChanged(object sender, EventArgs e)
-        {
-            ResetBrightnessQueue();
         }
 
         private void buttonAutoPosition_Click(object sender, EventArgs e)
@@ -1482,14 +1374,6 @@ namespace FoucaultTest
         {
             get { return (int)this["TimeAveragingCnt"]; }
             set { this["TimeAveragingCnt"] = value; }
-        }
-
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("60")]
-        public int CalibAveragingCnt
-        {
-            get { return (int)this["CalibAveragingCnt"]; }
-            set { this["CalibAveragingCnt"] = value; }
         }
 
         // camera attributes

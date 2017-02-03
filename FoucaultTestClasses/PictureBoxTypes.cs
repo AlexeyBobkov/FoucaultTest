@@ -32,7 +32,6 @@ namespace FoucaultTestClasses
         public int SideTolerance;
         public float ZoneAngle;
         public int TimeAveragingCnt;
-        public int CalibAveragingCnt;
     };
 
     // UI handler interfaces

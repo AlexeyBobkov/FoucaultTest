@@ -30,7 +30,6 @@ namespace FoucaultTest
         {
             textBoxAngle.Text = (options_.ZoneAngle*2).ToString();
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
-            textBoxCalibAveragingCount.Text = options_.CalibAveragingCnt.ToString();
             init_ = true;
         }
 
@@ -70,24 +69,6 @@ namespace FoucaultTest
             }
         }
 
-        private void textBoxCalibAveragingCount_TextChanged(object sender, EventArgs e)
-        {
-            if (!init_)
-                return;
-            try
-            {
-                options_.CalibAveragingCnt = Convert.ToInt32(textBoxCalibAveragingCount.Text);
-                if (options_.CalibAveragingCnt < 1)
-                    options_.CalibAveragingCnt = 1;
-                else if (options_.CalibAveragingCnt > 500)
-                    options_.CalibAveragingCnt = 500;
-            }
-            catch (System.FormatException)
-            {
-                options_.CalibAveragingCnt = 60;
-            }
-        }
-
         private void buttonDefault_Click(object sender, EventArgs e)
         {
             /*
@@ -100,18 +81,15 @@ namespace FoucaultTest
                 SideTolerance = 10,
                 ZoneAngle = 20,
                 TimeAveragingCnt = 30,
-                CalibAveragingCnt = 60
             };
              **/
             // we only reset the options changed in this dialog box
             options_.ZoneAngle = 30;
             options_.TimeAveragingCnt = 60;
-            options_.CalibAveragingCnt = 60;
 
             init_ = false;
             textBoxAngle.Text = (options_.ZoneAngle * 2).ToString();
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
-            textBoxCalibAveragingCount.Text = options_.CalibAveragingCnt.ToString();
             init_ = true;
         }
     }

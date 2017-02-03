@@ -41,9 +41,6 @@
             this.checkBoxAdvanceFwd = new System.Windows.Forms.CheckBox();
             this.buttonStoreDI = new System.Windows.Forms.Button();
             this.buttonSaveZoneRedingsToFile = new System.Windows.Forms.Button();
-            this.checkBoxUseCalibration = new System.Windows.Forms.CheckBox();
-            this.labelBrightnessCalib = new System.Windows.Forms.Label();
-            this.buttonBrightnessCalib = new System.Windows.Forms.Button();
             this.checkBoxMedianCalc = new System.Windows.Forms.CheckBox();
             this.buttonFoucaultOptions = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -158,9 +155,6 @@
             this.tabPageFoucault.Controls.Add(this.checkBoxAdvanceFwd);
             this.tabPageFoucault.Controls.Add(this.buttonStoreDI);
             this.tabPageFoucault.Controls.Add(this.buttonSaveZoneRedingsToFile);
-            this.tabPageFoucault.Controls.Add(this.checkBoxUseCalibration);
-            this.tabPageFoucault.Controls.Add(this.labelBrightnessCalib);
-            this.tabPageFoucault.Controls.Add(this.buttonBrightnessCalib);
             this.tabPageFoucault.Controls.Add(this.checkBoxMedianCalc);
             this.tabPageFoucault.Controls.Add(this.buttonFoucaultOptions);
             this.tabPageFoucault.Controls.Add(this.label5);
@@ -244,39 +238,6 @@
             this.buttonSaveZoneRedingsToFile.Text = "Save Readings";
             this.buttonSaveZoneRedingsToFile.UseVisualStyleBackColor = true;
             this.buttonSaveZoneRedingsToFile.Click += new System.EventHandler(this.buttonSaveZoneRedingsToFile_Click);
-            // 
-            // checkBoxUseCalibration
-            // 
-            this.checkBoxUseCalibration.AutoSize = true;
-            this.checkBoxUseCalibration.Checked = true;
-            this.checkBoxUseCalibration.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseCalibration.Enabled = false;
-            this.checkBoxUseCalibration.Location = new System.Drawing.Point(19, 350);
-            this.checkBoxUseCalibration.Name = "checkBoxUseCalibration";
-            this.checkBoxUseCalibration.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxUseCalibration.TabIndex = 12;
-            this.checkBoxUseCalibration.Text = "Use Calibration";
-            this.checkBoxUseCalibration.UseVisualStyleBackColor = true;
-            this.checkBoxUseCalibration.CheckedChanged += new System.EventHandler(this.checkBoxUseCalibration_CheckedChanged);
-            // 
-            // labelBrightnessCalib
-            // 
-            this.labelBrightnessCalib.Location = new System.Drawing.Point(158, 311);
-            this.labelBrightnessCalib.Name = "labelBrightnessCalib";
-            this.labelBrightnessCalib.Size = new System.Drawing.Size(124, 33);
-            this.labelBrightnessCalib.TabIndex = 11;
-            this.labelBrightnessCalib.Text = "No Caliration";
-            this.labelBrightnessCalib.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // buttonBrightnessCalib
-            // 
-            this.buttonBrightnessCalib.Location = new System.Drawing.Point(18, 311);
-            this.buttonBrightnessCalib.Name = "buttonBrightnessCalib";
-            this.buttonBrightnessCalib.Size = new System.Drawing.Size(124, 33);
-            this.buttonBrightnessCalib.TabIndex = 10;
-            this.buttonBrightnessCalib.Text = "Calibrate";
-            this.buttonBrightnessCalib.UseVisualStyleBackColor = true;
-            this.buttonBrightnessCalib.Click += new System.EventHandler(this.buttonBrightnessCalib_Click);
             // 
             // checkBoxMedianCalc
             // 
@@ -718,9 +679,6 @@
         private System.Windows.Forms.CheckBox checkBoxFitToScreen;
         private System.Windows.Forms.Button buttonDelMirrorBound;
         private System.Windows.Forms.CheckBox checkBoxMedianCalc;
-        private System.Windows.Forms.Button buttonBrightnessCalib;
-        private System.Windows.Forms.Label labelBrightnessCalib;
-        private System.Windows.Forms.CheckBox checkBoxUseCalibration;
         private System.Windows.Forms.Button buttonAutoPosition;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBoxDIValue;

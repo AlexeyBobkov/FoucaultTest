@@ -34,8 +34,6 @@
             this.textBoxTimeAveragingCount = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxCalibAveragingCount = new System.Windows.Forms.TextBox();
             this.buttonDefault = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -93,23 +91,6 @@
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(258, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(112, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Calib Averaging Count";
-            // 
-            // textBoxCalibAveragingCount
-            // 
-            this.textBoxCalibAveragingCount.Location = new System.Drawing.Point(261, 39);
-            this.textBoxCalibAveragingCount.Name = "textBoxCalibAveragingCount";
-            this.textBoxCalibAveragingCount.Size = new System.Drawing.Size(97, 20);
-            this.textBoxCalibAveragingCount.TabIndex = 5;
-            this.textBoxCalibAveragingCount.TextChanged += new System.EventHandler(this.textBoxCalibAveragingCount_TextChanged);
-            // 
             // buttonDefault
             // 
             this.buttonDefault.Location = new System.Drawing.Point(28, 123);
@@ -126,8 +107,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(403, 185);
             this.Controls.Add(this.buttonDefault);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBoxCalibAveragingCount);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -150,8 +129,6 @@
         private System.Windows.Forms.TextBox textBoxTimeAveragingCount;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxCalibAveragingCount;
         private System.Windows.Forms.Button buttonDefault;
     }
 }
