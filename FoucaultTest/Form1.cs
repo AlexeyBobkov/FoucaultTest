@@ -842,6 +842,8 @@ namespace FoucaultTest
             settings_.MirrorD = mirrorD_;
             settings_.MirrorROC = mirrorROC_;
 
+            zoneReadings_ = null;
+
             UpdateZonesUI();
             UpdateUIHandler();
             UpdateCalcHandler(false);
@@ -1296,6 +1298,13 @@ namespace FoucaultTest
 
         private void buttonLoadMirrorData_Click(object sender, EventArgs e)
         {
+            if (zoneReadings_ != null)
+            {
+                DialogResult res = MessageBox.Show("Existent zone readings will be deleted. Do you want to continue?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                if (res != DialogResult.Yes)
+                    return;
+            }
+            
             OpenFileDialog openfile = new OpenFileDialog();
             openfile.InitialDirectory = Application.StartupPath + @"\";
             openfile.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
