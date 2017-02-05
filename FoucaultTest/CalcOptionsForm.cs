@@ -32,6 +32,7 @@ namespace FoucaultTest
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
             textBoxAutoPrecision.Text = options_.AutoPrecision.ToString();
             textBoxStabilizationTime.Text = options_.AutoStabilizationTime.ToString();
+            checkBoxOffsetToZero.Checked = options_.AutoOffsetToZeroOnAdvanceForward;
             init_ = true;
         }
 
@@ -103,6 +104,11 @@ namespace FoucaultTest
             }
         }
 
+        private void checkBoxOffsetToZero_CheckedChanged(object sender, EventArgs e)
+        {
+            options_.AutoOffsetToZeroOnAdvanceForward = checkBoxOffsetToZero.Checked;
+        }
+
         private void buttonDefault_Click(object sender, EventArgs e)
         {
             // we only reset the options changed in this dialog box
@@ -110,12 +116,14 @@ namespace FoucaultTest
             options_.TimeAveragingCnt = 60;
             options_.AutoPrecision = 1.0F;
             options_.AutoStabilizationTime = 3.0;
+            options_.AutoOffsetToZeroOnAdvanceForward = true;
 
             init_ = false;
             textBoxAngle.Text = (options_.ZoneAngle * 2).ToString();
             textBoxTimeAveragingCount.Text = options_.TimeAveragingCnt.ToString();
             textBoxAutoPrecision.Text = options_.AutoPrecision.ToString();
             textBoxStabilizationTime.Text = options_.AutoStabilizationTime.ToString();
+            checkBoxOffsetToZero.Checked = options_.AutoOffsetToZeroOnAdvanceForward;
             init_ = true;
         }
     }

@@ -342,6 +342,7 @@ namespace FoucaultTest
             options_.TimeAveragingCnt = settings_.TimeAveragingCnt;
             options_.AutoPrecision = settings_.AutoPrecision;
             options_.AutoStabilizationTime = settings_.AutoStabilizationTime;
+            options_.AutoOffsetToZeroOnAdvanceForward = settings_.AutoOffsetToZeroOnAdvanceForward;
 
             //pictureBox.Image = new Bitmap(Properties.Resources.P1030892_1);
 
@@ -883,6 +884,17 @@ namespace FoucaultTest
             UpdateAutoModeControls();
         }
 
+        private void OffsetToZero()
+        {
+            if (valDIValid_)
+            {
+                valDIOffset_ = valDI_;
+                UpdateDIControls();
+            }
+            else
+                Console.Beep();
+        }
+
         private string MakeFileName()
         {
             DateTime dt = DateTime.Now;
@@ -950,6 +962,12 @@ namespace FoucaultTest
                 if(now - timeIntervalStart_ >= stabilizationTime)
                 {
                     // OK!
+
+                    // offset to zero if necessary
+                    if (options_.AutoOffsetToZeroOnAdvanceForward && checkBoxAdvanceFwd.Checked && startZoneIndex_ == 0)
+                        OffsetToZero();
+
+                    // save data and advance
                     if (SaveZone(comboBoxZoneNum.SelectedIndex))
                     {
                         Console.Beep();
@@ -1216,6 +1234,7 @@ namespace FoucaultTest
             settings_.TimeAveragingCnt = options_.TimeAveragingCnt;
             settings_.AutoPrecision = options_.AutoPrecision;
             settings_.AutoStabilizationTime = options_.AutoStabilizationTime;
+            settings_.AutoOffsetToZeroOnAdvanceForward = options_.AutoOffsetToZeroOnAdvanceForward;
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
@@ -1484,13 +1503,7 @@ namespace FoucaultTest
 
         private void buttonSetZero_Click(object sender, EventArgs e)
         {
-            if (valDIValid_)
-            {
-                valDIOffset_ = valDI_;
-                UpdateDIControls();
-            }
-            else
-                Console.Beep();
+            OffsetToZero();
         }
 
         private void checkBoxUseOffset_CheckedChanged(object sender, EventArgs e)
@@ -1727,6 +1740,13 @@ namespace FoucaultTest
         {
             get { return (double)this["AutoStabilizationTime"]; }
             set { this["AutoStabilizationTime"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool AutoOffsetToZeroOnAdvanceForward
+        {
+            get { return (bool)this["AutoOffsetToZeroOnAdvanceForward"]; }
+            set { this["AutoOffsetToZeroOnAdvanceForward"] = value; }
         }
     }
 }

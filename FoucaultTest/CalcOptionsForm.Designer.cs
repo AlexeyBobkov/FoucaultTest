@@ -39,6 +39,7 @@
             this.textBoxAutoPrecision = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxStabilizationTime = new System.Windows.Forms.TextBox();
+            this.checkBoxOffsetToZero = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBoxAngle
@@ -78,7 +79,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(145, 152);
+            this.button1.Location = new System.Drawing.Point(145, 163);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(97, 43);
             this.button1.TabIndex = 9;
@@ -88,7 +89,7 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(261, 152);
+            this.button2.Location = new System.Drawing.Point(261, 163);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(97, 43);
             this.button2.TabIndex = 10;
@@ -97,7 +98,7 @@
             // 
             // buttonDefault
             // 
-            this.buttonDefault.Location = new System.Drawing.Point(28, 152);
+            this.buttonDefault.Location = new System.Drawing.Point(28, 163);
             this.buttonDefault.Name = "buttonDefault";
             this.buttonDefault.Size = new System.Drawing.Size(97, 43);
             this.buttonDefault.TabIndex = 8;
@@ -139,11 +140,25 @@
             this.textBoxStabilizationTime.TabIndex = 7;
             this.textBoxStabilizationTime.TextChanged += new System.EventHandler(this.textBoxStabilizationTime_TextChanged);
             // 
+            // checkBoxOffsetToZero
+            // 
+            this.checkBoxOffsetToZero.AutoSize = true;
+            this.checkBoxOffsetToZero.Checked = true;
+            this.checkBoxOffsetToZero.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxOffsetToZero.Location = new System.Drawing.Point(28, 117);
+            this.checkBoxOffsetToZero.Name = "checkBoxOffsetToZero";
+            this.checkBoxOffsetToZero.Size = new System.Drawing.Size(262, 17);
+            this.checkBoxOffsetToZero.TabIndex = 11;
+            this.checkBoxOffsetToZero.Text = "Offset to Zero on Zone 1 When Advance Forward";
+            this.checkBoxOffsetToZero.UseVisualStyleBackColor = true;
+            this.checkBoxOffsetToZero.CheckedChanged += new System.EventHandler(this.checkBoxOffsetToZero_CheckedChanged);
+            // 
             // CalcOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 222);
+            this.ClientSize = new System.Drawing.Size(387, 234);
+            this.Controls.Add(this.checkBoxOffsetToZero);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxStabilizationTime);
             this.Controls.Add(this.label3);
@@ -176,5 +191,6 @@
         private System.Windows.Forms.TextBox textBoxAutoPrecision;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxStabilizationTime;
+        private System.Windows.Forms.CheckBox checkBoxOffsetToZero;
     }
 }

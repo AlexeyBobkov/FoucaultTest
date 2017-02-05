@@ -34,6 +34,7 @@ namespace FoucaultTestClasses
         public int TimeAveragingCnt;
         public float AutoPrecision;
         public double AutoStabilizationTime;
+        public bool AutoOffsetToZeroOnAdvanceForward;
     };
 
     // UI handler interfaces
