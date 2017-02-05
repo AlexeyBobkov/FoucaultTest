@@ -1,4 +1,5 @@
 ﻿#define HAS_VIDEO_PROPERTIES
+//#define DEBUG_EMULATION
 
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,13 @@ namespace FoucaultTest
         private IPictureUISelMirrorBoundData uiSelMirrorBoundData_;
         private CalcBrightnessModeE calcBrightnessMode_ = CalcBrightnessModeE.Median;
         private ICalcBrightness calcBrightness_;
+
+        // brightness queue and difference
         private Queue<float> brightnessDiffQueue_ = new Queue<float>();
         private float brightnessDiffSum_ = 0;
+        private bool brightnessDiffValid_ = false;
+        private float brightnessDiff_;
+
         private bool stopUpdateVideoFrames_ = false;
         private bool videoFrameIsInQueue_ = false;
 
@@ -72,6 +78,10 @@ namespace FoucaultTest
 
         // auto mode data
         private bool autoModeOn_ = false;
+        private bool timeIntervalStarted_ = false;
+        private DateTime timeIntervalStart_;
+        private double startValDI_;
+        private double startZoneIndex_;
 
         private delegate void TimeoutDelegate(SerialConnection connection);
         private delegate void ReceiveDelegate(byte[] data);
@@ -405,6 +415,15 @@ namespace FoucaultTest
             baudRateDI_ = settings_.BaudRateDI;
             lastDIRequest_ = DateTime.Now;
 
+            UpdateAutoModeControls();
+
+#if !DEBUG_EMULATION
+            checkBoxDbgEmulateBrightness.Visible = false;
+            checkBoxDbgEmulateDI.Visible = false;
+            textBoxDbgBrightness.Visible = false;
+            textBoxDbgDI.Visible = false;
+#endif
+
             init_ = true;
         }
 
@@ -480,14 +499,18 @@ namespace FoucaultTest
                 textBoxBrightnessLeft.Text = l.ToString(fmt);
                 textBoxBrightnessRight.Text = r.ToString(fmt);
 
-                float diff = AddAndCalcDiff(l - r);
-                textBoxBrightnessDiff.Text = diff.ToString(options_.TimeAveragingCnt > 1 ? "F2" : fmt);
-                return;
+                brightnessDiffValid_ = true;
+                brightnessDiff_ = AddAndCalcDiff(l - r);
+                textBoxBrightnessDiff.Text = brightnessDiff_.ToString(options_.TimeAveragingCnt > 1 ? "F2" : fmt);
             }
-            bitmap.Dispose();
-            textBoxBrightnessLeft.Text =
-            textBoxBrightnessRight.Text =
-            textBoxBrightnessDiff.Text = "N/A";
+            else
+            {
+                bitmap.Dispose();
+                textBoxBrightnessLeft.Text =
+                textBoxBrightnessRight.Text =
+                textBoxBrightnessDiff.Text = "N/A";
+                brightnessDiffValid_ = false;
+            }
         }
 
         private Size GetPictureBoxPanelSize()
@@ -597,6 +620,7 @@ namespace FoucaultTest
                 calcBrightness_.Dispose();
                 calcBrightness_ = null;
             }
+            UpdateAutoModeControls();
         }
 
         private void UpdateUIHandler()
@@ -679,6 +703,7 @@ namespace FoucaultTest
         {
             brightnessDiffQueue_.Clear();
             brightnessDiffSum_ = 0;
+            brightnessDiffValid_ = false;
         }
 
         private void UpdateZonesUI()
@@ -703,6 +728,7 @@ namespace FoucaultTest
                     connectionDI_ = null;
                     valDIValid_ = false;
                     UpdateDIControls();
+                    UpdateAutoModeControls();
                 }
             }
         }
@@ -710,17 +736,82 @@ namespace FoucaultTest
         {
             CloseConnection(connection);
         }
-        private void SendCommand(SerialConnection connection_, char cmd, int receiveCnt, ReceiveDelegate receiveDelegate)
+        private void SendCommand(SerialConnection connection, char cmd, int receiveCnt, ReceiveDelegate receiveDelegate)
         {
-            if (connection_ != null)
-                connection_.SendReceiveRequest(new byte[] { (byte)cmd }, receiveCnt, new BaseConnectionHandler(this, receiveDelegate, connection_));
+            if (connection != null)
+                connection.SendReceiveRequest(new byte[] { (byte)cmd }, receiveCnt, new BaseConnectionHandler(this, receiveDelegate, connection));
         }
 
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        private bool ConnectionDIValid
+        {
+#if DEBUG_EMULATION
+            get { return connectionDI_ != null || checkBoxDbgEmulateDI.Checked; }
+#else
+            get { return connectionDI_ != null; } 
+#endif
+        }
+        private bool ValueDIValid
+        {
+#if DEBUG_EMULATION
+            get { return valDIValid_ || checkBoxDbgEmulateDI.Checked; }
+#else
+            get { return valDIValid_; }
+#endif
+        }
         private double ValueDI
         {
+#if DEBUG_EMULATION
+            get
+            {
+                if (!checkBoxDbgEmulateDI.Checked)
+                    return checkBoxUseOffset.Checked ? valDI_ - valDIOffset_ : valDI_;
+
+                try
+                {
+                    return Convert.ToDouble(textBoxDbgDI.Text);
+                }
+                catch (System.FormatException)
+                {
+                    return 0;
+                }
+            }
+#else
             get { return checkBoxUseOffset.Checked ? valDI_ - valDIOffset_ : valDI_; }
+#endif
         }
 
+        private bool BrightnessDiffValid
+        {
+#if DEBUG_EMULATION
+            get { return brightnessDiffValid_ || checkBoxDbgEmulateBrightness.Checked; }
+#else
+            get { return brightnessDiffValid_; }
+#endif
+        }
+        private float BrightnessDiff
+        {
+#if DEBUG_EMULATION
+            get
+            {
+                if (!checkBoxDbgEmulateBrightness.Checked)
+                    return brightnessDiff_;
+                try
+                {
+                    return (float)Convert.ToDouble(textBoxDbgBrightness.Text);
+                }
+                catch (System.FormatException)
+                {
+                    return 100;
+                }
+            }
+#else
+            get { return brightnessDiff_; }
+#endif
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
         private void UpdateDIControls()
         {
             if (connectionDI_ == null)
@@ -789,6 +880,7 @@ namespace FoucaultTest
             else
                 valDIValid_ = false;
             UpdateDIControls();
+            UpdateAutoModeControls();
         }
 
         private string MakeFileName()
@@ -798,25 +890,126 @@ namespace FoucaultTest
                 dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"));
         }
 
+        private void UpdateAutoModeControls()
+        {
+            if (GetZoneNum() <= 0 || calcBrightness_ == null || !ConnectionDIValid || !ValueDIValid ||
+                (!checkBoxAdvanceFwd.Checked && !checkBoxAdvanceBack.Checked))
+            {
+                ExitAutoMode();
+                buttonAutoMeasurements.Enabled = false;
+            }
+            else
+            {
+                buttonAutoMeasurements.Enabled = true;
+            }
+        }
+        
+        private void EnterAutoMode()
+        {
+            if (!autoModeOn_)
+            {
+                autoModeOn_ = true;
+                timeIntervalStarted_ = false;
+
+                buttonAutoMeasurements.Text = "Stop Auto";
+                checkBoxAdvanceFwd.Enabled = false;
+                checkBoxAdvanceBack.Enabled = false;
+                Console.Beep();
+            }
+        }
+        private void ExitAutoMode()
+        {
+            if (autoModeOn_)
+            {
+                autoModeOn_ = false;
+                buttonAutoMeasurements.Text = "Start Auto";
+                checkBoxAdvanceFwd.Enabled = true;
+                checkBoxAdvanceBack.Enabled = true;
+                Console.Beep();
+            }
+        }
+
+        private void ProcessAutoMode()
+        {
+            if (!autoModeOn_)
+                return;
+
+            if (!ValueDIValid || !BrightnessDiffValid || Math.Abs(BrightnessDiff) > options_.AutoPrecision)
+            {
+                timeIntervalStarted_ = false;
+                return;
+            }
+
+            DateTime now = DateTime.Now;
+
+            if (timeIntervalStarted_ &&                                     // interval started
+                startValDI_ == ValueDI &&                                   // still same DI
+                startZoneIndex_ == comboBoxZoneNum.SelectedIndex)           // still same zone
+            {
+                TimeSpan stabilizationTime = TimeSpan.FromSeconds(options_.AutoStabilizationTime);
+                if(now - timeIntervalStart_ >= stabilizationTime)
+                {
+                    // OK!
+                    if (SaveZone(comboBoxZoneNum.SelectedIndex))
+                    {
+                        Console.Beep();
+                        if (checkBoxAdvanceFwd.Checked)
+                        {
+                            if (comboBoxZoneNum.SelectedIndex < comboBoxZoneNum.Items.Count - 1)
+                                comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex + 1;
+                            else
+                                ExitAutoMode();
+                        }
+                        else if (checkBoxAdvanceBack.Checked)
+                        {
+                            if (comboBoxZoneNum.SelectedIndex > 0)
+                                comboBoxZoneNum.SelectedIndex = comboBoxZoneNum.SelectedIndex - 1;
+                            else
+                                ExitAutoMode();
+                        }
+                    }
+                    else
+                    {
+                        Console.Beep();
+                        ExitAutoMode();
+                    }
+                }
+                // else wait more
+                return;
+            }
+
+            // start or restart interval
+            timeIntervalStarted_ = true;
+            timeIntervalStart_ = now;
+            startValDI_ = ValueDI;
+            startZoneIndex_ = comboBoxZoneNum.SelectedIndex;
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////
         // change handlers
         private void MirrorBoundChanged()
         {
+            ExitAutoMode();
             UpdateUIHandler();
             UpdateCalcHandler(false);
             ResetBrightnessQueue();
+            UpdateAutoModeControls();
         }
         private void ImageSizeChanged()
         {
+            ExitAutoMode();
             UpdateUIHandler();
             UpdateCalcHandler(true);
             ResetBrightnessQueue();
+            UpdateAutoModeControls();
         }
         private void UIModeChanged()
         {
+            ExitAutoMode();
             UpdateUIHandler();
             UpdateCalcHandler(false);
             ResetBrightnessQueue();
+            UpdateAutoModeControls();
         }
         private void VisualizationChanged()
         {
@@ -825,11 +1018,15 @@ namespace FoucaultTest
         private void CalcTypeChanged()
         {
             calcBrightnessMode_ = checkBoxMedianCalc.Checked ? CalcBrightnessModeE.Median : CalcBrightnessModeE.Mean;
+            ExitAutoMode();
             UpdateCalcHandler(true);
             ResetBrightnessQueue();
+            UpdateAutoModeControls();
         }
         private void ActiveZoneChanged()
         {
+            if (uiUpdateZoneData_ != null)
+                uiUpdateZoneData_.ActiveZone = activeZone_;
             ResetBrightnessQueue();
         }
         private void DIReadingsChanged()
@@ -844,11 +1041,14 @@ namespace FoucaultTest
 
             zoneReadings_ = null;
 
+            ExitAutoMode();
             UpdateZonesUI();
             UpdateUIHandler();
             UpdateCalcHandler(false);
             ResetBrightnessQueue();
+            UpdateAutoModeControls();
         }
+
         ////////////////////////////////////////////////////////////////////////////////////
 
         private void OnMirrorBoundChanged(object sender, EventArgs e)
@@ -951,8 +1151,6 @@ namespace FoucaultTest
             if (!init_)
                 return;
             activeZone_ = comboBoxZoneNum.SelectedIndex;
-            if (uiUpdateZoneData_ != null)
-                uiUpdateZoneData_.ActiveZone = activeZone_;
             ActiveZoneChanged();
         }
 
@@ -1085,11 +1283,13 @@ namespace FoucaultTest
                 }
             }
             UpdateDIControls();
+            UpdateAutoModeControls();
         }
 
         private void timerPoll_Tick(object sender, EventArgs e)
         {
             SendDIRequest();
+            ProcessAutoMode();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -1099,7 +1299,7 @@ namespace FoucaultTest
 
         private bool SaveZone(int zone)
         {
-            if (valDIValid_ && GetZoneNum() > 0)
+            if (ValueDIValid && GetZoneNum() > 0)
             {
                 if (zoneReadings_ == null)
                     zoneReadings_ = new ZoneReading[zoneBounds_.Length - 1];
@@ -1190,12 +1390,14 @@ namespace FoucaultTest
         {
             if (checkBoxAdvanceFwd.Checked && checkBoxAdvanceBack.Checked)
                 checkBoxAdvanceBack.Checked = false;
+            UpdateAutoModeControls();
         }
 
         private void checkBoxAdvanceBack_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxAdvanceFwd.Checked && checkBoxAdvanceBack.Checked)
                 checkBoxAdvanceFwd.Checked = false;
+            UpdateAutoModeControls();
         }
 
         private void buttonEditZoneReadings_Click(object sender, EventArgs e)
@@ -1336,15 +1538,19 @@ namespace FoucaultTest
         private void buttonAutoMeasurements_Click(object sender, EventArgs e)
         {
             if (autoModeOn_)
-            {
-                autoModeOn_ = false;
-                buttonAutoMeasurements.Text = "Start Auto";
-            }
+                ExitAutoMode();
             else
-            {
-                autoModeOn_ = true;
-                buttonAutoMeasurements.Text = "Stop Auto";
-            }
+                EnterAutoMode();
+        }
+
+        private void checkBoxDbgEmulateDI_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAutoModeControls();
+        }
+
+        private void checkBoxDbgEmulateBrightness_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAutoModeControls();
         }
     }
 
@@ -1510,9 +1716,9 @@ namespace FoucaultTest
         }
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("1.0")]
-        public double AutoPrecision
+        public float AutoPrecision
         {
-            get { return (double)this["AutoPrecision"]; }
+            get { return (float)this["AutoPrecision"]; }
             set { this["AutoPrecision"] = value; }
         }
         [UserScopedSettingAttribute()]

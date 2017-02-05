@@ -35,6 +35,7 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonLoadMirrorData = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
+            this.buttonAutoMeasurements = new System.Windows.Forms.Button();
             this.buttonClearDIs = new System.Windows.Forms.Button();
             this.buttonEditZoneReadings = new System.Windows.Forms.Button();
             this.checkBoxAdvanceBack = new System.Windows.Forms.CheckBox();
@@ -76,9 +77,12 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.buttonAutoMeasurements = new System.Windows.Forms.Button();
+            this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.checkBoxDbgEmulateDI = new System.Windows.Forms.CheckBox();
+            this.checkBoxDbgEmulateBrightness = new System.Windows.Forms.CheckBox();
+            this.textBoxDbgDI = new System.Windows.Forms.TextBox();
+            this.textBoxDbgBrightness = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -150,6 +154,10 @@
             // 
             // tabPageFoucault
             // 
+            this.tabPageFoucault.Controls.Add(this.textBoxDbgBrightness);
+            this.tabPageFoucault.Controls.Add(this.textBoxDbgDI);
+            this.tabPageFoucault.Controls.Add(this.checkBoxDbgEmulateBrightness);
+            this.tabPageFoucault.Controls.Add(this.checkBoxDbgEmulateDI);
             this.tabPageFoucault.Controls.Add(this.buttonAutoMeasurements);
             this.tabPageFoucault.Controls.Add(this.buttonClearDIs);
             this.tabPageFoucault.Controls.Add(this.buttonEditZoneReadings);
@@ -176,6 +184,16 @@
             this.tabPageFoucault.TabIndex = 1;
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
+            // 
+            // buttonAutoMeasurements
+            // 
+            this.buttonAutoMeasurements.Location = new System.Drawing.Point(161, 378);
+            this.buttonAutoMeasurements.Name = "buttonAutoMeasurements";
+            this.buttonAutoMeasurements.Size = new System.Drawing.Size(124, 31);
+            this.buttonAutoMeasurements.TabIndex = 22;
+            this.buttonAutoMeasurements.Text = "Start Auto";
+            this.buttonAutoMeasurements.UseVisualStyleBackColor = true;
+            this.buttonAutoMeasurements.Click += new System.EventHandler(this.buttonAutoMeasurements_Click);
             // 
             // buttonClearDIs
             // 
@@ -607,6 +625,11 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
+            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -617,21 +640,43 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
-            // timerPoll
+            // checkBoxDbgEmulateDI
             // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Interval = 300;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
+            this.checkBoxDbgEmulateDI.AutoSize = true;
+            this.checkBoxDbgEmulateDI.Location = new System.Drawing.Point(17, 631);
+            this.checkBoxDbgEmulateDI.Name = "checkBoxDbgEmulateDI";
+            this.checkBoxDbgEmulateDI.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxDbgEmulateDI.TabIndex = 23;
+            this.checkBoxDbgEmulateDI.Text = "Emulate DI";
+            this.checkBoxDbgEmulateDI.UseVisualStyleBackColor = true;
+            this.checkBoxDbgEmulateDI.CheckedChanged += new System.EventHandler(this.checkBoxDbgEmulateDI_CheckedChanged);
             // 
-            // buttonAutoMeasurements
+            // checkBoxDbgEmulateBrightness
             // 
-            this.buttonAutoMeasurements.Location = new System.Drawing.Point(161, 378);
-            this.buttonAutoMeasurements.Name = "buttonAutoMeasurements";
-            this.buttonAutoMeasurements.Size = new System.Drawing.Size(124, 31);
-            this.buttonAutoMeasurements.TabIndex = 22;
-            this.buttonAutoMeasurements.Text = "Start Auto";
-            this.buttonAutoMeasurements.UseVisualStyleBackColor = true;
-            this.buttonAutoMeasurements.Click += new System.EventHandler(this.buttonAutoMeasurements_Click);
+            this.checkBoxDbgEmulateBrightness.AutoSize = true;
+            this.checkBoxDbgEmulateBrightness.Location = new System.Drawing.Point(17, 660);
+            this.checkBoxDbgEmulateBrightness.Name = "checkBoxDbgEmulateBrightness";
+            this.checkBoxDbgEmulateBrightness.Size = new System.Drawing.Size(116, 17);
+            this.checkBoxDbgEmulateBrightness.TabIndex = 24;
+            this.checkBoxDbgEmulateBrightness.Text = "Emulate Brightness";
+            this.checkBoxDbgEmulateBrightness.UseVisualStyleBackColor = true;
+            this.checkBoxDbgEmulateBrightness.CheckedChanged += new System.EventHandler(this.checkBoxDbgEmulateBrightness_CheckedChanged);
+            // 
+            // textBoxDbgDI
+            // 
+            this.textBoxDbgDI.Location = new System.Drawing.Point(161, 631);
+            this.textBoxDbgDI.Name = "textBoxDbgDI";
+            this.textBoxDbgDI.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDbgDI.TabIndex = 25;
+            this.textBoxDbgDI.Text = "0";
+            // 
+            // textBoxDbgBrightness
+            // 
+            this.textBoxDbgBrightness.Location = new System.Drawing.Point(161, 660);
+            this.textBoxDbgBrightness.Name = "textBoxDbgBrightness";
+            this.textBoxDbgBrightness.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDbgBrightness.TabIndex = 26;
+            this.textBoxDbgBrightness.Text = "100";
             // 
             // MainForm
             // 
@@ -710,6 +755,10 @@
         private System.Windows.Forms.Label labelOffset;
         private System.Windows.Forms.CheckBox checkBoxUseOffset;
         private System.Windows.Forms.Button buttonAutoMeasurements;
+        private System.Windows.Forms.CheckBox checkBoxDbgEmulateDI;
+        private System.Windows.Forms.TextBox textBoxDbgBrightness;
+        private System.Windows.Forms.TextBox textBoxDbgDI;
+        private System.Windows.Forms.CheckBox checkBoxDbgEmulateBrightness;
     }
 }
 

@@ -77,7 +77,7 @@ namespace FoucaultTest
                 return;
             try
             {
-                options_.AutoPrecision = Convert.ToDouble(textBoxAutoPrecision.Text);
+                options_.AutoPrecision = (float)Convert.ToDouble(textBoxAutoPrecision.Text);
                 if (options_.AutoPrecision <= 0)
                     options_.AutoPrecision = 1;
             }
@@ -108,7 +108,7 @@ namespace FoucaultTest
             // we only reset the options changed in this dialog box
             options_.ZoneAngle = 30;
             options_.TimeAveragingCnt = 60;
-            options_.AutoPrecision = 1.0;
+            options_.AutoPrecision = 1.0F;
             options_.AutoStabilizationTime = 3.0;
 
             init_ = false;

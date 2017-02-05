@@ -32,7 +32,7 @@ namespace FoucaultTestClasses
         public int SideTolerance;
         public float ZoneAngle;
         public int TimeAveragingCnt;
-        public double AutoPrecision;
+        public float AutoPrecision;
         public double AutoStabilizationTime;
     };
 
