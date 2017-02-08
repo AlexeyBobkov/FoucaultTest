@@ -924,8 +924,8 @@ namespace FoucaultTest
                 timeIntervalStarted_ = false;
 
                 buttonAutoMeasurements.Text = "Stop Auto";
-                checkBoxAdvanceFwd.Enabled = false;
-                checkBoxAdvanceBack.Enabled = false;
+                //checkBoxAdvanceFwd.Enabled = false;
+                //checkBoxAdvanceBack.Enabled = false;
                 Console.Beep();
             }
         }
@@ -935,8 +935,8 @@ namespace FoucaultTest
             {
                 autoModeOn_ = false;
                 buttonAutoMeasurements.Text = "Start Auto";
-                checkBoxAdvanceFwd.Enabled = true;
-                checkBoxAdvanceBack.Enabled = true;
+                //checkBoxAdvanceFwd.Enabled = true;
+                //checkBoxAdvanceBack.Enabled = true;
                 Console.Beep();
             }
         }
@@ -959,7 +959,7 @@ namespace FoucaultTest
                 startZoneIndex_ == comboBoxZoneNum.SelectedIndex)           // still same zone
             {
                 TimeSpan stabilizationTime = TimeSpan.FromSeconds(options_.AutoStabilizationTime);
-                if(now - timeIntervalStart_ >= stabilizationTime)
+                if (now - timeIntervalStart_ >= stabilizationTime)
                 {
                     // OK!
 
@@ -993,14 +993,15 @@ namespace FoucaultTest
                     }
                 }
                 // else wait more
-                return;
             }
-
-            // start or restart interval
-            timeIntervalStarted_ = true;
-            timeIntervalStart_ = now;
-            startValDI_ = ValueDI;
-            startZoneIndex_ = comboBoxZoneNum.SelectedIndex;
+            else
+            {
+                // start or restart interval
+                timeIntervalStarted_ = true;
+                timeIntervalStart_ = now;
+                startValDI_ = ValueDI;
+                startZoneIndex_ = comboBoxZoneNum.SelectedIndex;
+            }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
