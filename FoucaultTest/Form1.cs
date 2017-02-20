@@ -1622,7 +1622,7 @@ namespace FoucaultTest
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("Black")]
+        [DefaultSettingValueAttribute("Green")]
         public Color InactiveZoneColor
         {
             get { return (Color)this["InactiveZoneColor"]; }
