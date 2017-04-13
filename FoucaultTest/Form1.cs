@@ -389,6 +389,7 @@ namespace FoucaultTest
             CorrectPictureSize();
 
             // load mirror data and zones
+            mirrorBound_ = settings_.MirrorBound;
             zoneBounds_ = settings_.Zones;
             mirrorD_ = settings_.MirrorD;
             mirrorROC_ = settings_.MirrorROC;
@@ -1074,7 +1075,7 @@ namespace FoucaultTest
         {
             if (uiSelMirrorBoundData_ != null)
             {
-                mirrorBound_ = uiSelMirrorBoundData_.MirrorBound;
+                settings_.MirrorBound = mirrorBound_ = uiSelMirrorBoundData_.MirrorBound;
                 MirrorBoundChanged();
             }
         }
@@ -1146,7 +1147,7 @@ namespace FoucaultTest
 
         private void buttonDelMirrorBound_Click(object sender, EventArgs e)
         {
-            mirrorBound_ = new RectangleF();
+            settings_.MirrorBound = mirrorBound_ = new RectangleF();
             MirrorBoundChanged();
         }
 
@@ -1748,6 +1749,13 @@ namespace FoucaultTest
         {
             get { return (bool)this["AutoOffsetToZeroOnAdvanceForward"]; }
             set { this["AutoOffsetToZeroOnAdvanceForward"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public RectangleF MirrorBound
+        {
+            get { return (RectangleF)this["MirrorBound"]; }
+            set { this["MirrorBound"] = value; }
         }
     }
 }
