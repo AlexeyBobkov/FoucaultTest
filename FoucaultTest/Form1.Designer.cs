@@ -58,6 +58,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxZoneNum = new System.Windows.Forms.ComboBox();
+            this.tabPageLWT = new System.Windows.Forms.TabPage();
+            this.buttonClearDIsLWT = new System.Windows.Forms.Button();
+            this.buttonEditZoneReadingsLWT = new System.Windows.Forms.Button();
+            this.checkBoxAdvanceBackLWT = new System.Windows.Forms.CheckBox();
+            this.checkBoxAdvanceFwdLWT = new System.Windows.Forms.CheckBox();
+            this.buttonStoreDI_LWT = new System.Windows.Forms.Button();
+            this.buttonSaveZoneRedingsToFileLWT = new System.Windows.Forms.Button();
+            this.buttonLWTOptions = new System.Windows.Forms.Button();
+            this.comboBoxZoneVizualizationLWT = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.comboBoxZoneNumLWT = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBoxUseOffset = new System.Windows.Forms.CheckBox();
@@ -88,6 +100,7 @@
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
             this.tabPageFoucault.SuspendLayout();
+            this.tabPageLWT.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelPictureBox.SuspendLayout();
@@ -113,6 +126,7 @@
             // 
             this.tabControl.Controls.Add(this.tabPageEdge);
             this.tabControl.Controls.Add(this.tabPageFoucault);
+            this.tabControl.Controls.Add(this.tabPageLWT);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(807, 3);
             this.tabControl.Name = "tabControl";
@@ -183,7 +197,7 @@
             this.tabPageFoucault.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageFoucault.Size = new System.Drawing.Size(306, 766);
             this.tabPageFoucault.TabIndex = 1;
-            this.tabPageFoucault.Text = "Foucault";
+            this.tabPageFoucault.Text = "Foucault Test";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
             // 
             // textBoxDbgBrightness
@@ -411,6 +425,130 @@
             this.comboBoxZoneNum.Size = new System.Drawing.Size(124, 21);
             this.comboBoxZoneNum.TabIndex = 3;
             this.comboBoxZoneNum.SelectedIndexChanged += new System.EventHandler(this.comboBoxZoneNum_SelectedIndexChanged);
+            // 
+            // tabPageLWT
+            // 
+            this.tabPageLWT.Controls.Add(this.buttonClearDIsLWT);
+            this.tabPageLWT.Controls.Add(this.buttonEditZoneReadingsLWT);
+            this.tabPageLWT.Controls.Add(this.checkBoxAdvanceBackLWT);
+            this.tabPageLWT.Controls.Add(this.checkBoxAdvanceFwdLWT);
+            this.tabPageLWT.Controls.Add(this.buttonStoreDI_LWT);
+            this.tabPageLWT.Controls.Add(this.buttonSaveZoneRedingsToFileLWT);
+            this.tabPageLWT.Controls.Add(this.buttonLWTOptions);
+            this.tabPageLWT.Controls.Add(this.comboBoxZoneVizualizationLWT);
+            this.tabPageLWT.Controls.Add(this.label13);
+            this.tabPageLWT.Controls.Add(this.label14);
+            this.tabPageLWT.Controls.Add(this.comboBoxZoneNumLWT);
+            this.tabPageLWT.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLWT.Name = "tabPageLWT";
+            this.tabPageLWT.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLWT.Size = new System.Drawing.Size(306, 766);
+            this.tabPageLWT.TabIndex = 2;
+            this.tabPageLWT.Text = "Lateral Wire Test";
+            this.tabPageLWT.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearDIsLWT
+            // 
+            this.buttonClearDIsLWT.Location = new System.Drawing.Point(78, 240);
+            this.buttonClearDIsLWT.Name = "buttonClearDIsLWT";
+            this.buttonClearDIsLWT.Size = new System.Drawing.Size(155, 39);
+            this.buttonClearDIsLWT.TabIndex = 32;
+            this.buttonClearDIsLWT.Text = "Clear Readings";
+            this.buttonClearDIsLWT.UseVisualStyleBackColor = true;
+            // 
+            // buttonEditZoneReadingsLWT
+            // 
+            this.buttonEditZoneReadingsLWT.Location = new System.Drawing.Point(79, 150);
+            this.buttonEditZoneReadingsLWT.Name = "buttonEditZoneReadingsLWT";
+            this.buttonEditZoneReadingsLWT.Size = new System.Drawing.Size(154, 39);
+            this.buttonEditZoneReadingsLWT.TabIndex = 30;
+            this.buttonEditZoneReadingsLWT.Text = "Edit Readings";
+            this.buttonEditZoneReadingsLWT.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAdvanceBackLWT
+            // 
+            this.checkBoxAdvanceBackLWT.AutoSize = true;
+            this.checkBoxAdvanceBackLWT.Location = new System.Drawing.Point(161, 118);
+            this.checkBoxAdvanceBackLWT.Name = "checkBoxAdvanceBackLWT";
+            this.checkBoxAdvanceBackLWT.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxAdvanceBackLWT.TabIndex = 29;
+            this.checkBoxAdvanceBackLWT.Text = "Advance Back";
+            this.checkBoxAdvanceBackLWT.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAdvanceFwdLWT
+            // 
+            this.checkBoxAdvanceFwdLWT.AutoSize = true;
+            this.checkBoxAdvanceFwdLWT.Checked = true;
+            this.checkBoxAdvanceFwdLWT.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAdvanceFwdLWT.Location = new System.Drawing.Point(18, 118);
+            this.checkBoxAdvanceFwdLWT.Name = "checkBoxAdvanceFwdLWT";
+            this.checkBoxAdvanceFwdLWT.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxAdvanceFwdLWT.TabIndex = 28;
+            this.checkBoxAdvanceFwdLWT.Text = "Advance Forward";
+            this.checkBoxAdvanceFwdLWT.UseVisualStyleBackColor = true;
+            // 
+            // buttonStoreDI_LWT
+            // 
+            this.buttonStoreDI_LWT.Location = new System.Drawing.Point(161, 30);
+            this.buttonStoreDI_LWT.Name = "buttonStoreDI_LWT";
+            this.buttonStoreDI_LWT.Size = new System.Drawing.Size(124, 64);
+            this.buttonStoreDI_LWT.TabIndex = 27;
+            this.buttonStoreDI_LWT.Text = "Store Reading";
+            this.buttonStoreDI_LWT.UseVisualStyleBackColor = true;
+            // 
+            // buttonSaveZoneRedingsToFileLWT
+            // 
+            this.buttonSaveZoneRedingsToFileLWT.Location = new System.Drawing.Point(78, 195);
+            this.buttonSaveZoneRedingsToFileLWT.Name = "buttonSaveZoneRedingsToFileLWT";
+            this.buttonSaveZoneRedingsToFileLWT.Size = new System.Drawing.Size(155, 39);
+            this.buttonSaveZoneRedingsToFileLWT.TabIndex = 31;
+            this.buttonSaveZoneRedingsToFileLWT.Text = "Save Readings";
+            this.buttonSaveZoneRedingsToFileLWT.UseVisualStyleBackColor = true;
+            // 
+            // buttonLWTOptions
+            // 
+            this.buttonLWTOptions.Location = new System.Drawing.Point(79, 327);
+            this.buttonLWTOptions.Name = "buttonLWTOptions";
+            this.buttonLWTOptions.Size = new System.Drawing.Size(154, 46);
+            this.buttonLWTOptions.TabIndex = 41;
+            this.buttonLWTOptions.Text = "Options";
+            this.buttonLWTOptions.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxZoneVizualizationLWT
+            // 
+            this.comboBoxZoneVizualizationLWT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxZoneVizualizationLWT.FormattingEnabled = true;
+            this.comboBoxZoneVizualizationLWT.Location = new System.Drawing.Point(18, 30);
+            this.comboBoxZoneVizualizationLWT.Name = "comboBoxZoneVizualizationLWT";
+            this.comboBoxZoneVizualizationLWT.Size = new System.Drawing.Size(124, 21);
+            this.comboBoxZoneVizualizationLWT.TabIndex = 24;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(15, 14);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 13);
+            this.label13.TabIndex = 23;
+            this.label13.Text = "Visualization";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(15, 57);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(42, 13);
+            this.label14.TabIndex = 25;
+            this.label14.Text = "Zone #";
+            // 
+            // comboBoxZoneNumLWT
+            // 
+            this.comboBoxZoneNumLWT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxZoneNumLWT.FormattingEnabled = true;
+            this.comboBoxZoneNumLWT.Location = new System.Drawing.Point(18, 73);
+            this.comboBoxZoneNumLWT.Name = "comboBoxZoneNumLWT";
+            this.comboBoxZoneNumLWT.Size = new System.Drawing.Size(124, 21);
+            this.comboBoxZoneNumLWT.TabIndex = 26;
             // 
             // tableLayoutPanel2
             // 
@@ -706,6 +844,8 @@
             this.tabPageEdge.ResumeLayout(false);
             this.tabPageFoucault.ResumeLayout(false);
             this.tabPageFoucault.PerformLayout();
+            this.tabPageLWT.ResumeLayout(false);
+            this.tabPageLWT.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -772,6 +912,18 @@
         private System.Windows.Forms.TextBox textBoxDbgDI;
         private System.Windows.Forms.CheckBox checkBoxDbgEmulateBrightness;
         private System.Windows.Forms.Button buttonSavePicture;
+        private System.Windows.Forms.TabPage tabPageLWT;
+        private System.Windows.Forms.Button buttonClearDIsLWT;
+        private System.Windows.Forms.Button buttonEditZoneReadingsLWT;
+        private System.Windows.Forms.CheckBox checkBoxAdvanceBackLWT;
+        private System.Windows.Forms.CheckBox checkBoxAdvanceFwdLWT;
+        private System.Windows.Forms.Button buttonStoreDI_LWT;
+        private System.Windows.Forms.Button buttonSaveZoneRedingsToFileLWT;
+        private System.Windows.Forms.Button buttonLWTOptions;
+        private System.Windows.Forms.ComboBox comboBoxZoneVizualizationLWT;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox comboBoxZoneNumLWT;
     }
 }
 

@@ -12,7 +12,8 @@ namespace FoucaultTestClasses
     {
         Off,
         SelectMirrorBound,
-        ShowZones
+        ShowZonesFoucault,
+        ShowZonesLWT
     };
 
     public enum ZoneVisualizationE

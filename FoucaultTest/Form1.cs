@@ -604,7 +604,7 @@ namespace FoucaultTest
                 calcBrightness_.Dispose();
                 calcBrightness_ = null;
             }
-            if (uiMode_ == UIModeE.ShowZones && GetZoneNum() > 0 && !mirrorBound_.IsEmpty && pictureBox.Image != null)
+            if (uiMode_ == UIModeE.ShowZonesFoucault && GetZoneNum() > 0 && !mirrorBound_.IsEmpty && pictureBox.Image != null)
             {
                 Size imageSize = pictureBox.Image.Size;
                 RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
@@ -662,7 +662,7 @@ namespace FoucaultTest
                     }
                     break;
 
-                case UIModeE.ShowZones:
+                case UIModeE.ShowZonesFoucault:
                     switch (zoneVisualization_)
                     {
                         default:
@@ -686,6 +686,10 @@ namespace FoucaultTest
                             }
                             break;
                     }
+                    break;
+
+                case UIModeE.ShowZonesLWT:
+                    uiHandler = new UIOffHandler(pictureBox);
                     break;
             }
             if (uiSelMirrorBoundData_ != null)
@@ -1193,9 +1197,13 @@ namespace FoucaultTest
             {
                 uiMode_ = UIModeE.SelectMirrorBound;
             }
+            else if (tabControl.SelectedTab == tabPageFoucault)
+            {
+                uiMode_ = UIModeE.ShowZonesFoucault;
+            }
             else
             {
-                uiMode_ = UIModeE.ShowZones;
+                uiMode_ = UIModeE.ShowZonesLWT;
             }
             UIModeChanged();
         }
