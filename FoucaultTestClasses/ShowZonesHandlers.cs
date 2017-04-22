@@ -153,7 +153,7 @@ namespace FoucaultTestClasses
         protected override void RebuildZoneData()
         {
             DisposeZoneData();
-            if (ZoneBounds == null || ZoneBounds.Length <= 1 || MirrorBound.IsEmpty)
+            if (ZoneBounds == null || ZoneBounds.Length <= 1 || MirrorBound.IsEmpty || ClientBound.IsEmpty)
                 zoneData_ = null;
             else
             {
@@ -257,7 +257,7 @@ namespace FoucaultTestClasses
 
         protected override void RebuildZoneData()
         {
-            if (ZoneBounds == null || ZoneBounds.Length <= 1 || MirrorBound.IsEmpty)
+            if (ZoneBounds == null || ZoneBounds.Length <= 1 || MirrorBound.IsEmpty || ClientBound.IsEmpty)
                 zoneData_ = null;
             else
             {

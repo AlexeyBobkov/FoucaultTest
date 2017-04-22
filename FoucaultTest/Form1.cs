@@ -384,7 +384,8 @@ namespace FoucaultTest
 
             comboBoxResolution.Enabled =
             buttonCameraSettings.Enabled =
-            buttonCopyPicture.Enabled = videoSource_ != null;
+            buttonCopyPicture.Enabled =
+            buttonSavePicture.Enabled = videoSource_ != null;
 
             CorrectPictureSize();
 
@@ -425,6 +426,9 @@ namespace FoucaultTest
             textBoxDbgBrightness.Visible = false;
             textBoxDbgDI.Visible = false;
 #endif
+
+            // Temporary hide LWT interface. To be developped later.
+            tabControl.TabPages.Remove(tabPageLWT);
 
             init_ = true;
         }
@@ -1525,6 +1529,11 @@ namespace FoucaultTest
                 videoSourceName_ = videosources[idx].Name;
                 StartVideoSource();
             }
+
+            comboBoxResolution.Enabled =
+            buttonCameraSettings.Enabled =
+            buttonCopyPicture.Enabled =
+            buttonSavePicture.Enabled = videoSource_ != null;
         }
 
         private void comboBoxCamera_DropDown(object sender, EventArgs e)
