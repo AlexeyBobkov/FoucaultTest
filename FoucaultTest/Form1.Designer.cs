@@ -35,6 +35,10 @@
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonLoadMirrorData = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
+            this.textBoxDbgBrightness = new System.Windows.Forms.TextBox();
+            this.textBoxDbgDI = new System.Windows.Forms.TextBox();
+            this.checkBoxDbgEmulateBrightness = new System.Windows.Forms.CheckBox();
+            this.checkBoxDbgEmulateDI = new System.Windows.Forms.CheckBox();
             this.buttonAutoMeasurements = new System.Windows.Forms.Button();
             this.buttonClearDIs = new System.Windows.Forms.Button();
             this.buttonEditZoneReadings = new System.Windows.Forms.Button();
@@ -77,12 +81,9 @@
             this.comboBoxResolution = new System.Windows.Forms.ComboBox();
             this.comboBoxCamera = new System.Windows.Forms.ComboBox();
             this.panelPictureBox = new System.Windows.Forms.Panel();
-            this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.checkBoxDbgEmulateDI = new System.Windows.Forms.CheckBox();
-            this.checkBoxDbgEmulateBrightness = new System.Windows.Forms.CheckBox();
-            this.textBoxDbgDI = new System.Windows.Forms.TextBox();
-            this.textBoxDbgBrightness = new System.Windows.Forms.TextBox();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
+            this.timerPoll = new System.Windows.Forms.Timer(this.components);
+            this.buttonSavePicture = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -184,6 +185,44 @@
             this.tabPageFoucault.TabIndex = 1;
             this.tabPageFoucault.Text = "Foucault";
             this.tabPageFoucault.UseVisualStyleBackColor = true;
+            // 
+            // textBoxDbgBrightness
+            // 
+            this.textBoxDbgBrightness.Location = new System.Drawing.Point(161, 660);
+            this.textBoxDbgBrightness.Name = "textBoxDbgBrightness";
+            this.textBoxDbgBrightness.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDbgBrightness.TabIndex = 22;
+            this.textBoxDbgBrightness.Text = "100";
+            // 
+            // textBoxDbgDI
+            // 
+            this.textBoxDbgDI.Location = new System.Drawing.Point(161, 631);
+            this.textBoxDbgDI.Name = "textBoxDbgDI";
+            this.textBoxDbgDI.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDbgDI.TabIndex = 20;
+            this.textBoxDbgDI.Text = "0";
+            // 
+            // checkBoxDbgEmulateBrightness
+            // 
+            this.checkBoxDbgEmulateBrightness.AutoSize = true;
+            this.checkBoxDbgEmulateBrightness.Location = new System.Drawing.Point(17, 660);
+            this.checkBoxDbgEmulateBrightness.Name = "checkBoxDbgEmulateBrightness";
+            this.checkBoxDbgEmulateBrightness.Size = new System.Drawing.Size(116, 17);
+            this.checkBoxDbgEmulateBrightness.TabIndex = 21;
+            this.checkBoxDbgEmulateBrightness.Text = "Emulate Brightness";
+            this.checkBoxDbgEmulateBrightness.UseVisualStyleBackColor = true;
+            this.checkBoxDbgEmulateBrightness.CheckedChanged += new System.EventHandler(this.checkBoxDbgEmulateBrightness_CheckedChanged);
+            // 
+            // checkBoxDbgEmulateDI
+            // 
+            this.checkBoxDbgEmulateDI.AutoSize = true;
+            this.checkBoxDbgEmulateDI.Location = new System.Drawing.Point(17, 631);
+            this.checkBoxDbgEmulateDI.Name = "checkBoxDbgEmulateDI";
+            this.checkBoxDbgEmulateDI.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxDbgEmulateDI.TabIndex = 19;
+            this.checkBoxDbgEmulateDI.Text = "Emulate DI";
+            this.checkBoxDbgEmulateDI.UseVisualStyleBackColor = true;
+            this.checkBoxDbgEmulateDI.CheckedChanged += new System.EventHandler(this.checkBoxDbgEmulateDI_CheckedChanged);
             // 
             // buttonAutoMeasurements
             // 
@@ -390,6 +429,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonSavePicture);
             this.panel1.Controls.Add(this.checkBoxUseOffset);
             this.panel1.Controls.Add(this.labelOffset);
             this.panel1.Controls.Add(this.buttonSetZero);
@@ -424,7 +464,7 @@
             this.checkBoxUseOffset.Location = new System.Drawing.Point(655, 76);
             this.checkBoxUseOffset.Name = "checkBoxUseOffset";
             this.checkBoxUseOffset.Size = new System.Drawing.Size(76, 17);
-            this.checkBoxUseOffset.TabIndex = 15;
+            this.checkBoxUseOffset.TabIndex = 16;
             this.checkBoxUseOffset.Text = "Use Offset";
             this.checkBoxUseOffset.UseVisualStyleBackColor = true;
             this.checkBoxUseOffset.CheckedChanged += new System.EventHandler(this.checkBoxUseOffset_CheckedChanged);
@@ -434,7 +474,7 @@
             this.labelOffset.Location = new System.Drawing.Point(565, 72);
             this.labelOffset.Name = "labelOffset";
             this.labelOffset.Size = new System.Drawing.Size(84, 26);
-            this.labelOffset.TabIndex = 14;
+            this.labelOffset.TabIndex = 15;
             this.labelOffset.Text = "0";
             this.labelOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -443,7 +483,7 @@
             this.buttonSetZero.Location = new System.Drawing.Point(487, 72);
             this.buttonSetZero.Name = "buttonSetZero";
             this.buttonSetZero.Size = new System.Drawing.Size(72, 26);
-            this.buttonSetZero.TabIndex = 13;
+            this.buttonSetZero.TabIndex = 14;
             this.buttonSetZero.Text = "Offset";
             this.buttonSetZero.UseVisualStyleBackColor = true;
             this.buttonSetZero.Click += new System.EventHandler(this.buttonSetZero_Click);
@@ -454,7 +494,7 @@
             this.checkBoxHideDI.Location = new System.Drawing.Point(655, 123);
             this.checkBoxHideDI.Name = "checkBoxHideDI";
             this.checkBoxHideDI.Size = new System.Drawing.Size(48, 17);
-            this.checkBoxHideDI.TabIndex = 19;
+            this.checkBoxHideDI.TabIndex = 20;
             this.checkBoxHideDI.Text = "Hide";
             this.checkBoxHideDI.UseVisualStyleBackColor = true;
             this.checkBoxHideDI.CheckedChanged += new System.EventHandler(this.checkBoxHideDI_CheckedChanged);
@@ -464,7 +504,7 @@
             this.labelDIUnit.Location = new System.Drawing.Point(565, 122);
             this.labelDIUnit.Name = "labelDIUnit";
             this.labelDIUnit.Size = new System.Drawing.Size(45, 21);
-            this.labelDIUnit.TabIndex = 18;
+            this.labelDIUnit.TabIndex = 19;
             this.labelDIUnit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label9
@@ -473,7 +513,7 @@
             this.label9.Location = new System.Drawing.Point(484, 106);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(50, 13);
-            this.label9.TabIndex = 16;
+            this.label9.TabIndex = 17;
             this.label9.Text = "Reading:";
             // 
             // textBoxDIValue
@@ -482,7 +522,7 @@
             this.textBoxDIValue.Name = "textBoxDIValue";
             this.textBoxDIValue.ReadOnly = true;
             this.textBoxDIValue.Size = new System.Drawing.Size(72, 20);
-            this.textBoxDIValue.TabIndex = 17;
+            this.textBoxDIValue.TabIndex = 18;
             // 
             // label8
             // 
@@ -490,7 +530,7 @@
             this.label8.Location = new System.Drawing.Point(484, 14);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(105, 13);
-            this.label8.TabIndex = 10;
+            this.label8.TabIndex = 11;
             this.label8.Text = "Dial Indicator Status:";
             // 
             // textBoxDIStatus
@@ -499,7 +539,7 @@
             this.textBoxDIStatus.Name = "textBoxDIStatus";
             this.textBoxDIStatus.ReadOnly = true;
             this.textBoxDIStatus.Size = new System.Drawing.Size(147, 20);
-            this.textBoxDIStatus.TabIndex = 11;
+            this.textBoxDIStatus.TabIndex = 12;
             this.textBoxDIStatus.Text = "Disconnected";
             // 
             // buttonConnectDI
@@ -507,7 +547,7 @@
             this.buttonConnectDI.Location = new System.Drawing.Point(655, 15);
             this.buttonConnectDI.Name = "buttonConnectDI";
             this.buttonConnectDI.Size = new System.Drawing.Size(112, 37);
-            this.buttonConnectDI.TabIndex = 12;
+            this.buttonConnectDI.TabIndex = 13;
             this.buttonConnectDI.Text = "Connect";
             this.buttonConnectDI.UseVisualStyleBackColor = true;
             this.buttonConnectDI.Click += new System.EventHandler(this.buttonConnectDI_Click);
@@ -539,9 +579,9 @@
             // 
             this.buttonCopyPicture.Location = new System.Drawing.Point(315, 110);
             this.buttonCopyPicture.Name = "buttonCopyPicture";
-            this.buttonCopyPicture.Size = new System.Drawing.Size(132, 32);
+            this.buttonCopyPicture.Size = new System.Drawing.Size(58, 32);
             this.buttonCopyPicture.TabIndex = 9;
-            this.buttonCopyPicture.Text = "Copy Picture";
+            this.buttonCopyPicture.Text = "Copy";
             this.buttonCopyPicture.UseVisualStyleBackColor = true;
             this.buttonCopyPicture.Click += new System.EventHandler(this.buttonCopyPicture_Click);
             // 
@@ -625,49 +665,6 @@
             this.panelPictureBox.TabIndex = 0;
             this.panelPictureBox.SizeChanged += new System.EventHandler(this.panelPictureBox_SizeChanged);
             // 
-            // timerPoll
-            // 
-            this.timerPoll.Enabled = true;
-            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
-            // 
-            // checkBoxDbgEmulateDI
-            // 
-            this.checkBoxDbgEmulateDI.AutoSize = true;
-            this.checkBoxDbgEmulateDI.Location = new System.Drawing.Point(17, 631);
-            this.checkBoxDbgEmulateDI.Name = "checkBoxDbgEmulateDI";
-            this.checkBoxDbgEmulateDI.Size = new System.Drawing.Size(78, 17);
-            this.checkBoxDbgEmulateDI.TabIndex = 19;
-            this.checkBoxDbgEmulateDI.Text = "Emulate DI";
-            this.checkBoxDbgEmulateDI.UseVisualStyleBackColor = true;
-            this.checkBoxDbgEmulateDI.CheckedChanged += new System.EventHandler(this.checkBoxDbgEmulateDI_CheckedChanged);
-            // 
-            // checkBoxDbgEmulateBrightness
-            // 
-            this.checkBoxDbgEmulateBrightness.AutoSize = true;
-            this.checkBoxDbgEmulateBrightness.Location = new System.Drawing.Point(17, 660);
-            this.checkBoxDbgEmulateBrightness.Name = "checkBoxDbgEmulateBrightness";
-            this.checkBoxDbgEmulateBrightness.Size = new System.Drawing.Size(116, 17);
-            this.checkBoxDbgEmulateBrightness.TabIndex = 21;
-            this.checkBoxDbgEmulateBrightness.Text = "Emulate Brightness";
-            this.checkBoxDbgEmulateBrightness.UseVisualStyleBackColor = true;
-            this.checkBoxDbgEmulateBrightness.CheckedChanged += new System.EventHandler(this.checkBoxDbgEmulateBrightness_CheckedChanged);
-            // 
-            // textBoxDbgDI
-            // 
-            this.textBoxDbgDI.Location = new System.Drawing.Point(161, 631);
-            this.textBoxDbgDI.Name = "textBoxDbgDI";
-            this.textBoxDbgDI.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDbgDI.TabIndex = 20;
-            this.textBoxDbgDI.Text = "0";
-            // 
-            // textBoxDbgBrightness
-            // 
-            this.textBoxDbgBrightness.Location = new System.Drawing.Point(161, 660);
-            this.textBoxDbgBrightness.Name = "textBoxDbgBrightness";
-            this.textBoxDbgBrightness.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDbgBrightness.TabIndex = 22;
-            this.textBoxDbgBrightness.Text = "100";
-            // 
             // pictureBox
             // 
             this.pictureBox.Image = null;
@@ -677,6 +674,21 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            // 
+            // timerPoll
+            // 
+            this.timerPoll.Enabled = true;
+            this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
+            // 
+            // buttonSavePicture
+            // 
+            this.buttonSavePicture.Location = new System.Drawing.Point(389, 110);
+            this.buttonSavePicture.Name = "buttonSavePicture";
+            this.buttonSavePicture.Size = new System.Drawing.Size(58, 32);
+            this.buttonSavePicture.TabIndex = 10;
+            this.buttonSavePicture.Text = "Save";
+            this.buttonSavePicture.UseVisualStyleBackColor = true;
+            this.buttonSavePicture.Click += new System.EventHandler(this.buttonSavePicture_Click);
             // 
             // MainForm
             // 
@@ -759,6 +771,7 @@
         private System.Windows.Forms.TextBox textBoxDbgBrightness;
         private System.Windows.Forms.TextBox textBoxDbgDI;
         private System.Windows.Forms.CheckBox checkBoxDbgEmulateBrightness;
+        private System.Windows.Forms.Button buttonSavePicture;
     }
 }
 

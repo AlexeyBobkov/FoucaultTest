@@ -896,10 +896,17 @@ namespace FoucaultTest
                 Console.Beep();
         }
 
-        private string MakeFileName()
+        private string MakeDIReadingsFileName()
         {
             DateTime dt = DateTime.Now;
             return String.Format("ZoneDIReadings{0}-{1}-{2}_{3}-{4}-{5}.txt",
+                dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"));
+        }
+
+        private string MakePictureFileName()
+        {
+            DateTime dt = DateTime.Now;
+            return String.Format("Picture{0}-{1}-{2}_{3}-{4}-{5}.png",
                 dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"));
         }
 
@@ -1124,6 +1131,33 @@ namespace FoucaultTest
                 Clipboard.SetImage(pictureBox.Image);
         }
 
+        private void buttonSavePicture_Click(object sender, EventArgs e)
+        {
+            if (pictureBox.Image == null)
+                return;
+
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = MakePictureFileName();
+            savefile.Filter = "PNG files (*.png)|*.png|All files (*.*)|*.*";
+
+            stopUpdateVideoFrames_ = true;
+            try
+            {
+                DialogResult res = savefile.ShowDialog();
+                stopUpdateVideoFrames_ = false;
+                if (res != DialogResult.OK)
+                    return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                stopUpdateVideoFrames_ = false;
+                return;
+            }
+
+            pictureBox.Image.Save(savefile.FileName, System.Drawing.Imaging.ImageFormat.Png);
+        }
+
         private void checkBoxFitToScreen_CheckedChanged(object sender, EventArgs e)
         {
             if (!init_ || ignoreCheckBoxFitToScreen_)
@@ -1341,7 +1375,7 @@ namespace FoucaultTest
                 return;
 
             SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = MakeFileName();
+            savefile.FileName = MakeDIReadingsFileName();
             savefile.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
 
             stopUpdateVideoFrames_ = true;
