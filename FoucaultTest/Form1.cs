@@ -1133,15 +1133,53 @@ namespace FoucaultTest
             CorrectPictureSize();
         }
 
+        private Image AskCropImage()
+        {
+            if (pictureBox.Image == null)
+                return null;
+
+            if (!mirrorBound_.IsEmpty)
+            {
+                stopUpdateVideoFrames_ = true;
+                DialogResult res = MessageBox.Show("Crop Picture to selected mirror rectangle?", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                stopUpdateVideoFrames_ = false;
+                switch (res)
+                {
+                    default:
+                    case DialogResult.Cancel:
+                        return null;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Yes:
+                        Size imageSize = pictureBox.Image.Size;
+                        RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
+                            imageSize.Width * mirrorBound_.Width, imageSize.Height * mirrorBound_.Height);
+                        mirrorBoundAbs.Intersect(new RectangleF(new PointF(0, 0), imageSize));
+                        if (!mirrorBoundAbs.IsEmpty)
+                            return ((Bitmap)pictureBox.Image).Clone(mirrorBoundAbs, pictureBox.Image.PixelFormat);
+                        break;
+                }
+            }
+            return (Image)pictureBox.Image.Clone();
+        }
+
         private void buttonCopyPicture_Click(object sender, EventArgs e)
         {
-            if (pictureBox.Image != null)
-                Clipboard.SetImage(pictureBox.Image);
+            if (pictureBox.Image == null)
+                return;
+
+            Image img = AskCropImage();
+            if(img != null)
+                Clipboard.SetImage(img);
         }
 
         private void buttonSavePicture_Click(object sender, EventArgs e)
         {
             if (pictureBox.Image == null)
+                return;
+
+            Image img = AskCropImage();
+            if (img == null)
                 return;
 
             SaveFileDialog savefile = new SaveFileDialog();
@@ -1163,7 +1201,7 @@ namespace FoucaultTest
                 return;
             }
 
-            pictureBox.Image.Save(savefile.FileName, System.Drawing.Imaging.ImageFormat.Png);
+            img.Save(savefile.FileName, System.Drawing.Imaging.ImageFormat.Png);
         }
 
         private void checkBoxFitToScreen_CheckedChanged(object sender, EventArgs e)
