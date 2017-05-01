@@ -144,7 +144,7 @@
             this.tabPageEdge.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageEdge.Size = new System.Drawing.Size(306, 766);
             this.tabPageEdge.TabIndex = 0;
-            this.tabPageEdge.Text = "Mirror Bound";
+            this.tabPageEdge.Text = "Working Rectangle";
             this.tabPageEdge.UseVisualStyleBackColor = true;
             // 
             // buttonDelMirrorBound
@@ -153,7 +153,7 @@
             this.buttonDelMirrorBound.Name = "buttonDelMirrorBound";
             this.buttonDelMirrorBound.Size = new System.Drawing.Size(167, 67);
             this.buttonDelMirrorBound.TabIndex = 0;
-            this.buttonDelMirrorBound.Text = "Delete Mirror Bound";
+            this.buttonDelMirrorBound.Text = "Delete Working Rectangle";
             this.buttonDelMirrorBound.UseVisualStyleBackColor = true;
             this.buttonDelMirrorBound.Click += new System.EventHandler(this.buttonDelMirrorBound_Click);
             // 

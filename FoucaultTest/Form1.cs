@@ -426,7 +426,14 @@ namespace FoucaultTest
             textBoxDbgBrightness.Visible = false;
             textBoxDbgDI.Visible = false;
 #endif
-
+            ContextMenu cm = new ContextMenu();
+            cm.MenuItems.Add("Copy Selected Rectangle", new EventHandler(CopySelectedRect_Click));
+            cm.MenuItems.Add("Copy Whole Picture", new EventHandler(CopyWholePicture_Click));
+            cm.MenuItems.Add("Save Selected Rectangle to File...", new EventHandler(SaveSelectedRect_Click));
+            cm.MenuItems.Add("Save Whole Picture to File...", new EventHandler(SaveWholePicture_Click));
+            cm.Popup += new EventHandler(PictureBoxContextMenu_Popup);
+            pictureBox.ContextMenu = cm;
+            
             // Temporary hide LWT interface. To be developped later.
             tabControl.TabPages.Remove(tabPageLWT);
 
@@ -1133,6 +1140,22 @@ namespace FoucaultTest
             CorrectPictureSize();
         }
 
+        private Image MakeImageToSave(bool fCrop)
+        {
+            if (pictureBox.Image == null)
+                return null;
+            if (fCrop)
+            {
+                Size imageSize = pictureBox.Image.Size;
+                RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
+                    imageSize.Width * mirrorBound_.Width, imageSize.Height * mirrorBound_.Height);
+                mirrorBoundAbs.Intersect(new RectangleF(new PointF(0, 0), imageSize));
+                if (!mirrorBoundAbs.IsEmpty)
+                    return ((Bitmap)pictureBox.Image).Clone(mirrorBoundAbs, pictureBox.Image.PixelFormat);
+            }
+            return (Image)pictureBox.Image.Clone();
+        }
+        
         private Image AskCropImage()
         {
             if (pictureBox.Image == null)
@@ -1151,13 +1174,7 @@ namespace FoucaultTest
                     case DialogResult.No:
                         break;
                     case DialogResult.Yes:
-                        Size imageSize = pictureBox.Image.Size;
-                        RectangleF mirrorBoundAbs = new RectangleF(imageSize.Width * mirrorBound_.Left, imageSize.Height * mirrorBound_.Top,
-                            imageSize.Width * mirrorBound_.Width, imageSize.Height * mirrorBound_.Height);
-                        mirrorBoundAbs.Intersect(new RectangleF(new PointF(0, 0), imageSize));
-                        if (!mirrorBoundAbs.IsEmpty)
-                            return ((Bitmap)pictureBox.Image).Clone(mirrorBoundAbs, pictureBox.Image.PixelFormat);
-                        break;
+                        return MakeImageToSave(true);
                 }
             }
             return (Image)pictureBox.Image.Clone();
@@ -1173,15 +1190,8 @@ namespace FoucaultTest
                 Clipboard.SetImage(img);
         }
 
-        private void buttonSavePicture_Click(object sender, EventArgs e)
+        private void SavePicture(Image img)
         {
-            if (pictureBox.Image == null)
-                return;
-
-            Image img = AskCropImage();
-            if (img == null)
-                return;
-
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.FileName = MakePictureFileName();
             savefile.Filter = "PNG files (*.png)|*.png|All files (*.*)|*.*";
@@ -1202,6 +1212,48 @@ namespace FoucaultTest
             }
 
             img.Save(savefile.FileName, System.Drawing.Imaging.ImageFormat.Png);
+        }
+
+        private void buttonSavePicture_Click(object sender, EventArgs e)
+        {
+            if (pictureBox.Image == null)
+                return;
+
+            Image img = AskCropImage();
+            if (img != null)
+                SavePicture(img);
+        }
+
+        // popup menu events
+        private void PictureBoxContextMenu_Popup(object sender, EventArgs e)
+        {
+            // just hardcode indices
+            ContextMenu cm = pictureBox.ContextMenu;
+            cm.MenuItems[0].Enabled = cm.MenuItems[2].Enabled = !mirrorBound_.IsEmpty;
+        }
+        private void CopySelectedRect_Click(object sender, EventArgs e)
+        {
+            Image img = MakeImageToSave(true);
+            if (img != null)
+                Clipboard.SetImage(img);
+        }
+        private void CopyWholePicture_Click(object sender, EventArgs e)
+        {
+            Image img = MakeImageToSave(false);
+            if (img != null)
+                Clipboard.SetImage(img);
+        }
+        private void SaveSelectedRect_Click(object sender, EventArgs e)
+        {
+            Image img = MakeImageToSave(true);
+            if (img != null)
+                SavePicture(img);
+        }
+        private void SaveWholePicture_Click(object sender, EventArgs e)
+        {
+            Image img = MakeImageToSave(false);
+            if (img != null)
+                SavePicture(img);
         }
 
         private void checkBoxFitToScreen_CheckedChanged(object sender, EventArgs e)
