@@ -124,7 +124,10 @@ namespace FoucaultTestClasses
         }
         public void OnMouseDown(MouseEventArgs e)
         {
-            Side side = GetSide(e.Location);
+            startBound_ = bound_;
+            startLocation_ = e.Location;
+
+            Side side = GetSide(startLocation_);
             if (side != Side.None)
             {
                 pict_.Capture = isCaptured_ = true;
@@ -162,6 +165,11 @@ namespace FoucaultTestClasses
                     case Side.Bottom:
                         bound_ = new Rectangle(bound_.Left, bound_.Top, bound_.Width, e.Y - bound_.Top);
                         break;
+                    case Side.Move:
+                        bound_ = new Rectangle(startBound_.Left + e.Location.X - startLocation_.X,
+                                               startBound_.Top + e.Location.Y - startLocation_.Y,
+                                               startBound_.Width, startBound_.Height);
+                        break;
                 }
                 Invalidate();
             }
@@ -178,6 +186,7 @@ namespace FoucaultTestClasses
                     case Side.Right: pict_.Cursor = Cursors.SizeWE; break;
                     case Side.Top:
                     case Side.Bottom: pict_.Cursor = Cursors.SizeNS; break;
+                    case Side.Move: pict_.Cursor = Cursors.SizeAll; break;
                     default: pict_.Cursor = null; break;
                 }
             }
@@ -231,8 +240,10 @@ namespace FoucaultTestClasses
 
         private void Invalidate() { pict_.Invalidate(bound_); }
 
-        private enum Side { None, UpperLeft, UpperRight, LowerLeft, LowerRight, Left, Right, Top, Bottom };
-        Side side_;
+        private enum Side { None, Move, UpperLeft, UpperRight, LowerLeft, LowerRight, Left, Right, Top, Bottom };
+        private Side side_;
+        private Point startLocation_;
+        private Rectangle startBound_;
 
         private Side GetSide(Point pt)
         {
@@ -260,6 +271,8 @@ namespace FoucaultTestClasses
                     return Side.Top;
                 if (pt.Y >= bound_.Bottom - options_.SideTolerance && pt.Y <= bound_.Bottom + options_.SideTolerance)
                     return Side.Bottom;
+                if (pt.Y >= bound_.Top && pt.Y <= bound_.Bottom)
+                    return Side.Move;
             }
             return Side.None;
         }
