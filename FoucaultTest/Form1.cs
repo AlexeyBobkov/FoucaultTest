@@ -270,17 +270,20 @@ namespace FoucaultTest
                     if (videoSource_.VideoCapabilities.Length > 0)
                     {
                         int maxW = 0;
+                        int maxRate = 0;
                         int idx = 0;
 
                         //Search for the highest resolution
                         for (int i = 0; i < videoSource_.VideoCapabilities.Length; i++)
                         {
                             VideoCapabilities vc = videoSource_.VideoCapabilities[i];
-                            comboBoxResolution.Items.Add(vc.FrameSize.Width.ToString() + "x" + vc.FrameSize.Height.ToString());
+                            comboBoxResolution.Items.Add(vc.FrameSize.Width.ToString() + "x" + vc.FrameSize.Height.ToString() +
+                                "x" + vc.BitCount.ToString() + "bits(" + vc.AverageFrameRate + " fps)");
 
-                            if (vc.FrameSize.Width > maxW)
+                            if (vc.FrameSize.Width > maxW || (vc.FrameSize.Width == maxW && vc.AverageFrameRate > maxRate))
                             {
                                 maxW = vc.FrameSize.Width;
+                                maxRate = vc.AverageFrameRate;
                                 idx = i;
                             }
                         }
@@ -436,6 +439,8 @@ namespace FoucaultTest
             
             // Temporary hide LWT interface. To be developped later.
             tabControl.TabPages.Remove(tabPageLWT);
+
+            checkBoxCropToMirrorRect.Checked = settings_.CropToMirrorRect;
 
             init_ = true;
         }
@@ -1156,13 +1161,14 @@ namespace FoucaultTest
             return (Image)pictureBox.Image.Clone();
         }
         
-        private Image AskCropImage()
+        private Image CheckCropImage()
         {
             if (pictureBox.Image == null)
                 return null;
 
             if (!mirrorBound_.IsEmpty)
             {
+                /*
                 stopUpdateVideoFrames_ = true;
                 DialogResult res = MessageBox.Show("Crop Picture to selected mirror rectangle?", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                 stopUpdateVideoFrames_ = false;
@@ -1176,6 +1182,9 @@ namespace FoucaultTest
                     case DialogResult.Yes:
                         return MakeImageToSave(true);
                 }
+                 * */
+                if(checkBoxCropToMirrorRect.Checked)
+                    return MakeImageToSave(true);
             }
             return (Image)pictureBox.Image.Clone();
         }
@@ -1185,7 +1194,7 @@ namespace FoucaultTest
             if (pictureBox.Image == null)
                 return;
 
-            Image img = AskCropImage();
+            Image img = CheckCropImage();
             if(img != null)
                 Clipboard.SetImage(img);
         }
@@ -1219,7 +1228,7 @@ namespace FoucaultTest
             if (pictureBox.Image == null)
                 return;
 
-            Image img = AskCropImage();
+            Image img = CheckCropImage();
             if (img != null)
                 SavePicture(img);
         }
@@ -1708,6 +1717,11 @@ namespace FoucaultTest
         {
             UpdateAutoModeControls();
         }
+
+        private void checkBoxCropToMirrorRect_CheckedChanged(object sender, EventArgs e)
+        {
+            settings_.CropToMirrorRect = checkBoxCropToMirrorRect.Checked;
+        }
     }
 
     sealed class MainFormSettings : ApplicationSettingsBase
@@ -1897,6 +1911,13 @@ namespace FoucaultTest
         {
             get { return (RectangleF)this["MirrorBound"]; }
             set { this["MirrorBound"] = value; }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool CropToMirrorRect
+        {
+            get { return (bool)this["CropToMirrorRect"]; }
+            set { this["CropToMirrorRect"] = value; }
         }
     }
 }

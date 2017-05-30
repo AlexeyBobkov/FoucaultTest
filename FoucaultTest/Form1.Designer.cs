@@ -32,8 +32,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageEdge = new System.Windows.Forms.TabPage();
+            this.checkBoxCropToMirrorRect = new System.Windows.Forms.CheckBox();
+            this.buttonSavePicture = new System.Windows.Forms.Button();
             this.buttonDelMirrorBound = new System.Windows.Forms.Button();
             this.buttonLoadMirrorData = new System.Windows.Forms.Button();
+            this.buttonCopyPicture = new System.Windows.Forms.Button();
             this.tabPageFoucault = new System.Windows.Forms.TabPage();
             this.textBoxDbgBrightness = new System.Windows.Forms.TextBox();
             this.textBoxDbgDI = new System.Windows.Forms.TextBox();
@@ -84,7 +87,6 @@
             this.buttonConnectDI = new System.Windows.Forms.Button();
             this.buttonAutoPosition = new System.Windows.Forms.Button();
             this.checkBoxFitToScreen = new System.Windows.Forms.CheckBox();
-            this.buttonCopyPicture = new System.Windows.Forms.Button();
             this.labelScale = new System.Windows.Forms.Label();
             this.hScrollBarScale = new System.Windows.Forms.HScrollBar();
             this.label7 = new System.Windows.Forms.Label();
@@ -95,7 +97,6 @@
             this.panelPictureBox = new System.Windows.Forms.Panel();
             this.pictureBox = new FoucaultTestClasses.CustomPictureBox();
             this.timerPoll = new System.Windows.Forms.Timer(this.components);
-            this.buttonSavePicture = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEdge.SuspendLayout();
@@ -137,8 +138,11 @@
             // 
             // tabPageEdge
             // 
+            this.tabPageEdge.Controls.Add(this.checkBoxCropToMirrorRect);
+            this.tabPageEdge.Controls.Add(this.buttonSavePicture);
             this.tabPageEdge.Controls.Add(this.buttonDelMirrorBound);
             this.tabPageEdge.Controls.Add(this.buttonLoadMirrorData);
+            this.tabPageEdge.Controls.Add(this.buttonCopyPicture);
             this.tabPageEdge.Location = new System.Drawing.Point(4, 22);
             this.tabPageEdge.Name = "tabPageEdge";
             this.tabPageEdge.Padding = new System.Windows.Forms.Padding(3);
@@ -146,6 +150,29 @@
             this.tabPageEdge.TabIndex = 0;
             this.tabPageEdge.Text = "Working Rectangle";
             this.tabPageEdge.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCropToMirrorRect
+            // 
+            this.checkBoxCropToMirrorRect.AutoSize = true;
+            this.checkBoxCropToMirrorRect.Checked = true;
+            this.checkBoxCropToMirrorRect.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCropToMirrorRect.Location = new System.Drawing.Point(74, 214);
+            this.checkBoxCropToMirrorRect.Name = "checkBoxCropToMirrorRect";
+            this.checkBoxCropToMirrorRect.Size = new System.Drawing.Size(155, 17);
+            this.checkBoxCropToMirrorRect.TabIndex = 2;
+            this.checkBoxCropToMirrorRect.Text = "Crop to Working Rectangle";
+            this.checkBoxCropToMirrorRect.UseVisualStyleBackColor = true;
+            this.checkBoxCropToMirrorRect.CheckedChanged += new System.EventHandler(this.checkBoxCropToMirrorRect_CheckedChanged);
+            // 
+            // buttonSavePicture
+            // 
+            this.buttonSavePicture.Location = new System.Drawing.Point(74, 275);
+            this.buttonSavePicture.Name = "buttonSavePicture";
+            this.buttonSavePicture.Size = new System.Drawing.Size(167, 32);
+            this.buttonSavePicture.TabIndex = 4;
+            this.buttonSavePicture.Text = "Save Picture";
+            this.buttonSavePicture.UseVisualStyleBackColor = true;
+            this.buttonSavePicture.Click += new System.EventHandler(this.buttonSavePicture_Click);
             // 
             // buttonDelMirrorBound
             // 
@@ -159,13 +186,23 @@
             // 
             // buttonLoadMirrorData
             // 
-            this.buttonLoadMirrorData.Location = new System.Drawing.Point(74, 144);
+            this.buttonLoadMirrorData.Location = new System.Drawing.Point(74, 116);
             this.buttonLoadMirrorData.Name = "buttonLoadMirrorData";
             this.buttonLoadMirrorData.Size = new System.Drawing.Size(167, 64);
             this.buttonLoadMirrorData.TabIndex = 1;
             this.buttonLoadMirrorData.Text = "Load Mirror Data";
             this.buttonLoadMirrorData.UseVisualStyleBackColor = true;
             this.buttonLoadMirrorData.Click += new System.EventHandler(this.buttonLoadMirrorData_Click);
+            // 
+            // buttonCopyPicture
+            // 
+            this.buttonCopyPicture.Location = new System.Drawing.Point(74, 237);
+            this.buttonCopyPicture.Name = "buttonCopyPicture";
+            this.buttonCopyPicture.Size = new System.Drawing.Size(167, 32);
+            this.buttonCopyPicture.TabIndex = 3;
+            this.buttonCopyPicture.Text = "Copy Picture";
+            this.buttonCopyPicture.UseVisualStyleBackColor = true;
+            this.buttonCopyPicture.Click += new System.EventHandler(this.buttonCopyPicture_Click);
             // 
             // tabPageFoucault
             // 
@@ -567,7 +604,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.buttonSavePicture);
             this.panel1.Controls.Add(this.checkBoxUseOffset);
             this.panel1.Controls.Add(this.labelOffset);
             this.panel1.Controls.Add(this.buttonSetZero);
@@ -580,7 +616,6 @@
             this.panel1.Controls.Add(this.buttonConnectDI);
             this.panel1.Controls.Add(this.buttonAutoPosition);
             this.panel1.Controls.Add(this.checkBoxFitToScreen);
-            this.panel1.Controls.Add(this.buttonCopyPicture);
             this.panel1.Controls.Add(this.labelScale);
             this.panel1.Controls.Add(this.hScrollBarScale);
             this.panel1.Controls.Add(this.label7);
@@ -713,16 +748,6 @@
             this.checkBoxFitToScreen.UseVisualStyleBackColor = true;
             this.checkBoxFitToScreen.CheckedChanged += new System.EventHandler(this.checkBoxFitToScreen_CheckedChanged);
             // 
-            // buttonCopyPicture
-            // 
-            this.buttonCopyPicture.Location = new System.Drawing.Point(315, 110);
-            this.buttonCopyPicture.Name = "buttonCopyPicture";
-            this.buttonCopyPicture.Size = new System.Drawing.Size(58, 32);
-            this.buttonCopyPicture.TabIndex = 9;
-            this.buttonCopyPicture.Text = "Copy";
-            this.buttonCopyPicture.UseVisualStyleBackColor = true;
-            this.buttonCopyPicture.Click += new System.EventHandler(this.buttonCopyPicture_Click);
-            // 
             // labelScale
             // 
             this.labelScale.AutoSize = true;
@@ -818,16 +843,6 @@
             this.timerPoll.Enabled = true;
             this.timerPoll.Tick += new System.EventHandler(this.timerPoll_Tick);
             // 
-            // buttonSavePicture
-            // 
-            this.buttonSavePicture.Location = new System.Drawing.Point(389, 110);
-            this.buttonSavePicture.Name = "buttonSavePicture";
-            this.buttonSavePicture.Size = new System.Drawing.Size(58, 32);
-            this.buttonSavePicture.TabIndex = 10;
-            this.buttonSavePicture.Text = "Save";
-            this.buttonSavePicture.UseVisualStyleBackColor = true;
-            this.buttonSavePicture.Click += new System.EventHandler(this.buttonSavePicture_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -842,6 +857,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.tabPageEdge.ResumeLayout(false);
+            this.tabPageEdge.PerformLayout();
             this.tabPageFoucault.ResumeLayout(false);
             this.tabPageFoucault.PerformLayout();
             this.tabPageLWT.ResumeLayout(false);
@@ -924,6 +940,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox comboBoxZoneNumLWT;
+        private System.Windows.Forms.CheckBox checkBoxCropToMirrorRect;
     }
 }
 
