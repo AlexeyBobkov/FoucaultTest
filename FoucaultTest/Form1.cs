@@ -1779,7 +1779,6 @@ namespace FoucaultTest
             set { profile_.SetValue(section_, "ZoneAngle", value); }
         }
 
-        [DefaultSettingValueAttribute("60")]
         public int TimeAveragingCnt
         {
             get { return profile_.GetValue(section_, "TimeAveragingCnt", 60); }
@@ -1806,7 +1805,6 @@ namespace FoucaultTest
             set { profile_.SetValue(section_, "Brightness", value); }
         }
 
-        [DefaultSettingValueAttribute("-2147483648")]
         public int Contrast
         {
             get { return profile_.GetValue(section_, "Contrast", -2147483648); }
@@ -1860,7 +1858,7 @@ namespace FoucaultTest
         }
         public double[] Zones
         {
-            get { return (double[])profile_.GetValue(section_, "Zones"); }
+            get { return (double[])profile_.GetValue(section_, "Zones", typeof(double[])); }
             set { profile_.SetValue(section_, "Zones", value); }
         }
         public float AutoPrecision
@@ -1881,7 +1879,7 @@ namespace FoucaultTest
         public RectangleF MirrorBound
         {
             get { return (RectangleF)profile_.GetValue(section_, "MirrorBound", null, new RectangleF()); }
-            set { profile_.SetValue(section_, "MirrorBound", value); }
+            set { profile_.SetValue(section_, "MirrorBound", value, SettingsSupport.AddType.Full); }
         }
         public bool CropToMirrorRect
         {

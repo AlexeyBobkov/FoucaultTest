@@ -42,42 +42,42 @@ namespace SettingsSupport
     ///////////////////////////////////////
     public class XmlBuffer : IDisposable
     {
-        private XmlProfile m_profile;
-        private XmlDocument m_doc;
-        private FileStream m_file;
-        internal bool m_needsFlushing;
+        private XmlProfile profile_;
+        private XmlDocument doc_;
+        private FileStream file_;
+        internal bool needsFlushing_;
 
         internal XmlBuffer(XmlProfile profile, bool lockFile)
         {
-            m_profile = profile;
-            if (lockFile && File.Exists(m_profile.Name))
-                m_file = new FileStream(m_profile.Name, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+            profile_ = profile;
+            if (lockFile && File.Exists(profile_.Name))
+                file_ = new FileStream(profile_.Name, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
         }
 
         internal void Load(XmlTextWriter writer)
         {
             writer.Flush();
             writer.BaseStream.Position = 0;
-            m_doc.Load(writer.BaseStream);
-            m_needsFlushing = true;
+            doc_.Load(writer.BaseStream);
+            needsFlushing_ = true;
         }
 
         internal XmlDocument XmlDocument
         {
             get
             {
-                if (m_doc == null)
+                if (doc_ == null)
                 {
-                    m_doc = new XmlDocument();
-                    if (m_file != null)
+                    doc_ = new XmlDocument();
+                    if (file_ != null)
                     {
-                        m_file.Position = 0;
-                        m_doc.Load(m_file);
+                        file_.Position = 0;
+                        doc_.Load(file_);
                     }
-                    else if (File.Exists(m_profile.Name))
-                        m_doc.Load(m_profile.Name);
+                    else if (File.Exists(profile_.Name))
+                        doc_.Load(profile_.Name);
                 }
-                return m_doc;
+                return doc_;
             }
         }
 
@@ -88,62 +88,62 @@ namespace SettingsSupport
 
         public bool NeedsFlushing
         {
-            get { return m_needsFlushing; }
+            get { return needsFlushing_; }
         }
 
         public bool Locked
         {
-            get { return m_file != null; }
+            get { return file_ != null; }
         }
 
         public void Flush()
         {
-            if (m_profile == null)
+            if (profile_ == null)
                 throw new InvalidOperationException("Cannot flush an XmlBuffer object that has been closed.");
 
-            if (m_doc == null)
+            if (doc_ == null)
                 return;
 
-            if (m_file == null)
-                m_doc.Save(m_profile.Name);
+            if (file_ == null)
+                doc_.Save(profile_.Name);
             else
             {
-                m_file.SetLength(0);
-                m_doc.Save(m_file);
+                file_.SetLength(0);
+                doc_.Save(file_);
             }
 
-            m_needsFlushing = false;
+            needsFlushing_ = false;
         }
 
         public void Reset()
         {
-            if (m_profile == null)
+            if (profile_ == null)
                 throw new InvalidOperationException("Cannot reset an XmlBuffer object that has been closed.");
 
-            m_doc = null;
-            m_needsFlushing = false;
+            doc_ = null;
+            needsFlushing_ = false;
         }
 
         public void Close()
         {
-            if (m_profile == null)
+            if (profile_ == null)
                 return;
 
-            if (m_needsFlushing)
+            if (needsFlushing_)
                 Flush();
 
-            m_doc = null;
+            doc_ = null;
 
-            if (m_file != null)
+            if (file_ != null)
             {
-                m_file.Close();
-                m_file = null;
+                file_.Close();
+                file_ = null;
             }
 
-            if (m_profile != null)
+            if (profile_ != null)
             {
-                m_profile.m_buffer = null;
-                m_profile = null;
+                profile_.buffer_ = null;
+                profile_ = null;
             }
         }
 
@@ -171,25 +171,25 @@ namespace SettingsSupport
 
         public string RootName
         {
-            get { return m_rootName; }
-            set { m_rootName = value; }
+            get { return rootName_; }
+            set { rootName_ = value; }
         }
 
         public Encoding Encoding
         {
-            get { return m_encoding; }
-            set { m_encoding = value; }
+            get { return encoding_; }
+            set { encoding_ = value; }
         }
 
         public bool Buffering
         {
-            get { return m_buffer != null; }
+            get { return buffer_ != null; }
         }
 
         public AddType AddTypes
         {
-            get { return m_addTypes; }
-            set { m_addTypes = value; }
+            get { return addTypes_; }
+            set { addTypes_ = value; }
         }
 
         public XmlBuffer Buffer()
@@ -199,9 +199,9 @@ namespace SettingsSupport
 
         public XmlBuffer Buffer(bool lockFile)
         {
-            if (m_buffer == null)
-                m_buffer = new XmlBuffer(this, lockFile);
-            return m_buffer;
+            if (buffer_ == null)
+                buffer_ = new XmlBuffer(this, lockFile);
+            return buffer_;
         }
 
         // IMyProfile methods
@@ -257,24 +257,24 @@ namespace SettingsSupport
         }
         public virtual void Flush()
         {
-            if (m_buffer != null && m_buffer.m_needsFlushing)
-                m_buffer.Flush();
+            if (buffer_ != null && buffer_.needsFlushing_)
+                buffer_.Flush();
         }
 
 
         ///////////////////////////////////////
         // Implementation
         ///////////////////////////////////////
-        private string m_rootName = "profile";
-        private Encoding m_encoding = Encoding.UTF8;
-        internal XmlBuffer m_buffer;
-        private AddType m_addTypes = AddType.Default;
+        private string rootName_ = "profile";
+        private Encoding encoding_ = Encoding.UTF8;
+        internal XmlBuffer buffer_;
+        private AddType addTypes_ = AddType.Default;
 
         protected void DoSetValue(string section, string entry, object value, AddType addType)
         {
             if (value == null)
             {
-                RemoveEntry(section, entry);    // Remove the entry
+                RemoveEntry(section, entry);
                 return;
             }
 
@@ -285,10 +285,10 @@ namespace SettingsSupport
             string valueString = (converter.CanConvertTo(typeof(string)) && converter.CanConvertFrom(typeof(string))) ?
                                   converter.ConvertToString(value) : null;
 
-            if ((m_buffer == null || m_buffer.IsEmpty) && !File.Exists(Name))
+            if ((buffer_ == null || buffer_.IsEmpty) && !File.Exists(Name))
             {
                 // The file does not exist
-                using (XmlTextWriter writer = (m_buffer == null) ?
+                using (XmlTextWriter writer = (buffer_ == null) ?
                                 new XmlTextWriter(Name, Encoding) :
                                 new XmlTextWriter(new MemoryStream(), Encoding))    // If there's a buffer, write to it without creating the file
                 {
@@ -309,8 +309,8 @@ namespace SettingsSupport
                     writer.WriteEndElement();
                     writer.WriteEndElement();
                     writer.WriteEndElement();
-                    if (m_buffer != null)
-                        m_buffer.Load(writer);
+                    if (buffer_ != null)
+                        buffer_.Load(writer);
                 }
                 return;
             }
@@ -391,9 +391,9 @@ namespace SettingsSupport
 
         protected void RemoveEntry(string section, string entry)
         {
-            // Get the entry's node, if it exists
             XmlDocument doc = GetXmlDocument();
-            XmlNode entryNode = doc != null ? doc.DocumentElement.SelectSingleNode(GetSectionsPath(section) + "/" + GetEntryPath(entry)) : null;
+            XmlElement root = doc != null ? doc.DocumentElement : null;
+            XmlNode entryNode = root != null ? root.SelectSingleNode(GetSectionsPath(section) + "/" + GetEntryPath(entry)) : null;
             if (entryNode == null)
                 return;
 
@@ -406,8 +406,8 @@ namespace SettingsSupport
 
         protected XmlDocument GetXmlDocument()
         {
-            if (m_buffer != null)
-                return m_buffer.XmlDocument;
+            if (buffer_ != null)
+                return buffer_.XmlDocument;
 
             if (!File.Exists(Name))
                 return null;
@@ -426,8 +426,8 @@ namespace SettingsSupport
         
         protected void Save(XmlDocument doc)
         {
-            if (m_buffer != null)
-                m_buffer.m_needsFlushing = true;
+            if (buffer_ != null)
+                buffer_.needsFlushing_ = true;
             else
                 doc.Save(Name);
         }
