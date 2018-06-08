@@ -1738,6 +1738,11 @@ namespace FoucaultTest
 
     sealed class MainFormSettings
     {
+        public MainFormSettings()
+        {
+            profile_.AddTypes = SettingsSupport.AddType.Short;
+        }
+        
         public Color SelectPenColor
         {
             get { return (Color)profile_.GetValue(section_, "SelectPenColor", null, Color.Red); }

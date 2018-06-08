@@ -4,16 +4,27 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace SettingsSupport
 {
+    ///////////////////////////////////////
+    public enum AddType
+    {
+        Default,                    // default
+        None,                       // no type
+        Short,                      // short type
+        ShortForCurrentAssembly,    // short type for current assembly only, otherwise full
+        Full                        // full type
+    }
+
     ///////////////////////////////////////
     public interface IProfile
     {
         string Name { get; set; }
 
         void SetValue(string section, string entry, object value);
-        void SetValue(string section, string entry, object value, bool addType);
+        void SetValue(string section, string entry, object value, AddType addType);
 
         string GetValue(string section, string entry, string defaultValue);
         int GetValue(string section, string entry, int defaultValue);
@@ -175,6 +186,12 @@ namespace SettingsSupport
             get { return m_buffer != null; }
         }
 
+        public AddType AddTypes
+        {
+            get { return m_addTypes; }
+            set { m_addTypes = value; }
+        }
+
         public XmlBuffer Buffer()
         {
             return Buffer(true);
@@ -194,9 +211,9 @@ namespace SettingsSupport
         }
         public virtual void SetValue(string section, string entry, object value)
         {
-            DoSetValue(section, entry, value, true);
+            DoSetValue(section, entry, value, AddType.Default);
         }
-        public virtual void SetValue(string section, string entry, object value, bool addType)
+        public virtual void SetValue(string section, string entry, object value, AddType addType)
         {
             DoSetValue(section, entry, value, addType);
         }
@@ -234,6 +251,8 @@ namespace SettingsSupport
         }
         public virtual object GetValue(string section, string entry, Type type, object defaultValue)
         {
+            if (type == null && defaultValue != null)
+                type = defaultValue.GetType();
             return DoGetValue(section, entry, type) ?? defaultValue;
         }
         public virtual void Flush()
@@ -249,14 +268,18 @@ namespace SettingsSupport
         private string m_rootName = "profile";
         private Encoding m_encoding = Encoding.UTF8;
         internal XmlBuffer m_buffer;
+        private AddType m_addTypes = AddType.Default;
 
-        protected void DoSetValue(string section, string entry, object value, bool addType)
+        protected void DoSetValue(string section, string entry, object value, AddType addType)
         {
             if (value == null)
             {
                 RemoveEntry(section, entry);    // Remove the entry
                 return;
             }
+
+            if (addType == AddType.Default)
+                addType = AddTypes;
 
             TypeConverter converter = TypeDescriptor.GetConverter(value.GetType());
             string valueString = (converter.CanConvertTo(typeof(string)) && converter.CanConvertFrom(typeof(string))) ?
@@ -276,8 +299,8 @@ namespace SettingsSupport
                     writer.WriteAttributeString("name", null, section);
                     writer.WriteStartElement("entry");
                     writer.WriteAttributeString("name", null, entry);
-                    if (addType)
-                        writer.WriteAttributeString("type", null, TypeName(value));
+                    if (addType != AddType.None)
+                        writer.WriteAttributeString("type", null, TypeName(value, addType));
                     writer.WriteAttributeString("serializeAs", null, valueString != null ? "String" : "Xml");
                     if (valueString != null)
                         writer.WriteString(valueString);
@@ -313,8 +336,8 @@ namespace SettingsSupport
                 entryNode.RemoveAll();
 
             AddAttribute(entryNode, "name", entry);
-            if (addType)
-                AddAttribute(entryNode, "type", TypeName(value));
+            if (addType != AddType.None)
+                AddAttribute(entryNode, "type", TypeName(value, addType));
             AddAttribute(entryNode, "serializeAs", valueString != null ? "String" : "Xml");
 
             if (valueString != null)
@@ -409,12 +432,25 @@ namespace SettingsSupport
                 doc.Save(Name);
         }
 
-        protected string TypeName(object value)
+        protected string TypeName(object value, AddType addType)
         {
-            return value.GetType().AssemblyQualifiedName;
-            //Type t = value.GetType();
-            //string s = t.AssemblyQualifiedName;
-            //return s.Substring(0, s.IndexOf(',')) + "," + t.Assembly.GetName().Name;
+            Type t = value.GetType();
+            string assemblyName = t.AssemblyQualifiedName;
+            switch (addType)
+            {
+                case AddType.Short:
+                    return assemblyName.Substring(0, assemblyName.IndexOf(',')) + ", " + t.Assembly.GetName().Name;
+
+                case AddType.ShortForCurrentAssembly:
+                    return (!t.Assembly.Equals(Assembly.GetExecutingAssembly())) ?
+                            assemblyName :
+                            assemblyName.Substring(0, assemblyName.IndexOf(',')) + ", " + t.Assembly.GetName().Name;
+
+                default:
+                case AddType.Default:
+                case AddType.Full:
+                    return assemblyName;
+            }
         }
     }
 }
