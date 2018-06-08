@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoucaultTestClasses", "Fouc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialPortSupport", "SerialPortSupport\SerialPortSupport.csproj", "{B6947D80-234D-432E-A80A-15B81DF80683}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsSupport", "SettingsSupport\SettingsSupport.csproj", "{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{B6947D80-234D-432E-A80A-15B81DF80683}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6947D80-234D-432E-A80A-15B81DF80683}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6947D80-234D-432E-A80A-15B81DF80683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

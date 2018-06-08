@@ -126,6 +126,10 @@
       <Project>{B6947D80-234D-432E-A80A-15B81DF80683}</Project>
       <Name>SerialPortSupport</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SettingsSupport\SettingsSupport.csproj">
+      <Project>{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}</Project>
+      <Name>SettingsSupport</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

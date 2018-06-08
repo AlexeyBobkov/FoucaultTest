@@ -249,13 +249,16 @@ namespace FoucaultTest
         {
             if (videoSourceName_ != null)
             {
-                settings_.Camera = videoSourceName_;
-                settings_.Brightness = GetVideoProperty(videoSource, VideoProcAmpProperty.Brightness);
-                settings_.Contrast = GetVideoProperty(videoSource, VideoProcAmpProperty.Contrast);
-                settings_.Hue = GetVideoProperty(videoSource, VideoProcAmpProperty.Hue);
-                settings_.Saturation = GetVideoProperty(videoSource, VideoProcAmpProperty.Saturation);
-                settings_.Sharpness = GetVideoProperty(videoSource, VideoProcAmpProperty.Sharpness);
-                settings_.Gamma = GetVideoProperty(videoSource, VideoProcAmpProperty.Gamma);
+                using (settings_.Buffer())
+                {
+                    settings_.Camera = videoSourceName_;
+                    settings_.Brightness = GetVideoProperty(videoSource, VideoProcAmpProperty.Brightness);
+                    settings_.Contrast = GetVideoProperty(videoSource, VideoProcAmpProperty.Contrast);
+                    settings_.Hue = GetVideoProperty(videoSource, VideoProcAmpProperty.Hue);
+                    settings_.Saturation = GetVideoProperty(videoSource, VideoProcAmpProperty.Saturation);
+                    settings_.Sharpness = GetVideoProperty(videoSource, VideoProcAmpProperty.Sharpness);
+                    settings_.Gamma = GetVideoProperty(videoSource, VideoProcAmpProperty.Gamma);
+                }
             }
         }
 #endif
@@ -448,7 +451,7 @@ namespace FoucaultTest
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             StopVideoSource(true);
-            settings_.Save();
+            //settings_.Flush();
         }
 
         private DialogResult ShowDialog(Form form)
@@ -1082,9 +1085,12 @@ namespace FoucaultTest
         }
         private void MirrorAndZonesChanged()
         {
-            settings_.Zones = zoneBounds_;
-            settings_.MirrorD = mirrorD_;
-            settings_.MirrorROC = mirrorROC_;
+            using (settings_.Buffer())
+            {
+                settings_.Zones = zoneBounds_;
+                settings_.MirrorD = mirrorD_;
+                settings_.MirrorROC = mirrorROC_;
+            }
 
             zoneReadings_ = null;
 
@@ -1372,16 +1378,19 @@ namespace FoucaultTest
             if (fUpdateCalcHandler || fResetBrightnessQueue)
                 ResetBrightnessQueue();
 
-            settings_.SelectPenColor = options_.SelectPenColor;
-            settings_.InactiveZoneColor = options_.InactiveZoneColor;
-            settings_.ActiveZoneColor = options_.ActiveZoneColor;
-            settings_.ZoneHeight = options_.ZoneHeight;
-            settings_.SideTolerance = options_.SideTolerance;
-            settings_.ZoneAngle = options_.ZoneAngle;
-            settings_.TimeAveragingCnt = options_.TimeAveragingCnt;
-            settings_.AutoPrecision = options_.AutoPrecision;
-            settings_.AutoStabilizationTime = options_.AutoStabilizationTime;
-            settings_.AutoOffsetToZeroOnAdvanceForward = options_.AutoOffsetToZeroOnAdvanceForward;
+            using (settings_.Buffer())
+            {
+                settings_.SelectPenColor = options_.SelectPenColor;
+                settings_.InactiveZoneColor = options_.InactiveZoneColor;
+                settings_.ActiveZoneColor = options_.ActiveZoneColor;
+                settings_.ZoneHeight = options_.ZoneHeight;
+                settings_.SideTolerance = options_.SideTolerance;
+                settings_.ZoneAngle = options_.ZoneAngle;
+                settings_.TimeAveragingCnt = options_.TimeAveragingCnt;
+                settings_.AutoPrecision = options_.AutoPrecision;
+                settings_.AutoStabilizationTime = options_.AutoStabilizationTime;
+                settings_.AutoOffsetToZeroOnAdvanceForward = options_.AutoOffsetToZeroOnAdvanceForward;
+            }
         }
 
         private void checkBoxMedianCalc_CheckedChanged(object sender, EventArgs e)
@@ -1428,8 +1437,11 @@ namespace FoucaultTest
 
             CloseConnection(connectionDI_);
 
-            settings_.PortNameDI = portNameDI_ = form.PortName;
-            settings_.BaudRateDI = baudRateDI_ = form.BaudRate;
+            using (settings_.Buffer())
+            {
+                settings_.PortNameDI = portNameDI_ = form.PortName;
+                settings_.BaudRateDI = baudRateDI_ = form.BaudRate;
+            }
 
             if (portNameDI_ != null)
             {
@@ -1724,200 +1736,160 @@ namespace FoucaultTest
         }
     }
 
-    sealed class MainFormSettings : ApplicationSettingsBase
+    sealed class MainFormSettings
     {
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("Red")]
         public Color SelectPenColor
         {
-            get { return (Color)this["SelectPenColor"]; }
-            set { this["SelectPenColor"] = value; }
+            get { return (Color)profile_.GetValue(section_, "SelectPenColor", null, Color.Red); }
+            set { profile_.SetValue(section_, "SelectPenColor", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("Green")]
         public Color InactiveZoneColor
         {
-            get { return (Color)this["InactiveZoneColor"]; }
-            set { this["InactiveZoneColor"] = value; }
+            get { return (Color)profile_.GetValue(section_, "InactiveZoneColor", null, Color.Green); }
+            set { profile_.SetValue(section_, "InactiveZoneColor", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("Red")]
         public Color ActiveZoneColor
         {
-            get { return (Color)this["ActiveZoneColor"]; }
-            set { this["ActiveZoneColor"] = value; }
+            get { return (Color)profile_.GetValue(section_, "ActiveZoneColor", null, Color.Red); }
+            set { profile_.SetValue(section_, "ActiveZoneColor", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("0.16")]
         public double ZoneHeight
         {
-            get { return (double)this["ZoneHeight"]; }
-            set { this["ZoneHeight"] = value; }
+            get { return profile_.GetValue(section_, "ZoneHeight", 0.16); }
+            set { profile_.SetValue(section_, "ZoneHeight", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("10")]
         public int SideTolerance
         {
-            get { return (int)this["SideTolerance"]; }
-            set { this["SideTolerance"] = value; }
+            get { return profile_.GetValue(section_, "SideTolerance", 10); }
+            set { profile_.SetValue(section_, "SideTolerance", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("30")]
         public float ZoneAngle
         {
-            get { return (float)this["ZoneAngle"]; }
-            set { this["ZoneAngle"] = value; }
+            get { return profile_.GetValue(section_, "ZoneAngle", 30F); }
+            set { profile_.SetValue(section_, "ZoneAngle", value); }
         }
 
-        [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("60")]
         public int TimeAveragingCnt
         {
-            get { return (int)this["TimeAveragingCnt"]; }
-            set { this["TimeAveragingCnt"] = value; }
+            get { return profile_.GetValue(section_, "TimeAveragingCnt", 60); }
+            set { profile_.SetValue(section_, "TimeAveragingCnt", value); }
         }
 
         // camera attributes
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public string Camera
         {
-            get { return (string)this["Camera"]; }
-            set { this["Camera"] = value; }
+            get { return profile_.GetValue(section_, "Camera", ""); }
+            set { profile_.SetValue(section_, "Camera", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public string Resolution
         {
-            get { return (string)this["Resolution"]; }
-            set { this["Resolution"] = value; }
+            get { return profile_.GetValue(section_, "Resolution", ""); }
+            set { profile_.SetValue(section_, "Resolution", value); }
         }
 
 #if HAS_VIDEO_PROPERTIES
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("-2147483648")]
         public int Brightness
         {
-            get { return (int)this["Brightness"]; }
-            set { this["Brightness"] = value; }
+            get { return profile_.GetValue(section_, "Brightness", -2147483648); }
+            set { profile_.SetValue(section_, "Brightness", value); }
         }
 
-        [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("-2147483648")]
         public int Contrast
         {
-            get { return (int)this["Contrast"]; }
-            set { this["Contrast"] = value; }
+            get { return profile_.GetValue(section_, "Contrast", -2147483648); }
+            set { profile_.SetValue(section_, "Contrast", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("-2147483648")]
         public int Hue
         {
-            get { return (int)this["Hue"]; }
-            set { this["Hue"] = value; }
+            get { return profile_.GetValue(section_, "Hue", -2147483648); }
+            set { profile_.SetValue(section_, "Hue", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("-2147483648")]
         public int Saturation
         {
-            get { return (int)this["Saturation"]; }
-            set { this["Saturation"] = value; }
+            get { return profile_.GetValue(section_, "Saturation", -2147483648); }
+            set { profile_.SetValue(section_, "Saturation", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("-2147483648")]
         public int Sharpness
         {
-            get { return (int)this["Sharpness"]; }
-            set { this["Sharpness"] = value; }
+            get { return profile_.GetValue(section_, "Sharpness", -2147483648); }
+            set { profile_.SetValue(section_, "Sharpness", value); }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("-2147483648")]
         public int Gamma
         {
-            get { return (int)this["Gamma"]; }
-            set { this["Gamma"] = value; }
+            get { return profile_.GetValue(section_, "Gamma", -2147483648); }
+            set { profile_.SetValue(section_, "Gamma", value); }
         }
 #endif
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public string PortNameDI
         {
-            get { return (string)this["PortNameDI"]; }
-            set { this["PortNameDI"] = value; }
+            get { return profile_.GetValue(section_, "PortNameDI", ""); }
+            set { profile_.SetValue(section_, "PortNameDI", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("115200")]
         public int BaudRateDI
         {
-            get { return (int)this["BaudRateDI"]; }
-            set { this["BaudRateDI"] = value; }
+            get { return profile_.GetValue(section_, "BaudRateDI", 115200); }
+            set { profile_.SetValue(section_, "BaudRateDI", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public double MirrorD
         {
-            get { return (double)this["MirrorD"]; }
-            set { this["MirrorD"] = value; }
+            get { return profile_.GetValue(section_, "MirrorD", 0.0); }
+            set { profile_.SetValue(section_, "MirrorD", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public double MirrorROC
         {
-            get { return (double)this["MirrorROC"]; }
-            set { this["MirrorROC"] = value; }
+            get { return profile_.GetValue(section_, "MirrorROC", 0.0); }
+            set { profile_.SetValue(section_, "MirrorROC", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public double[] Zones
         {
-            get { return (double[])this["Zones"]; }
-            set { this["Zones"] = value; }
+            get { return (double[])profile_.GetValue(section_, "Zones"); }
+            set { profile_.SetValue(section_, "Zones", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("1.0")]
         public float AutoPrecision
         {
-            get { return (float)this["AutoPrecision"]; }
-            set { this["AutoPrecision"] = value; }
+            get { return profile_.GetValue(section_, "AutoPrecision", 1F); }
+            set { profile_.SetValue(section_, "AutoPrecision", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("3.0")]
         public double AutoStabilizationTime
         {
-            get { return (double)this["AutoStabilizationTime"]; }
-            set { this["AutoStabilizationTime"] = value; }
+            get { return profile_.GetValue(section_, "AutoStabilizationTime", 3.0); }
+            set { profile_.SetValue(section_, "AutoStabilizationTime", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
         public bool AutoOffsetToZeroOnAdvanceForward
         {
-            get { return (bool)this["AutoOffsetToZeroOnAdvanceForward"]; }
-            set { this["AutoOffsetToZeroOnAdvanceForward"] = value; }
+            get { return profile_.GetValue(section_, "AutoOffsetToZeroOnAdvanceForward", true); }
+            set { profile_.SetValue(section_, "AutoOffsetToZeroOnAdvanceForward", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
         public RectangleF MirrorBound
         {
-            get { return (RectangleF)this["MirrorBound"]; }
-            set { this["MirrorBound"] = value; }
+            get { return (RectangleF)profile_.GetValue(section_, "MirrorBound", null, new RectangleF()); }
+            set { profile_.SetValue(section_, "MirrorBound", value); }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
         public bool CropToMirrorRect
         {
-            get { return (bool)this["CropToMirrorRect"]; }
-            set { this["CropToMirrorRect"] = value; }
+            get { return profile_.GetValue(section_, "CropToMirrorRect", true); }
+            set { profile_.SetValue(section_, "CropToMirrorRect", value); }
         }
+
+        public SettingsSupport.XmlBuffer Buffer()
+        {
+            return profile_.Buffer();
+        }
+
+        private const string section_ = "entries";
+        private SettingsSupport.XmlProfile profile_ = new SettingsSupport.XmlProfile();
     }
 }
