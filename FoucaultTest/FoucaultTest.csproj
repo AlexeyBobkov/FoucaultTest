@@ -122,13 +122,9 @@
       <Project>{BE100FC2-D7DB-49F5-94ED-C624260C2C5B}</Project>
       <Name>FoucaultTestClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SerialPortSupport\SerialPortSupport.csproj">
-      <Project>{B6947D80-234D-432E-A80A-15B81DF80683}</Project>
-      <Name>SerialPortSupport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SettingsSupport\SettingsSupport.csproj">
-      <Project>{9513A47D-4AE5-46BA-87CE-B2EBEE2EB875}</Project>
-      <Name>SettingsSupport</Name>
+    <ProjectReference Include="..\UtilityLibrary\UtilityLibrary\UtilityLibrary.csproj">
+      <Project>{F7BEF099-2D2A-4355-8B9C-0B9C45C0000E}</Project>
+      <Name>UtilityLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

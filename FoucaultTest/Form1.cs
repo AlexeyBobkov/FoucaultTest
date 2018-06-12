@@ -13,7 +13,7 @@ using System.Configuration;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using FoucaultTestClasses;
-using SerialPortSupport;
+using AAB.UtilityLibrary;
 
 namespace FoucaultTest
 {
@@ -1740,24 +1740,24 @@ namespace FoucaultTest
     {
         public MainFormSettings()
         {
-            profile_.AddTypes = SettingsSupport.AddType.Short;
+            profile_.AddTypes = AddType.Short;
         }
         
         public Color SelectPenColor
         {
-            get { return (Color)profile_.GetValue(section_, "SelectPenColor", null, Color.Red); }
+            get { return (Color)profile_.GetValue(section_, "SelectPenColor", Color.Red); }
             set { profile_.SetValue(section_, "SelectPenColor", value); }
         }
 
         public Color InactiveZoneColor
         {
-            get { return (Color)profile_.GetValue(section_, "InactiveZoneColor", null, Color.Green); }
+            get { return (Color)profile_.GetValue(section_, "InactiveZoneColor", Color.Green); }
             set { profile_.SetValue(section_, "InactiveZoneColor", value); }
         }
 
         public Color ActiveZoneColor
         {
-            get { return (Color)profile_.GetValue(section_, "ActiveZoneColor", null, Color.Red); }
+            get { return (Color)profile_.GetValue(section_, "ActiveZoneColor", Color.Red); }
             set { profile_.SetValue(section_, "ActiveZoneColor", value); }
         }
 
@@ -1788,13 +1788,13 @@ namespace FoucaultTest
         // camera attributes
         public string Camera
         {
-            get { return profile_.GetValue(section_, "Camera", ""); }
+            get { return (string)profile_.GetValue(section_, "Camera", ""); }
             set { profile_.SetValue(section_, "Camera", value); }
         }
 
         public string Resolution
         {
-            get { return profile_.GetValue(section_, "Resolution", ""); }
+            get { return (string)profile_.GetValue(section_, "Resolution", ""); }
             set { profile_.SetValue(section_, "Resolution", value); }
         }
 
@@ -1838,7 +1838,7 @@ namespace FoucaultTest
 
         public string PortNameDI
         {
-            get { return profile_.GetValue(section_, "PortNameDI", ""); }
+            get { return (string)profile_.GetValue(section_, "PortNameDI", ""); }
             set { profile_.SetValue(section_, "PortNameDI", value); }
         }
         public int BaudRateDI
@@ -1878,8 +1878,8 @@ namespace FoucaultTest
         }
         public RectangleF MirrorBound
         {
-            get { return (RectangleF)profile_.GetValue(section_, "MirrorBound", null, new RectangleF()); }
-            set { profile_.SetValue(section_, "MirrorBound", value, SettingsSupport.AddType.Full); }
+            get { return (RectangleF)profile_.GetValue(section_, "MirrorBound", new RectangleF()); }
+            set { profile_.SetValue(section_, "MirrorBound", value, AddType.Full); }
         }
         public bool CropToMirrorRect
         {
@@ -1887,12 +1887,12 @@ namespace FoucaultTest
             set { profile_.SetValue(section_, "CropToMirrorRect", value); }
         }
 
-        public SettingsSupport.XmlBuffer Buffer()
+        public XmlBuffer Buffer()
         {
             return profile_.Buffer();
         }
 
         private const string section_ = "entries";
-        private SettingsSupport.XmlProfile profile_ = new SettingsSupport.XmlProfile();
+        private XmlProfile profile_ = new XmlProfile();
     }
 }
