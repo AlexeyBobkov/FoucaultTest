@@ -1,3 +1,6 @@
 [submodule "UtilityLibrary"]
 	path = UtilityLibrary
 	url = https://github.com/AlexeyBobkov/UtilityLibrary
+[submodule "AForge.NET"]
+	path = AForge.NET
+	url = https://github.com/AlexeyBobkov/AForge.NET

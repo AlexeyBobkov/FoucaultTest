@@ -1858,7 +1858,7 @@ namespace FoucaultTest
         }
         public double[] Zones
         {
-            get { return (double[])profile_.GetValue(section_, "Zones", typeof(double[])); }
+            get { return (double[])profile_.GetValue(section_, "Zones", null, typeof(double[])); }
             set { profile_.SetValue(section_, "Zones", value); }
         }
         public float AutoPrecision
