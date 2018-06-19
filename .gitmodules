@@ -4,3 +4,4 @@
 [submodule "AForge.NET"]
 	path = AForge.NET
 	url = https://github.com/AlexeyBobkov/AForge.NET
+	branch = video_capabilities
